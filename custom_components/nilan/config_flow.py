@@ -35,7 +35,7 @@ async def validate_device(address, port, unit_id) -> None:
     client = ModbusTcpClient(address, port)
     try:
         result = client.read_holding_registers(
-            CTS602HoldingRegisters.machine_type_select, 1, unit=int(unit_id)
+            CTS602HoldingRegisters.control_type, 1, unit=int(unit_id)
         )
     except ModbusException as value_error:
         client.close()
