@@ -112,7 +112,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
             HVAC_MODE_OFF,
         ]
         self._attr_preset_modes = ["Energy", "Comfort", "Water"]
-        self._attr_fan_modes = [0, 1, 2, 3, 4]
+        self._attr_fan_modes = ["0", "1", "2", "3", "4"]
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_supported_features = supported_featrures
 
@@ -162,7 +162,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
         self._attr_preset_mode = HVAC_TO_PRESET.get(
             await self._device.get_air_exchange_mode()
         )
-        self._attr_fan_mode = await self._device.get_ventilation_step()
+        self._attr_fan_mode = str(await self._device.get_ventilation_step())
         control_state = await self._device.get_control_state()
         fan_inlet_state = await self._device.get_inlet_speed_step()
         ventilation_state = await self._device.get_ventilation_state()
