@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "name": "[%key:common::config_flow::data::name%]",
+          "host_ip": "[%key:common::config_flow::data::host_ip%]",
+          "host_port": "[%key:common::config_flow::data::host_port%]",
+          "unit_id": "[%key:common::config_flow::data::unit_id%]"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_response": "[%key:common::config_flow::error::invalid_auth%]",
+      "unsupported_device": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+    }
+  }
+}
