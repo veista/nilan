@@ -15,7 +15,10 @@ from homeassistant.components.climate.const import (
     HVAC_MODE_COOL,
     HVAC_MODE_HEAT,
     HVAC_MODE_OFF,
-    ClimateEntityFeature,
+    SUPPORT_FAN_MODE,
+    SUPPORT_PRESET_MODE,
+    SUPPORT_TARGET_HUMIDITY,
+    SUPPORT_TARGET_TEMPERATURE,
 )
 
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
@@ -52,9 +55,7 @@ HVAC_TO_PRESET = {
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Add climate entities for a config entry."""
-    supported_features = (
-        ClimateEntityFeature.FAN_MODE | ClimateEntityFeature.TARGET_HUMIDITY
-    )
+    supported_features = SUPPORT_FAN_MODE | SUPPORT_TARGET_HUMIDITY
 
     hvac_basic_attributes = [
         "get_run_state",
@@ -83,11 +84,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             attribute in device.get_attributes
             for attribute in hvac_temperature_attributes
         ):
-            supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
+            supported_features |= SUPPORT_TARGET_TEMPERATURE
         if all(
             attribute in device.get_attributes for attribute in hvac_preset_attributes
         ):
-            supported_features |= ClimateEntityFeature.PRESET_MODE
+            supported_features |= SUPPORT_PRESET_MODE
         entities.append(NilanClimate(device, supported_features))
     async_add_entities(entities, True)
 
