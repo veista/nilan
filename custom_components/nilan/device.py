@@ -1695,7 +1695,7 @@ class Device:
 
     async def set_alarm_reset_code(self, mode: int) -> bool:
         """set alarm reset code."""
-        if mode >= 100 and mode <= 199 or mode == 255:
+        if mode >= 0 and mode <= 254 or mode == 255:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.alarm_reset,

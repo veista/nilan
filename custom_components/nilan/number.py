@@ -9,10 +9,7 @@ from .__init__ import NilanEntity
 
 from homeassistant.helpers.entity import EntityCategory
 
-from homeassistant.components.number import (
-    NumberEntity,
-    NumberMode,
-)
+from homeassistant.components.number import NumberEntity, NumberMode
 
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
@@ -454,7 +451,7 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         _unique_id = self._name.lower().replace(" ", "_")
         return f"{_name}.{_unique_id}"
 
-    async def async_set_value(self, value: float) -> None:
+    async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
         await getattr(self._device, self._set_attr)(int(value))
 

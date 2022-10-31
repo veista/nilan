@@ -57,7 +57,7 @@ ALARM_CODES_TO_TEXT = {
     70: "E70 Anode Error",
     72: "E72 Abnormally Low Evaporator Temperature",
     92: "E92 Backup Error",
-    154: "All Alarms",
+    255: "All Alarms",
 }
 
 TEXT_TO_ALARM_CODES = {
@@ -111,5 +111,5 @@ TEXT_TO_ALARM_CODES = {
     "E70 Anode Error": 70,
     "E72 Abnormally Low Evaporator Temperature": 72,
     "E92 Backup Error": 92,
-    "All Alarms": 154,
+    "All Alarms": 255,
 }

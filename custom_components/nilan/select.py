@@ -420,7 +420,7 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        await self._device.set_alarm_reset_code(TEXT_TO_ALARM_CODES.get(option) + 99)
+        await self._device.set_alarm_reset_code(TEXT_TO_ALARM_CODES.get(option))
 
     async def async_update(self) -> None:
         """Fetch new state data for the select."""
