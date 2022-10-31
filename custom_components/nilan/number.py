@@ -457,4 +457,4 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
-        self._attr_value = await getattr(self._device, self._attribute)()
+        self._attr_native_value = await getattr(self._device, self._attribute)()
