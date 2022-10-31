@@ -9,7 +9,7 @@ Only CTS602/VP18C support at this time. If you have CTS700 or another device you
 ### Hardware
 You must have a ModBus RTU to Modbus TCP Bridge installed on your Nilan device for this integration to work.
 
-The easiest way is to purchase one, but you can also build one easily with an ESP8266/ESP32. Instructions comming shortly.
+The easiest way is to purchase one, but you can also build one easily with an ESP8266/ESP32 https://github.com/veista/modbus_bridge
 
 ### Software
 #### Manually
