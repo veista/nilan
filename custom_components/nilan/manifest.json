@@ -4,9 +4,6 @@
   "version": "1.0",
   "config_flow": true,
   "documentation": "https://github.com/veista/nilan",
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
   "requirements": ["pymodbus==2.5.3"],
   "dependencies": ["modbus"],
   "codeowners": [
