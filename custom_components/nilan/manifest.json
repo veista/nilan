@@ -7,8 +7,6 @@
   "requirements": ["pymodbus==2.5.3"],
   "dependencies": ["modbus"],
   "issue_tracker": "https://github.com/veista/nilan/issues"
-  "codeowners": [
-    "@veista"
-  ],
+  "codeowners": ["@veista"],
   "iot_class": "local_polling"
 }
