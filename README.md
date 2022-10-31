@@ -1,7 +1,7 @@
 # Nilan
 Nilan integration for Home Assistant
 
-Only CTS602 support at this time. If you have CTS700 you will have to help me with that.
+Only CTS602/VP18C support at this time. If you have CTS700 or another device you will have to help me with that.
 
 - Majority of functions are supported. If some critical is missing please leave an issue.
 
