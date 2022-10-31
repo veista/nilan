@@ -8,6 +8,7 @@
   "zeroconf": [],
   "homekit": {},
   "requirements": ["pymodbus==2.5.3"],
+  "dependencies": "modbus",
   "codeowners": [
     "@veista"
   ],
