@@ -437,5 +437,5 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
         if option3 != 0:
             options.append(ALARM_CODES_TO_TEXT.get(option3))
         if len(options) > 1:
-            options.append(ALARM_CODES_TO_TEXT.get(155))
+            options.append(ALARM_CODES_TO_TEXT.get(255))
         self._attr_options = options
