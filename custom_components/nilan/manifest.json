@@ -1,7 +1,7 @@
 {
   "domain": "nilan",
   "name": "Nilan",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "config_flow": true,
   "documentation": "https://github.com/veista/nilan",
   "requirements": ["pymodbus==2.5.3"],
