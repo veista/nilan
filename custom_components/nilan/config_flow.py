@@ -5,6 +5,7 @@ from typing import Any, Optional
 
 import voluptuous as vol
 
+import logging
 
 from homeassistant import config_entries
 
@@ -29,6 +30,8 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
+_LOGGER = logging.getLogger(__name__)
+
 
 async def validate_device(address, port, unit_id) -> None:
     """validate device model"""
@@ -49,6 +52,10 @@ async def validate_device(address, port, unit_id) -> None:
         signed=True,
     )
     if not value_output in DEVICE_TYPES:
+        _LOGGER.debug(
+            "Device Type %s not found in supported devices list",
+            str(value_output),
+        )
         raise ValueError("unsupported_device")
     client.close()
     return
