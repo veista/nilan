@@ -436,11 +436,11 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         self._attr_name = "Nilan: " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
-        self._attr_min_value = min_value
-        self._attr_max_value = max_value
-        self._attr_step = step
+        self._attr_native_min_value = min_value
+        self._attr_native_max_value = max_value
+        self._attr_native_step = step
         self._attr_mode = mode
-        self._attr_unit_of_measurement = unit
+        self._attr_native_unit_of_measurement = unit
         self._attr_icon = icon
         self._name = name
 
