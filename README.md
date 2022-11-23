@@ -1,3 +1,4 @@
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 # Nilan
 Nilan integration for Home Assistant
 
@@ -18,7 +19,7 @@ The easiest way is to purchase one, but you can also build one easily with an ES
 - Add Nilan from Integrations
 
 #### HACS
-- Coming Soon
+- This integration is available from HACS 
 
 ### Support
 If you like the integration, please leave a star or concider donating at https://www.buymeacoffee.com/veista
