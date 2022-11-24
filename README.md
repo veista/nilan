@@ -32,7 +32,7 @@ The easiest way is to purchase one, but you can also build one easily with an ES
 1. Before submitting an issue, read the previous issues.
 2. If you have a CTS700 device, it is a long road to get it supported by this integration, open an issue and we will go forward there
 3. If you have a CTS602 device and you get an device not supported error during installation:
-  - Turn on debug log for the integration and try installing the integration again. Take note of the debug log and submit it with the issue.
+  - Turn on debug logging for the integration and try installing the integration again. Take note of the debug log and submit it with the issue.
   - Take a picture of the device type plate and submit it with the issue.
   - If you have HMI350T - Touch screen HMI - installed on your device, take a picture of the device info page and submit it with the issue.
 
