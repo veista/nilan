@@ -37,5 +37,5 @@ The easiest way is to purchase one, but you can also build one easily with an ES
   - If you have HMI350T - Touch screen HMI - installed on your device, take a picture of the device info page and submit it with the issue.
 
 ## Support
-If you like the integration, please leave a star or concider donating at https://www.buymeacoffee.com/veista
+If you like the integration, please leave a star and concider donating at https://www.buymeacoffee.com/veista
 
