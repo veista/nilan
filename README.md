@@ -8,10 +8,9 @@ Supported devices (as typed in HMI menu):
 - COMBI 302
 
 Supports co2 sensor as well. After-heater support in the works.
+- Majority of functions are supported. If some critical is missing please leave an issue.
 
 If you have CTS700 or another device you will have to help me with that.
-
-- Majority of functions are supported. If some critical is missing please leave an issue.
 
 ## Installation
 ### Hardware
