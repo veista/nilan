@@ -21,6 +21,6 @@ The easiest way is to purchase one, but you can also build one easily with an ES
 #### HACS
 - This integration is available from HACS 
 
-### Support
+## Support
 If you like the integration, please leave a star or concider donating at https://www.buymeacoffee.com/veista
 
