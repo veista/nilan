@@ -49,6 +49,15 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
         )
     ],
+    "get_bypass_flap_state": [
+        Map(
+            "Bypass Flap",
+            BinarySensorDeviceClass.OPENING,
+            None,
+            None,
+            None,
+        )
+    ],
 }
 
 

@@ -111,6 +111,7 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_compressor_state": "binary_sensor",
     "get_smoke_alarm_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
+    "get_bypass_flap_state": "binary_sensor",
     "get_air_filter_alarm_interval": "select",
     "get_air_quality_control_type": "select",
     "get_cooling_mode_ventilation_step": "select",
@@ -1499,6 +1500,22 @@ class Device:
         """get defrost state."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.output_defrosting, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            if value == 0:
+                return False
+            return True
+        return None
+
+    async def get_bypass_flap_state(self) -> bool:
+        """get bypass flap state."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.air_bypass_is_open, 1, "input"
         )
         if result is not None:
             value = int.from_bytes(
