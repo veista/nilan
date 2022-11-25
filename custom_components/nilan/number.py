@@ -159,6 +159,19 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-high",
         )
     ],
+    "get_external_heating_offset": [
+        Map(
+            "Room Temperature Neutral Zone",
+            "set_external_heating_offset",
+            EntityCategory.CONFIG,
+            0,
+            10,
+            1,
+            NumberMode.BOX,
+            TEMP_CELSIUS,
+            "mdi:thermometer-lines",
+        )
+    ],
     "get_summer_state_change_setpoint": [
         Map(
             "Change to Summer State Setpoint",
@@ -328,6 +341,19 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:wrench-clock",
         )
     ],
+    "get_supply_heating_pid_time": [
+        Map(
+            "Supply Air PID Integration Time",
+            "set_supply_heating_pid_time",
+            EntityCategory.CONFIG,
+            0,
+            25,
+            1,
+            NumberMode.BOX,
+            TIME_SECONDS,
+            "mdi:wrench-clock",
+        )
+    ],
     "get_compressor_stop_time": [
         Map(
             "Compressor Stop Time",
@@ -380,7 +406,74 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-low",
         )
     ],
+    "get_central_heat_supply_curve_offset": [
+        Map(
+            "Supply Heater Curve Offset",
+            "set_central_heat_supply_curve_offset",
+            EntityCategory.CONFIG,
+            -15,
+            10,
+            1,
+            NumberMode.BOX,
+            TEMP_CELSIUS,
+            "mdi:thermometer-lines",
+        )
+    ],
+    "get_min_supply_air_temperature": [
+        Map(
+            "Minimum Supply Air Temperature",
+            "set_min_supply_air_temperature",
+            EntityCategory.CONFIG,
+            5,
+            40,
+            1,
+            NumberMode.BOX,
+            TEMP_CELSIUS,
+            "mdi:thermometer-low",
+        )
+    ],
+    "get_max_supply_air_temperature": [
+        Map(
+            "Maximum Supply Air Temperature",
+            "set_max_supply_air_temperature",
+            EntityCategory.CONFIG,
+            20,
+            50,
+            1,
+            NumberMode.BOX,
+            TEMP_CELSIUS,
+            "mdi:thermometer-high",
+        )
+    ],
+    "get_central_heat_supply_curve": [
+        Map(
+            "Outdoor Temperature Compensation Curve",
+            "set_central_heat_supply_curve",
+            EntityCategory.CONFIG,
+            1,
+            10,
+            1,
+            NumberMode.BOX,
+            None,
+            "mdi:chart-bell-curve-cumulative",
+        )
+    ],
+    "get_supply_heater_delay": [
+        Map(
+            "Supply Heater Delay",
+            "set_supply_heater_delay",
+            EntityCategory.CONFIG,
+            0,
+            30,
+            1,
+            NumberMode.BOX,
+            TIME_MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
 }
+
+# "get_supply_heater_delay": "number",
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):

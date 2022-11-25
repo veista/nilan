@@ -137,6 +137,32 @@ NUMBER_TO_HMI_LANGUAGE = {
     9: "Italian",
 }
 
+NUMBER_TO_CENTRAL_HEAT_TYPE = {
+    0: "Off",
+    1: "Electric",
+    2: "Heatpump",
+    3: "Both",
+}
+
+CENTRAL_HEAT_TYPE_TO_NUMBER = {
+    "Off": 0,
+    "Electric": 1,
+    "Heatpump": 2,
+    "Both": 3,
+}
+
+NUMBER_TO_CENTRAL_HEAT_SELECT = {
+    0: "Off",
+    1: "Heating",
+    2: "Requirement",
+}
+
+CENTRAL_HEAT_SELECT_TO_NUMBER = {
+    "Off": 0,
+    "Heating": 1,
+    "Requirement": 2,
+}
+
 NUMBER_TO_DEFROST_VENTILATION = {0: "None", 1: "Constant Flow", 2: "Low Flow"}
 
 DEFROST_VENTILATION_TO_NUMBER = {
@@ -147,7 +173,7 @@ DEFROST_VENTILATION_TO_NUMBER = {
 
 Map = namedtuple("map", "name set_attr entity_category options enum icon")
 
-ATTRIBUTE_TO_SENSORS = {
+ATTRIBUTE_TO_SELECT = {
     "get_air_filter_alarm_interval": [
         Map(
             "Air Filter Alarm Interval",
@@ -298,6 +324,26 @@ ATTRIBUTE_TO_SENSORS = {
             "mdi:fan",
         )
     ],
+    "get_central_heat_type": [
+        Map(
+            "Air Heating Type",
+            "set_central_heat_type",
+            EntityCategory.CONFIG,
+            CENTRAL_HEAT_TYPE_TO_NUMBER,
+            NUMBER_TO_CENTRAL_HEAT_TYPE,
+            "mdi:radiator",
+        )
+    ],
+    "get_central_heat_select": [
+        Map(
+            "After Heating Mode",
+            "set_central_heat_select",
+            EntityCategory.CONFIG,
+            CENTRAL_HEAT_SELECT_TO_NUMBER,
+            NUMBER_TO_CENTRAL_HEAT_SELECT,
+            "mdi:radiator",
+        )
+    ],
 }
 
 
@@ -306,8 +352,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     device = hass.data[DOMAIN][config_entry.entry_id]
     selects = []
     for attribute in device.get_assigned("select"):
-        if attribute in ATTRIBUTE_TO_SENSORS:
-            maps = ATTRIBUTE_TO_SENSORS[attribute]
+        if attribute in ATTRIBUTE_TO_SELECT:
+            maps = ATTRIBUTE_TO_SELECT[attribute]
             selects.extend(
                 [
                     NilanCTS602Select(

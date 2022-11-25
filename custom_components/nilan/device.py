@@ -62,7 +62,9 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_low_temperature_compressor_start_setpoint": "number",
     "get_low_outdoor_temperature_setpoint": "number",
     "get_min_supply_air_summer_setpoint": "number",
+    "get_max_supply_air_summer_setpoint": "number",
     "get_min_supply_air_winter_setpoint": "number",
+    "get_max_supply_air_winter_setpoint": "number",
     "get_summer_state_change_setpoint": "number",
     "get_supply_power_at_level_1": "number",
     "get_supply_power_at_level_2": "number",
@@ -87,7 +89,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_user_humidity_setpoint": "climate",
     "get_user_temperature_setpoint": "climate",
     "get_room_master_temperature": "climate",
-    "get_air_exchange_mode": "climate",
     "get_control_state": "sensor",
     "get_ventilation_state": "sensor",
     "get_humidity": "sensor",
@@ -129,8 +130,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_high_temperature_curve": "number",
     "get_low_temperature_compressor_start_setpoint": "number",
     "get_low_outdoor_temperature_setpoint": "number",
-    "get_min_supply_air_summer_setpoint": "number",
-    "get_min_supply_air_winter_setpoint": "number",
     "get_summer_state_change_setpoint": "number",
     "get_supply_power_at_level_1": "number",
     "get_supply_power_at_level_2": "number",
@@ -146,6 +145,9 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_defrost_time": "number",
     "get_compressor_stop_time": "number",
     "get_low_room_temperature_setpoint": "number",
+    "get_min_supply_air_summer_setpoint": "number",
+    "get_max_supply_air_summer_setpoint": "number",
+    "get_external_heating_offset": "number",
 }
 
 HW_VERSION_TO_DEVICE = {
@@ -159,6 +161,24 @@ CO2_PRESENT_TO_ATTRIBUTES = {
     "get_co2_low_limit_setpoint": "number",
     "get_co2_high_limit_setpoint": "number",
 }
+
+ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {
+    "get_t7_inlet_temperature_after_heater": "sensor",
+    "get_after_heating_element_capacity": "sensor",
+    "get_central_heat_select": "select",
+    "get_supply_heating_pid_time": "number",
+    "get_after_heating_type": "sensor",
+    "get_central_heat_supply_curve_offset": "number",
+    "get_central_heat_supply_curve": "number",
+    "get_min_supply_air_temperature": "number",
+    "get_max_supply_air_temperature": "number",
+    "get_supply_heater_delay": "number",
+}
+
+ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
+
+WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
+
 
 DEVICE_TYPES = {
     19: "VP 18c",
@@ -205,6 +225,15 @@ class Device:
                 self._device_type = DEVICE_TYPES[hw_type]
                 if await self.get_co2_present():
                     self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
+                after_heater_type = await self.get_after_heating_type()
+                if after_heater_type == 1:
+                    self._attributes.update(ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
+                if after_heater_type == 2:
+                    self._attributes.update(
+                        ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
+                    )
+                if after_heater_type == 3:
+                    self._attributes.update(WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
@@ -240,6 +269,19 @@ class Device:
         """get hardware type."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.control_type, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        return None
+
+    async def get_after_heating_type(self) -> int:
+        """get after heating type."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.air_heat_type, 1, "holding"
         )
         if result is not None:
             return int.from_bytes(
@@ -407,6 +449,32 @@ class Device:
             )
         return None
 
+    async def get_central_heat_type(self) -> int:
+        """get heat type."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.central_heat_heat_type, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        return None
+
+    async def get_central_heat_select(self) -> int:
+        """get central heat select."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.central_heat_heat_select, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        return None
+
     async def get_fan_startup_delay(self) -> int:
         """get fan startup delay."""
         result = await self._modbus.async_pymodbus_call(
@@ -456,6 +524,91 @@ class Device:
         """get Master Room Temperature."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.air_temp_temp_room, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_after_heating_element_capacity(self) -> float:
+        """get After Heating Element Capacity."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602InputRegisters.output_air_heat_cap,
+            1,
+            "input",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_external_heating_offset(self) -> float:
+        """get external heating offset."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_heat_extern,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_supply_offset(self) -> float:
+        """get supply offset."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_offset,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_min_supply_temperature(self) -> float:
+        """get min supply temperature."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_min,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_man_supply_temperature(self) -> float:
+        """get min supply temperature."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_max,
+            1,
+            "holding",
         )
         if result is not None:
             value = int.from_bytes(
@@ -535,6 +688,20 @@ class Device:
         """get T6 evaporator Temperature."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.input_t6_evap, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_t7_inlet_temperature_after_heater(self) -> float:
+        """get T7 inlet Temperature after heater."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.input_t7_inlet, 1, "input"
         )
         if result is not None:
             value = int.from_bytes(
@@ -808,6 +975,40 @@ class Device:
             return float(value) / 100
         return None
 
+    async def get_min_supply_air_temperature(self) -> float:
+        """get minimum supply air temperature setpoint."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_min,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_max_supply_air_temperature(self) -> float:
+        """get max supply air temperature setpoint."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_max,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
     async def get_min_supply_air_summer_setpoint(self) -> float:
         """get minimum supply air temperature setpoint."""
         result = await self._modbus.async_pymodbus_call(
@@ -929,6 +1130,23 @@ class Device:
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
             CTS602HoldingRegisters.air_qual_time_out,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        return None
+
+    async def get_supply_heating_pid_time(self) -> int:
+        """get pid integration time."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_reg_time,
             1,
             "holding",
         )
@@ -1300,6 +1518,37 @@ class Device:
             return value
         return None
 
+    async def get_central_heat_supply_curve(self) -> int:
+        """get central heating curve."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_curve_select,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        return None
+
+    async def get_supply_heater_delay(self) -> int:
+        """get supply heater delay."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.air_heat_delay, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        return None
+
     async def get_inlet_speed_step(self) -> int:
         """get supply fan level."""
         result = await self._modbus.async_pymodbus_call(
@@ -1380,6 +1629,23 @@ class Device:
             CTS602InputRegisters.input_t12_bottom,
             1,
             "input",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        return None
+
+    async def get_central_heat_supply_curve_offset(self) -> float:
+        """get supply curve offset temp."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_supply_offset,
+            1,
+            "holding",
         )
         if result is not None:
             value = int.from_bytes(
@@ -1757,6 +2023,30 @@ class Device:
             return True
         return False
 
+    async def set_central_heat_type(self, mode: int) -> bool:
+        """set air heating type."""
+        if mode in (0, 1, 2, 3):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_heat_type,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_central_heat_select(self, mode: int) -> bool:
+        """set central heating mode."""
+        if mode in (0, 1, 2):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_heat_select,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
     async def set_low_room_temp_ventilation_level(self, mode: int) -> bool:
         """set low room temperature ventilation level."""
         if mode in (0, 1, 2, 3, 4):
@@ -1913,6 +2203,30 @@ class Device:
             return True
         return False
 
+    async def set_supply_heater_delay(self, value: int) -> bool:
+        """set supply heater delay in m."""
+        if value >= 0 and value <= 30:
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.air_heat_delay,
+                value,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_central_heat_supply_curve(self, value: int) -> bool:
+        """set supply heater delay in m."""
+        if value >= 1 and value <= 10:
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_curve_select,
+                value,
+                "write_registers",
+            )
+            return True
+        return False
+
     async def set_compressor_stop_time(self, value: int) -> bool:
         """set compressor stop time in s."""
         if value >= 0 and value <= 3600:
@@ -1987,6 +2301,62 @@ class Device:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.compressor_cond_temp_max,
+                output,
+                "write_registers",
+            )
+
+    async def set_external_heating_offset(self, value: float):
+        """set external heating offset."""
+        if value >= 0 and value <= 10:
+            value = int(value * 100)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_heat_extern,
+                output,
+                "write_registers",
+            )
+
+    async def set_min_supply_air_temperature(self, value: float):
+        """set min supply temperature."""
+        if value >= 5 and value <= 40:
+            value = int(value * 100)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_supply_min,
+                output,
+                "write_registers",
+            )
+
+    async def set_max_supply_air_temperature(self, value: float):
+        """set max supply temperature."""
+        if value >= 20 and value <= 50:
+            value = int(value * 100)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_supply_max,
+                output,
+                "write_registers",
+            )
+
+    async def set_central_heat_supply_curve_offset(self, value: float):
+        """set supply curve offset."""
+        if value >= -15 and value <= 10:
+            value = int(value * 100)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_supply_offset,
                 output,
                 "write_registers",
             )
@@ -2161,6 +2531,16 @@ class Device:
     async def set_max_high_humidity_vent_time(self, value: float):
         """set maximum time in high humidity ventilation in m"""
         if value >= 1 and value <= 180:
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.air_qual_time_out,
+                value,
+                "write_registers",
+            )
+
+    async def set_supply_heating_pid_time(self, value: float):
+        """set pid integration time"""
+        if value >= 0 and value <= 25:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_time_out,

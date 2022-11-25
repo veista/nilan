@@ -62,6 +62,13 @@ SEASON_STATES = {
     True: "Summer",
 }
 
+AFTER_HEATING_TYPES = {
+    0: "No Heater",
+    1: "Electrical",
+    2: "Electric on Binary Relays",
+    3: "Water",
+}
+
 USER_MENU_STATES = {
     0: "Closed",
     1: "Open",
@@ -128,6 +135,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_t7_inlet_temperature_after_heater": [
+        Map(
+            "Supply Air Temperature After Heater",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_t10_external_temperature": [
         Map(
             "Return Air Temperature",
@@ -172,6 +190,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_after_heating_element_capacity": [
+        Map(
+            "After Heating Element Capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:radiator",
+            None,
+        )
+    ],
     "get_co2_sensor_value": [
         Map(
             "CO2 Sensor",
@@ -192,6 +221,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             "mdi:state-machine",
             CONTROL_STATES,
+        )
+    ],
+    "get_after_heating_type": [
+        Map(
+            "After Heating Type",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            AFTER_HEATING_TYPES,
         )
     ],
     "get_time_in_control_state": [
