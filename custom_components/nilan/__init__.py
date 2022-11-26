@@ -10,7 +10,15 @@ from .device import Device
 
 from .const import DOMAIN
 
-PLATFORMS = ["climate", "water_heater", "sensor", "select", "binary_sensor", "number"]
+PLATFORMS = [
+    "climate",
+    "water_heater",
+    "sensor",
+    "select",
+    "binary_sensor",
+    "number",
+    "switch",
+]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

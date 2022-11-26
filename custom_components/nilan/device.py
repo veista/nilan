@@ -177,6 +177,7 @@ ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {
     "get_min_supply_air_temperature": "number",
     "get_max_supply_air_temperature": "number",
     "get_supply_heater_delay": "number",
+    "get_supply_air_after_heating": "switch",
 }
 
 ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
@@ -327,6 +328,19 @@ class Device:
         """get user menu state."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.user_user_menu_open, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        return None
+
+    async def get_supply_air_after_heating(self) -> int:
+        """get After heating activation state."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.air_heat_select_set, 1, "holding"
         )
         if result is not None:
             return int.from_bytes(
@@ -1976,6 +1990,18 @@ class Device:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_rh_vent_lo,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_supply_air_after_heating(self, mode: int) -> bool:
+        """set After heating activation."""
+        if mode in (0, 1):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.air_heat_select_set,
                 mode,
                 "write_registers",
             )
