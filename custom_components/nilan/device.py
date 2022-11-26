@@ -232,6 +232,7 @@ class Device:
                     self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
                 after_heater_type = await self.get_after_heating_type()
                 if after_heater_type == 1:
+                    del self._attributes["get_t2_inlet_temperature"]
                     self._attributes.update(ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
                 if after_heater_type == 2:
                     self._attributes.update(
