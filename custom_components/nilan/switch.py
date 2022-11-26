@@ -9,6 +9,8 @@ from .__init__ import NilanEntity
 
 from homeassistant.components.switch import SwitchEntity
 
+from homeassistant.helpers.entity import EntityCategory
+
 from .const import DOMAIN, SCAN_INTERVAL_TIME
 
 
@@ -21,12 +23,12 @@ Map = namedtuple(
 ATTRIBUTE_TO_SWITCHES = {
     "get_supply_air_after_heating": [
         Map(
-            "Supply Air After Heating",
+            "Supply Air After Heating Installed",
             "set_supply_air_after_heating",
-            None,
+            EntityCategory.CONFIG,
             0,
             1,
-            "mdi:radiator-disabled",
+            "mdi:radiator-off",
             "mdi:radiator",
         )
     ],
