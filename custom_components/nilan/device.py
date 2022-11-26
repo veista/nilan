@@ -202,9 +202,9 @@ class Device:
         self._client_config = {
             "name": self._device_name,
             "type": "tcp",
-            "delay": "",
+            "delay": 0,
             "port": self._host_port,
-            "timeout": 1000,
+            "timeout": 1,
             "close_comm_on_error": "false",
             "retries": 10,
             "retry_on_empty": "true",
