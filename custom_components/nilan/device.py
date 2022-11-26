@@ -38,6 +38,8 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_days_to_air_filter_change": "sensor",
     "get_summer_state": "sensor",
     "get_time": "sensor",
+    "get_supply_fan_level": "sensor",
+    "get_return_fan_level": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_smoke_alarm_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
@@ -109,6 +111,8 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_days_to_air_filter_change": "sensor",
     "get_summer_state": "sensor",
     "get_time": "sensor",
+    "get_supply_fan_level": "sensor",
+    "get_return_fan_level": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_smoke_alarm_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
@@ -484,7 +488,46 @@ class Device:
             return int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
-                signed=True,
+                signed=False,
+            )
+        return None
+
+    async def get_actual_vent_set(self) -> int:
+        """get Actual ventilation step set point."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.air_flow_vent_set, 1, "input"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        return None
+
+    async def get_supply_fan_level(self) -> int:
+        """get Actual inlet fan speed step."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.air_flow_inlet_act, 1, "input"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        return None
+
+    async def get_return_fan_level(self) -> int:
+        """get Actual exhaust fan speed step."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.air_flow_exhaust_act, 1, "input"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
             )
         return None
 

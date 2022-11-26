@@ -322,6 +322,28 @@ ATTRIBUTE_TO_SENSORS = {
             USER_MENU_STATES,
         )
     ],
+    "get_supply_fan_level": [
+        Map(
+            "Supply Fan Level",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            None,
+        )
+    ],
+    "get_return_fan_level": [
+        Map(
+            "Return Fan Level",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            None,
+        )
+    ],
 }
 
 
