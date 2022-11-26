@@ -17,6 +17,10 @@ You must have a ModBus RTU to Modbus TCP Bridge installed on your Nilan device f
 
 The easiest way is to purchase one, but you can also build one easily with an ESP8266/ESP32 https://github.com/veista/modbus_bridge
 
+#### Tested Known-to-work Bridge Devices
+* USR-TCP232-410S
+* https://github.com/veista/modbus_bridge
+
 ### Software
 #### Manually
 - Copy the nilan folder into your custom_components folder
