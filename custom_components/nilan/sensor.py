@@ -137,7 +137,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t7_inlet_temperature_after_heater": [
         Map(
-            "Supply Air Temperature After Heater",
+            "Supply Air Temperature",
             TEMP_CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,

@@ -29,6 +29,7 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_t15_user_panel_temperature": "sensor",
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
+    "get_t7_inlet_temperature_after_heater": "sensor",
     "get_t1_intake_temperature": "sensor",
     "get_t0_controller_temperature": "sensor",
     "get_alarm_count": "sensor",
@@ -101,6 +102,7 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_t15_user_panel_temperature": "sensor",
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
+    "get_t7_inlet_temperature_after_heater": "sensor",
     "get_t1_intake_temperature": "sensor",
     "get_t0_controller_temperature": "sensor",
     "get_alarm_count": "sensor",
@@ -111,8 +113,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_time": "sensor",
     "get_supply_fan_level": "sensor",
     "get_return_fan_level": "sensor",
-    "get_after_heating_type": "sensor",
-    "get_after_heating_element_capacity": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_smoke_alarm_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
@@ -129,7 +129,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_min_return_step": "select",
     "get_max_return_step": "select",
     "get_defrost_ventilation_level": "select",
-    "get_central_heat_select": "select",
     "get_max_high_humidity_vent_time": "number",
     "get_low_temperature_curve": "number",
     "get_high_temperature_curve": "number",
@@ -153,13 +152,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_min_supply_air_summer_setpoint": "number",
     "get_max_supply_air_summer_setpoint": "number",
     "get_external_heating_offset": "number",
-    "get_supply_heating_pid_time": "number",
-    "get_central_heat_supply_curve_offset": "number",
-    "get_central_heat_supply_curve": "number",
-    "get_min_supply_air_temperature": "number",
-    "get_max_supply_air_temperature": "number",
-    "get_supply_heater_delay": "number",
-    "get_supply_air_after_heating": "switch",
 }
 
 HW_VERSION_TO_DEVICE = {
@@ -173,6 +165,24 @@ CO2_PRESENT_TO_ATTRIBUTES = {
     "get_co2_low_limit_setpoint": "number",
     "get_co2_high_limit_setpoint": "number",
 }
+
+ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {
+    "get_after_heating_element_capacity": "sensor",
+    "get_central_heat_select": "select",
+    "get_supply_heating_pid_time": "number",
+    "get_after_heating_type": "sensor",
+    "get_central_heat_supply_curve_offset": "number",
+    "get_central_heat_supply_curve": "number",
+    "get_min_supply_air_temperature": "number",
+    "get_max_supply_air_temperature": "number",
+    "get_supply_heater_delay": "number",
+    "get_supply_air_after_heating": "switch",
+}
+
+ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
+
+WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
+
 
 DEVICE_TYPES = {
     19: "VP 18c",
@@ -219,6 +229,15 @@ class Device:
                 self._device_type = DEVICE_TYPES[hw_type]
                 if await self.get_co2_present():
                     self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
+                after_heater_type = await self.get_after_heating_type()
+                if after_heater_type == 1:
+                    self._attributes.update(ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
+                if after_heater_type == 2:
+                    self._attributes.update(
+                        ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
+                    )
+                if after_heater_type == 3:
+                    self._attributes.update(WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
