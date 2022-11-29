@@ -6,6 +6,75 @@ from homeassistant.components.modbus import modbus
 from homeassistant.core import HomeAssistant
 from .registers import CTS602InputRegisters, CTS602HoldingRegisters
 
+COMFORT_SUPPORTED_ENTITIES = {
+    "get_run_state": "climate",
+    "get_ventilation_step": "climate",
+    "get_operation_mode": "climate",
+    "get_user_humidity_setpoint": "climate",
+    "get_user_temperature_setpoint": "climate",
+    "get_room_master_temperature": "climate",
+    "get_control_state": "sensor",
+    "get_ventilation_state": "sensor",
+    "get_humidity": "sensor",
+    "get_average_humidity": "sensor",
+    "get_inlet_speed_step": "sensor",
+    "get_outlet_speed_step": "sensor",
+    "get_smoke_alarm": "sensor",
+    "get_t10_external_temperature": "sensor",
+    "get_t15_user_panel_temperature": "sensor",
+    "get_t6_evaporator_temperature": "sensor",
+    "get_t5_condenser_temperature": "sensor",
+    "get_t7_inlet_temperature_after_heater": "sensor",
+    "get_t1_intake_temperature": "sensor",
+    "get_t0_controller_temperature": "sensor",
+    "get_alarm_count": "sensor",
+    "get_time_in_control_state": "sensor",
+    "get_days_since_air_filter_change": "sensor",
+    "get_days_to_air_filter_change": "sensor",
+    "get_summer_state": "sensor",
+    "get_time": "sensor",
+    "get_supply_fan_level": "sensor",
+    "get_return_fan_level": "sensor",
+    "get_compressor_state": "binary_sensor",
+    "get_smoke_alarm_state": "binary_sensor",
+    "get_defrost_state": "binary_sensor",
+    "get_air_filter_alarm_interval": "select",
+    "get_air_quality_control_type": "select",
+    "get_compressor_priority": "select",
+    "get_cooling_mode_ventilation_step": "select",
+    "get_cooling_setpoint": "select",
+    "get_low_humidity_step": "select",
+    "get_high_humidity_step": "select",
+    "get_low_outdoor_temperature_ventilation_step": "select",
+    "get_min_supply_step": "select",
+    "get_min_return_step": "select",
+    "get_max_return_step": "select",
+    "get_defrost_ventilation_level": "select",
+    "get_scalding_protection_setpoint": "number",
+    "get_max_high_humidity_vent_time": "number",
+    "get_low_temperature_curve": "number",
+    "get_high_temperature_curve": "number",
+    "get_low_temperature_compressor_start_setpoint": "number",
+    "get_low_outdoor_temperature_setpoint": "number",
+    "get_min_supply_air_summer_setpoint": "number",
+    "get_min_supply_air_winter_setpoint": "number",
+    "get_summer_state_change_setpoint": "number",
+    "get_supply_power_at_level_1": "number",
+    "get_supply_power_at_level_2": "number",
+    "get_supply_power_at_level_3": "number",
+    "get_supply_power_at_level_4": "number",
+    "get_return_power_at_level_1": "number",
+    "get_return_power_at_level_2": "number",
+    "get_return_power_at_level_3": "number",
+    "get_return_power_at_level_4": "number",
+    "get_fan_startup_delay": "number",
+    "get_defrost_start_setpoint": "number",
+    "get_defrost_stop_setpoint": "number",
+    "get_defrost_time": "number",
+    "get_compressor_stop_time": "number",
+    "get_low_room_temperature_setpoint": "number",
+}
+
 VP18C_SUPPORTED_ENTITIES = {
     "get_run_state": "climate",
     "get_ventilation_step": "climate",
@@ -155,6 +224,7 @@ COMBI302_SUPPORTED_ENTITIES = {
 }
 
 HW_VERSION_TO_DEVICE = {
+    13: COMFORT_SUPPORTED_ENTITIES,
     19: VP18C_SUPPORTED_ENTITIES,
     35: COMBI302_SUPPORTED_ENTITIES,
 }
@@ -167,10 +237,10 @@ CO2_PRESENT_TO_ATTRIBUTES = {
 }
 
 ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {
+    "get_after_heating_type": "sensor",
     "get_after_heating_element_capacity": "sensor",
     "get_central_heat_select": "select",
     "get_supply_heating_pid_time": "number",
-    "get_after_heating_type": "sensor",
     "get_central_heat_supply_curve_offset": "number",
     "get_central_heat_supply_curve": "number",
     "get_min_supply_air_temperature": "number",
@@ -185,6 +255,7 @@ WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
 
 
 DEVICE_TYPES = {
+    13: "COMFORT",
     19: "VP 18c",
     35: "COMBI 302",
 }
