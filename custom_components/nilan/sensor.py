@@ -113,6 +113,28 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_t3_exhaust_temperature": [
+        Map(
+            "Return Air Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_t4_outlet": [
+        Map(
+            "Supply Air Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_t5_condenser_temperature": [
         Map(
             "Condenser Temperature",
@@ -138,6 +160,17 @@ ATTRIBUTE_TO_SENSORS = {
     "get_t7_inlet_temperature_after_heater": [
         Map(
             "Supply Air Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_t8_outdoor_temperature": [
+        Map(
+            "Fresh Air Intake Temperature",
             TEMP_CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -337,6 +370,28 @@ ATTRIBUTE_TO_SENSORS = {
         Map(
             "Return Fan Level",
             None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            None,
+        )
+    ],
+    "get_return_fan_speed": [
+        Map(
+            "Return Fan Speed",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            None,
+        )
+    ],
+    "get_supply_fan_speed": [
+        Map(
+            "Supply Fan Speed",
+            PERCENTAGE,
             None,
             SensorStateClass.MEASUREMENT,
             None,

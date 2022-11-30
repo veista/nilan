@@ -218,7 +218,7 @@ ATTRIBUTE_TO_SELECT = {
         Map(
             "Cooling Mode Ventilation Level",
             "set_cooling_mode_ventilation_step",
-            None,
+            EntityCategory.CONFIG,
             COOLING_STEP_TO_NUMBER,
             NUMBER_TO_COOLING_STEP,
             "mdi:fan",
@@ -228,7 +228,7 @@ ATTRIBUTE_TO_SELECT = {
         Map(
             "Cooling Setpoint Offset",
             "set_cooling_setpoint",
-            None,
+            EntityCategory.CONFIG,
             COOLING_SETPOINT_TO_NUMBER,
             NUMBER_TO_COOLING_SETPOINT,
             "mdi:thermometer-lines",

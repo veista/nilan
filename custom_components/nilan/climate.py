@@ -55,25 +55,28 @@ HVAC_TO_PRESET = {
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Add climate entities for a config entry."""
-    supported_features = SUPPORT_FAN_MODE | SUPPORT_TARGET_HUMIDITY
+    supported_features = SUPPORT_FAN_MODE
 
     hvac_basic_attributes = [
         "get_run_state",
         "get_ventilation_step",
         "get_operation_mode",
-        "get_user_humidity_setpoint",
-        "get_humidity",
         "get_inlet_speed_step",
         "get_ventilation_state",
         "get_control_state",
     ]
     hvac_temperature_attributes = [
         "get_user_temperature_setpoint",
-        "get_room_master_temperature",
+        "get_control_temperature",
     ]
 
     hvac_preset_attributes = [
         "get_air_exchange_mode",
+    ]
+
+    hvac_humidity_attributes = [
+        "get_user_humidity_setpoint",
+        "get_humidity",
     ]
 
     # refine to select supported features automatically
@@ -89,6 +92,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
             attribute in device.get_attributes for attribute in hvac_preset_attributes
         ):
             supported_features |= SUPPORT_PRESET_MODE
+        if all(
+            attribute in device.get_attributes for attribute in hvac_humidity_attributes
+        ):
+            supported_features |= SUPPORT_TARGET_HUMIDITY
         entities.append(NilanClimate(device, supported_features))
     async_add_entities(entities, True)
 

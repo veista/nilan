@@ -341,6 +341,45 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:wrench-clock",
         )
     ],
+    "get_maximum_compressor_defrost_time": [
+        Map(
+            "Maximum Evaporator Defrost Time",
+            "set_maximum_compressor_defrost_time",
+            EntityCategory.CONFIG,
+            2,
+            60,
+            1,
+            NumberMode.BOX,
+            TIME_MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
+    "get_maximum_outlet_defrost_time": [
+        Map(
+            "Maximum Outlet Defrost Time",
+            "set_maximum_outlet_defrost_time",
+            EntityCategory.CONFIG,
+            5,
+            60,
+            1,
+            NumberMode.BOX,
+            TIME_MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
+    "get_time_between_defrost": [
+        Map(
+            "Time Between Defrost Cycles",
+            "set_time_between_defrost",
+            EntityCategory.CONFIG,
+            15,
+            720,
+            1,
+            NumberMode.BOX,
+            TIME_MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
     "get_supply_heating_pid_time": [
         Map(
             "Supply Air PID Integration Time",
@@ -472,8 +511,6 @@ ATTRIBUTE_TO_NUMBERS = {
         )
     ],
 }
-
-# "get_supply_heater_delay": "number",
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
