@@ -61,11 +61,11 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         "get_run_state",
         "get_operation_mode",
         "get_ventilation_step",
-        "get_inlet_speed_step",
         "get_control_state",
     ]
     hvac_status_attributes = [
         "get_ventilation_state",
+        "get_inlet_speed_step",
     ]
     hvac_temperature_attributes = [
         "get_user_temperature_setpoint",
@@ -179,19 +179,20 @@ class NilanClimate(NilanEntity, ClimateEntity):
         )
         self._attr_fan_mode = str(await self._device.get_ventilation_step())
         control_state = await self._device.get_control_state()
-        fan_inlet_state = await self._device.get_inlet_speed_step()
         if self._status_attributes_supported:
             ventilation_state = await self._device.get_ventilation_state()
+            fan_inlet_state = await self._device.get_inlet_speed_step()
             if ventilation_state == 3:
                 self._attr_hvac_action = CURRENT_HVAC_DRY
         elif control_state in (7, 17):
             self._attr_hvac_action = CURRENT_HVAC_HEAT
         elif control_state in (8, 11):
             self._attr_hvac_action = CURRENT_HVAC_COOL
-        elif fan_inlet_state > 0:
-            self._attr_hvac_action = CURRENT_HVAC_FAN
-        elif fan_inlet_state == 0 and control_state > 0:
-            self._attr_hvac_action = CURRENT_HVAC_IDLE
+        elif self._status_attributes_supported:
+            if fan_inlet_state > 0:
+                self._attr_hvac_action = CURRENT_HVAC_FAN
+            elif fan_inlet_state == 0 and control_state > 0:
+                self._attr_hvac_action = CURRENT_HVAC_IDLE
         else:
             self._attr_hvac_action = CURRENT_HVAC_OFF
 
