@@ -399,6 +399,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_display_text": [
+        Map(
+            "Display Text",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
 }
 
 

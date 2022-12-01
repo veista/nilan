@@ -12,6 +12,7 @@ COMFORT_SUPPORTED_ENTITIES = {
     "get_t4_outlet": "sensor",
     "get_display_led_1_state": "binary_sensor",
     "get_display_led_2_state": "binary_sensor",
+    "get_display_text": "sensor",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -322,7 +323,8 @@ class Device:
                 version += char1 + char2 + "."
             version = version.replace(" ", "")
             version = version[:-1]
-        return version
+            return version
+        return None
 
     async def get_controller_hardware_version(self) -> int:
         """get controller board hardware version."""
@@ -335,6 +337,28 @@ class Device:
                 "little",
                 signed=False,
             )
+        return None
+
+    async def get_display_text(self) -> str:
+        """get old HMI display text."""
+        text_string = ""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.display_text_1_2, 4, "input"
+        )
+        if result.registers is not None:
+            for value in result.registers:
+                char1 = chr(value >> 8)
+                char2 = chr(value & 0x00FF)
+                text_string += char1 + char2
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.display_text_9_10, 4, "input"
+        )
+        if result.registers is not None:
+            for value in result.registers:
+                char1 = chr(value >> 8)
+                char2 = chr(value & 0x00FF)
+                text_string += char1 + char2
+            return text_string
         return None
 
     async def get_user_menu_state(self) -> int:
@@ -1393,7 +1417,7 @@ class Device:
         return None
 
     async def get_pre_heater_temp_set(self) -> int:
-        """ get Select anti frost start criteria."""
+        """get Select anti frost start criteria."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.preheat_temp_set, 1, "holding"
         )
@@ -2427,7 +2451,7 @@ class Device:
         return False
 
     async def set_pre_heater_deftrost_select(self, mode: int) -> bool:
-        """ set Select anti frost also during evap. defrost."""
+        """set Select anti frost also during evap. defrost."""
         if mode in (0, 1):
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
@@ -2439,7 +2463,7 @@ class Device:
         return False
 
     async def set_pre_heater_temp_set(self, mode: int) -> bool:
-        """ set Select anti frost start criteria."""
+        """set Select anti frost start criteria."""
         if mode in (0, 1, 2, 3, 4, 5):
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
