@@ -90,6 +90,19 @@ class CTS602InputRegisters:
 
     central_heat_heat_ext_set = 1800
 
+    display_led_1 = 2000
+    display_led_2 = 2001
+    display_text_1_2 = 2002
+    display_text_3_4 = 2003
+    display_text_5_6 = 2004
+    display_text_7_8 = 2005
+    display_attr_1_8 = 2006
+    display_text_9_10 = 2007
+    display_text_11_12 = 2008
+    display_text_13_14 = 2009
+    display_text_15_16 = 2010
+    display_attr_9_16 = 2011
+
     pre_heat_block_remain = 2100
 
     dpt_in_session = 2200
@@ -265,6 +278,8 @@ class CTS602HoldingRegisters:
     air_qual_co2_vent_hi = 1920
     air_qual_co2_lim_lo = 1921
     air_qual_co2_lim_hi = 1922
+
+    display_key_code = 2000
 
     user_user_menu_open = 2002
     user_language = 2003

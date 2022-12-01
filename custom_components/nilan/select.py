@@ -163,6 +163,22 @@ CENTRAL_HEAT_SELECT_TO_NUMBER = {
     "Requirement": 2,
 }
 
+NUMBER_TO_AIR_TEMP_HEAT_SELECT = {
+    0: "Off",
+    1: "HP",
+    2: "HP + Afterheat",
+    3: "Afterheat",
+    4: "Afterheat + HP",
+}
+
+AIR_TEMP_HEAT_SELECT_TO_NUMBER = {
+    "Off": 0,
+    "HP": 1,
+    "HP + Afterheat": 2,
+    "Afterheat": 3,
+    "Afterheat + HP": 4,
+}
+
 NUMBER_TO_DEFROST_VENTILATION = {0: "None", 1: "Constant Flow", 2: "Low Flow"}
 
 DEFROST_VENTILATION_TO_NUMBER = {
@@ -170,6 +186,34 @@ DEFROST_VENTILATION_TO_NUMBER = {
     "Constant Flow": 1,
     "Low Flow": 2,
 }
+
+PRE_HEATER_EFFECT_TO_NUMBER = {
+    "Standard": 0,
+    "Extra": 1,
+}
+NUMBER_TO_PRE_HEATER_EFFECT = {
+    0: "Standard",
+    1: "Extra",
+}
+
+PRE_HEATER_TEMP_TO_NUMBER = {
+    "Off": 0,
+    "1 ºC": 1,
+    "2 ºC": 2,
+    "3 ºC": 3,
+    "4 ºC": 4,
+    "5 ºC": 5,
+}
+
+NUMBER_TO_PRE_HEATER_TEMP = {
+    0: "Off",
+    1: "1 ºC",
+    2: "2 ºC",
+    3: "3 ºC",
+    4: "4 ºC",
+    5: "5 ºC",
+}
+
 
 Map = namedtuple("map", "name set_attr entity_category options enum icon")
 
@@ -342,6 +386,36 @@ ATTRIBUTE_TO_SELECT = {
             CENTRAL_HEAT_SELECT_TO_NUMBER,
             NUMBER_TO_CENTRAL_HEAT_SELECT,
             "mdi:radiator",
+        )
+    ],
+    "get_air_heat_select": [
+        Map(
+            "Heat Source Select",
+            "set_air_heat_select",
+            EntityCategory.CONFIG,
+            AIR_TEMP_HEAT_SELECT_TO_NUMBER,
+            NUMBER_TO_AIR_TEMP_HEAT_SELECT,
+            "mdi:radiator",
+        )
+    ],
+    "get_pre_heater_deftrost_select": [
+        Map(
+            "Pre-Heating Effect",
+            "get_pre_heater_deftrost_select",
+            EntityCategory.CONFIG,
+            PRE_HEATER_EFFECT_TO_NUMBER,
+            NUMBER_TO_PRE_HEATER_EFFECT,
+            "mdi:snowflake-melt",
+        )
+    ],
+    "get_pre_heater_temp_set": [
+        Map(
+            "Pre-Heating Temperature",
+            "set_pre_heater_temp_set",
+            EntityCategory.CONFIG,
+            PRE_HEATER_TEMP_TO_NUMBER,
+            NUMBER_TO_PRE_HEATER_TEMP,
+            "mdi:snowflake-melt",
         )
     ],
 }

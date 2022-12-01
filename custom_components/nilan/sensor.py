@@ -126,7 +126,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t4_outlet": [
         Map(
-            "Supply Air Temperature",
+            "Waste Air Temperature",
             TEMP_CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,

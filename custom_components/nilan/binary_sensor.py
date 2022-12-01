@@ -58,6 +58,42 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
         )
     ],
+    "get_user_function_1_state": [
+        Map(
+            "User Selection 1",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_user_function_2_state": [
+        Map(
+            "User Selection 2",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_display_led_1_state": [
+        Map(
+            "Display LED 1",
+            BinarySensorDeviceClass.LIGHT,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_display_led_2_state": [
+        Map(
+            "Display LED 2",
+            BinarySensorDeviceClass.LIGHT,
+            None,
+            None,
+            None,
+        )
+    ],
 }
 
 

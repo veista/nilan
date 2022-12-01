@@ -7,10 +7,11 @@ from homeassistant.core import HomeAssistant
 from .registers import CTS602InputRegisters, CTS602HoldingRegisters
 
 COMFORT_SUPPORTED_ENTITIES = {
-    "get_bypass_flap_state": "binary_sensor",
     "get_t8_outdoor_temperature": "sensor",
     "get_t3_exhaust_temperature": "sensor",
     "get_t4_outlet": "sensor",
+    "get_display_led_1_state": "binary_sensor",
+    "get_display_led_2_state": "binary_sensor",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -50,7 +51,6 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_low_temperature_curve": "number",
     "get_high_temperature_curve": "number",
     "get_average_humidity": "sensor",
-    "get_t7_inlet_temperature_after_heater": "sensor",
     "get_inlet_speed_step": "sensor",
     "get_outlet_speed_step": "sensor",
     "get_t10_external_temperature": "sensor",
@@ -58,8 +58,11 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_t5_condenser_temperature": "sensor",
     "get_t1_intake_temperature": "sensor",
     "get_ventilation_state": "sensor",
+    "get_days_since_air_filter_change": "sensor",
+    "get_days_to_air_filter_change": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
+    "get_air_heat_select": "select",
 }
 
 COMBI302_SUPPORTED_ENTITIES = {
@@ -70,6 +73,9 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_compressor_priority": "select",
     "get_low_outdoor_temperature_ventilation_step": "select",
     "get_defrost_ventilation_level": "select",
+    "get_air_heat_select": "select",
+    "get_pre_heater_deftrost_select": "select",
+    "get_pre_heater_temp_set": "select",
     "get_supply_power_at_level_1": "number",
     "get_supply_power_at_level_2": "number",
     "get_supply_power_at_level_3": "number",
@@ -95,11 +101,12 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_inlet_speed_step": "sensor",
     "get_outlet_speed_step": "sensor",
     "get_t10_external_temperature": "sensor",
-    "get_t7_inlet_temperature_after_heater": "sensor",
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
     "get_t1_intake_temperature": "sensor",
     "get_ventilation_state": "sensor",
+    "get_days_since_air_filter_change": "sensor",
+    "get_days_to_air_filter_change": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
     "get_bypass_flap_state": "binary_sensor",
@@ -115,12 +122,11 @@ COMMON_ENTITIES = {
     "get_control_state": "sensor",
     "get_humidity": "sensor",
     "get_smoke_alarm": "sensor",
+    "get_t7_inlet_temperature_after_heater": "sensor",
     "get_t15_user_panel_temperature": "sensor",
     "get_t0_controller_temperature": "sensor",
     "get_alarm_count": "sensor",
     "get_time_in_control_state": "sensor",
-    "get_days_since_air_filter_change": "sensor",
-    "get_days_to_air_filter_change": "sensor",
     "get_summer_state": "sensor",
     "get_time": "sensor",
     "get_supply_fan_level": "sensor",
@@ -138,6 +144,8 @@ COMMON_ENTITIES = {
     "get_min_supply_air_summer_setpoint": "number",
     "get_min_supply_air_winter_setpoint": "number",
     "get_summer_state_change_setpoint": "number",
+    "get_user_function_1_state": "binary_sensor",
+    "get_user_function_2_state": "binary_sensor",
 }
 
 HW_VERSION_TO_DEVICE = {
@@ -211,22 +219,26 @@ class Device:
             hw_type = await self.get_machine_type()
             if hw_type in HW_VERSION_TO_DEVICE:
                 self._device_sw_ver = await self.get_controller_software_version()
-                if hw_type not in (13,):
-                    self._device_hw_ver = await self.get_controller_hardware_version()
                 self._attributes = COMMON_ENTITIES
                 self._attributes.update(HW_VERSION_TO_DEVICE[hw_type])
                 self._device_type = DEVICE_TYPES[hw_type]
-                if await self.get_co2_present():
-                    self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
-                after_heater_type = await self.get_after_heating_type()
-                if after_heater_type == 1:
-                    self._attributes.update(ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
-                if after_heater_type == 2:
-                    self._attributes.update(
-                        ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-                    )
-                if after_heater_type == 3:
-                    self._attributes.update(WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES)
+                if hw_type not in (13,):
+                    self._device_hw_ver = await self.get_controller_hardware_version()
+                    if await self.get_co2_present():
+                        self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
+                    after_heater_type = await self.get_after_heating_type()
+                    if after_heater_type == 1:
+                        self._attributes.update(
+                            ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
+                        )
+                    if after_heater_type == 2:
+                        self._attributes.update(
+                            ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
+                        )
+                    if after_heater_type == 3:
+                        self._attributes.update(
+                            WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
+                        )
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
@@ -280,7 +292,20 @@ class Device:
             return int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
-                signed=True,
+                signed=False,
+            )
+        return None
+
+    async def get_air_heat_select(self) -> int:
+        """get heat source selection."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.air_temp_heat_select, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
             )
         return None
 
@@ -1353,6 +1378,34 @@ class Device:
             return value
         return None
 
+    async def get_pre_heater_deftrost_select(self) -> int:
+        """get Select anti frost also during evap. defrost."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.preheat_defrost, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        return None
+
+    async def get_pre_heater_temp_set(self) -> int:
+        """ get Select anti frost start criteria."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.preheat_temp_set, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        return None
+
     async def get_high_humidity_step(self) -> int:
         """get High humidity ventilation level."""
         result = await self._modbus.async_pymodbus_call(
@@ -1992,6 +2045,70 @@ class Device:
             return True
         return None
 
+    async def get_user_function_1_state(self) -> bool:
+        """Get user function State"""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.input_user_func, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            if value == 0:
+                return False
+            return True
+        return None
+
+    async def get_user_function_2_state(self) -> bool:
+        """Get user function 2 State"""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.input_user_func_2, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            if value == 0:
+                return False
+            return True
+        return None
+
+    async def get_display_led_1_state(self) -> bool:
+        """Get display led 1 State (older models)"""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.display_led_1, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            if value == 0:
+                return False
+            return True
+        return None
+
+    async def get_display_led_2_state(self) -> bool:
+        """Get display led 2 State (older models)"""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.display_led_2, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            if value == 0:
+                return False
+            return True
+        return None
+
     async def get_compressor_state(self) -> bool:
         """Get compressor State"""
         result = await self._modbus.async_pymodbus_call(
@@ -2298,11 +2415,47 @@ class Device:
         return False
 
     async def set_central_heat_type(self, mode: int) -> bool:
-        """set air heating type."""
+        """set central heating type."""
         if mode in (0, 1, 2, 3):
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_heat_type,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_pre_heater_deftrost_select(self, mode: int) -> bool:
+        """ set Select anti frost also during evap. defrost."""
+        if mode in (0, 1):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.preheat_defrost,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_pre_heater_temp_set(self, mode: int) -> bool:
+        """ set Select anti frost start criteria."""
+        if mode in (0, 1, 2, 3, 4, 5):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.preheat_temp_set,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_air_heat_select(self, mode: int) -> bool:
+        """set air heating."""
+        if mode in (0, 1, 2, 3, 4):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.air_temp_heat_select,
                 mode,
                 "write_registers",
             )
