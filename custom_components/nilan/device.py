@@ -57,6 +57,7 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
     "get_t1_intake_temperature": "sensor",
+    "get_ventilation_state": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
 }
@@ -98,6 +99,7 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
     "get_t1_intake_temperature": "sensor",
+    "get_ventilation_state": "sensor",
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
     "get_bypass_flap_state": "binary_sensor",
@@ -111,7 +113,6 @@ COMMON_ENTITIES = {
     "get_user_temperature_setpoint": "climate",
     "get_control_temperature": "climate",
     "get_control_state": "sensor",
-    "get_ventilation_state": "sensor",
     "get_humidity": "sensor",
     "get_smoke_alarm": "sensor",
     "get_t15_user_panel_temperature": "sensor",

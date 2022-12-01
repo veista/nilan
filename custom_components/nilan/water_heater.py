@@ -27,9 +27,10 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     water_heater_capabilities = [
         "get_control_state",
         "get_electric_water_heater_setpoint",
+        "get_t11_electric_water_heater_temperature",
         "get_electric_water_heater_state",
         "get_compressor_water_heater_setpoint",
-        "get_compressor_water_heater_temperature",
+        "get_t12_compressor_water_heater_temperature",
     ]
     entities = []
     device = hass.data[DOMAIN][config_entry.entry_id]
@@ -74,7 +75,7 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
             await self._device.get_electric_water_heater_setpoint()
         )
         self._attr_current_temperature = (
-            await self._device.get_electric_water_heater_temperature()
+            await self._device.get_t11_electric_water_heater_temperature()
         )
         running_state = await self._device.get_electric_water_heater_state()
         if running_state == 1:
@@ -158,7 +159,7 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
             await self._device.get_compressor_water_heater_setpoint()
         )
         self._attr_current_temperature = (
-            await self._device.get_compressor_water_heater_temperature()
+            await self._device.get_t12_compressor_water_heater_temperature()
         )
         running_state = await self._device.get_control_state()
         if running_state in (9, 11, 17):
