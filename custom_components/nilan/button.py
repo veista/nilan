@@ -11,9 +11,6 @@ from homeassistant.components.button import ButtonEntity
 
 from .const import DOMAIN, SCAN_INTERVAL_TIME
 
-import time
-
-
 SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 Map = namedtuple("map", "press_attr name entity_category press_value auto_clear icon")

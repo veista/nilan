@@ -82,7 +82,6 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_max_return_step": "select",
     "get_compressor_priority": "select",
     "get_low_outdoor_temperature_ventilation_step": "select",
-    "get_defrost_ventilation_level": "select",
     "get_air_heat_select": "select",
     "get_pre_heater_deftrost_select": "select",
     "get_pre_heater_temp_set": "select",
