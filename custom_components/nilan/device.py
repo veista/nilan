@@ -348,9 +348,17 @@ class Device:
         )
         if result.registers is not None:
             for value in result.registers:
-                char1 = chr(value & 0x00FF)
-                char2 = chr(value >> 8)
-                text_string += format(char1, ascii) + format(char2, ascii)
+                char1 = value & 0x00FF
+                char2 = value >> 8
+                if char1 == 0xDF:
+                    char1 = "°"
+                else:
+                    char1 = chr(char1)
+                if char2 == 0xDF:
+                    char2 = "°"
+                else:
+                    char2 = chr(char2)
+                text_string += char1 + char2
             return text_string
         return None
 
@@ -362,9 +370,17 @@ class Device:
         )
         if result.registers is not None:
             for value in result.registers:
-                char1 = chr(value & 0x00FF)
-                char2 = chr(value >> 8)
-                text_string += format(char1, ascii) + format(char2, ascii)
+                char1 = value & 0x00FF
+                char2 = value >> 8
+                if char1 == 0xDF:
+                    char1 = "°"
+                else:
+                    char1 = chr(char1)
+                if char2 == 0xDF:
+                    char2 = "°"
+                else:
+                    char2 = chr(char2)
+                text_string += char1 + char2
             return text_string
         return None
 
