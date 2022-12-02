@@ -399,9 +399,20 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
-    "get_display_text": [
+    "get_display_text_1": [
         Map(
-            "Display Text",
+            "Display Text Line 1",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_display_text_2": [
+        Map(
+            "Display Text Line 2",
             None,
             None,
             SensorStateClass.MEASUREMENT,

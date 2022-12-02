@@ -12,7 +12,8 @@ COMFORT_SUPPORTED_ENTITIES = {
     "get_t4_outlet": "sensor",
     "get_display_led_1_state": "binary_sensor",
     "get_display_led_2_state": "binary_sensor",
-    "get_display_text": "sensor",
+    "get_display_text_1": "sensor",
+    "get_display_text_2": "sensor",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -339,24 +340,30 @@ class Device:
             )
         return None
 
-    async def get_display_text(self) -> str:
-        """get old HMI display text."""
+    async def get_display_text_1(self) -> str:
+        """get old HMI display text line 1."""
         text_string = ""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.display_text_1_2, 4, "input"
         )
         if result.registers is not None:
             for value in result.registers:
-                char1 = chr(value >> 8)
-                char2 = chr(value & 0x00FF)
+                char1 = chr(value & 0x00FF)
+                char2 = chr(value >> 8)
                 text_string += char1 + char2
+            return text_string
+        return None
+
+    async def get_display_text_2(self) -> str:
+        """get old HMI display text line 2."""
+        text_string = ""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.display_text_9_10, 4, "input"
         )
         if result.registers is not None:
             for value in result.registers:
-                char1 = chr(value >> 8)
-                char2 = chr(value & 0x00FF)
+                char1 = chr(value & 0x00FF)
+                char2 = chr(value >> 8)
                 text_string += char1 + char2
             return text_string
         return None
