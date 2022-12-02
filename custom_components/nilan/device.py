@@ -350,7 +350,7 @@ class Device:
             for value in result.registers:
                 char1 = chr(value & 0x00FF)
                 char2 = chr(value >> 8)
-                text_string += char1 + char2
+                text_string += format(char1, ascii) + format(char2, ascii)
             return text_string
         return None
 
@@ -364,7 +364,7 @@ class Device:
             for value in result.registers:
                 char1 = chr(value & 0x00FF)
                 char2 = chr(value >> 8)
-                text_string += char1 + char2
+                text_string += format(char1, ascii) + format(char2, ascii)
             return text_string
         return None
 
