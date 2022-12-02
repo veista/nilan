@@ -14,6 +14,14 @@ COMFORT_SUPPORTED_ENTITIES = {
     "get_display_led_2_state": "binary_sensor",
     "get_display_text_1": "sensor",
     "get_display_text_2": "sensor",
+    "display_escape_button": "button",
+    "display_up_button": "button",
+    "display_down_button": "button",
+    "display_enter_button": "button",
+    "display_off_button": "button",
+    "display_on_button": "button",
+    "display_down_escape_button": "button",
+    "display_clear_down_escape_button": "button",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -2251,6 +2259,18 @@ class Device:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.control_mode_set,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_display_button(self, mode: int) -> bool:
+        """set display button."""
+        if mode < 64:
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.display_key_code,
                 mode,
                 "write_registers",
             )
