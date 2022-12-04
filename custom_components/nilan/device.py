@@ -14,6 +14,13 @@ COMFORT_SUPPORTED_ENTITIES = {
     "get_t4_outlet": "sensor",
     "get_display_text_1": "sensor",
     "get_display_text_2": "sensor",
+    "display_escape_button": "button",
+    "display_up_button": "button",
+    "display_down_button": "button",
+    "display_enter_button": "button",
+    "display_off_button": "button",
+    "display_on_button": "button",
+    "display_down_escape_button": "button",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -328,14 +335,26 @@ class Device:
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
         )
-        if result.registers is not None:
-            for value in result.registers:
-                char1 = chr(value >> 8)
-                char2 = chr(value & 0x00FF)
-                version += char1 + char2 + "."
-            version = version.replace(" ", "")
-            version = version[:-1]
-            return version
+        bus_version = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
+        )
+        if int(bus_version.registers[0]) > 7:
+            if result.registers is not None:
+                for value in result.registers:
+                    char1 = chr(value >> 8)
+                    char2 = chr(value & 0x00FF)
+                    version += char1 + char2 + "."
+                version = version.replace(" ", "")
+                version = version[:-1]
+                return version
+        else:
+            if result.registers is not None:
+                for value in result.registers:
+                    char1 = chr(value & 0x00FF)
+                    char2 = chr(value >> 8)
+                    version += char1 + char2
+                version = version.replace(" ", "")
+                return version
         return None
 
     async def get_controller_hardware_version(self) -> int:
@@ -2203,13 +2222,19 @@ class Device:
             return True
         return False
 
-    async def set_display_button(self, mode: int) -> bool:
+    async def set_display_button_press(self, mode: int) -> bool:
         """set display button."""
         if mode < 64:
             await self._modbus.async_pymodbus_call(
                 self._unit_id,
                 CTS602HoldingRegisters.display_key_code,
                 mode,
+                "write_registers",
+            )
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.display_key_code,
+                0,
                 "write_registers",
             )
             return True

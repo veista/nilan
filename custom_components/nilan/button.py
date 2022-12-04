@@ -19,7 +19,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_escape_button": [
         Map(
             "Display Escape Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x01,
             True,
@@ -29,7 +29,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_up_button": [
         Map(
             "Display Up Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x02,
             True,
@@ -39,7 +39,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_down_button": [
         Map(
             "Display Down Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x04,
             True,
@@ -49,7 +49,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_enter_button": [
         Map(
             "Display Enter Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x08,
             True,
@@ -59,7 +59,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_off_button": [
         Map(
             "Display Off Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x10,
             True,
@@ -69,7 +69,7 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_on_button": [
         Map(
             "Display On Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x20,
             True,
@@ -79,19 +79,9 @@ ATTRIBUTE_TO_BUTTONS = {
     "display_down_escape_button": [
         Map(
             "Display Down + Escape Button",
-            "set_display_button",
+            "set_display_button_press",
             None,
             0x05,
-            False,
-            None,
-        )
-    ],
-    "display_clear_down_escape_button": [
-        Map(
-            "Display Clear Down Escape Press",
-            "set_display_button",
-            None,
-            0x00,
             False,
             None,
         )
@@ -161,5 +151,3 @@ class NilanCTS602Number(ButtonEntity, NilanEntity):
     async def async_press(self, **kwargs):
         """Handle the button press."""
         await getattr(self._device, self._press_attr)(int(self._press_value))
-        if self._auto_clear:
-            await getattr(self._device, self._press_attr)(int(0))
