@@ -63,8 +63,8 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             "User Selection 1",
             BinarySensorDeviceClass.RUNNING,
             None,
-            None,
-            None,
+            "mdi:account",
+            "mdi:account-off",
         )
     ],
     "get_user_function_2_state": [
@@ -72,8 +72,8 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             "User Selection 2",
             BinarySensorDeviceClass.RUNNING,
             None,
-            None,
-            None,
+            "mdi:account",
+            "mdi:account-off",
         )
     ],
     "get_display_led_1_state": [
@@ -81,8 +81,8 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             "Display LED 1",
             BinarySensorDeviceClass.LIGHT,
             None,
-            None,
-            None,
+            "mdi:led-on",
+            "mdi:led-off",
         )
     ],
     "get_display_led_2_state": [
@@ -90,8 +90,8 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             "Display LED 2",
             BinarySensorDeviceClass.LIGHT,
             None,
-            None,
-            None,
+            "mdi:led-on",
+            "mdi:led-off",
         )
     ],
 }
