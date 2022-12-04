@@ -3,22 +3,11 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-from homeassistant.components.climate import ClimateEntity
-from homeassistant.components.climate.const import (
-    CURRENT_HVAC_OFF,
-    CURRENT_HVAC_DRY,
-    CURRENT_HVAC_COOL,
-    CURRENT_HVAC_FAN,
-    CURRENT_HVAC_HEAT,
-    CURRENT_HVAC_IDLE,
-    HVAC_MODE_AUTO,
-    HVAC_MODE_COOL,
-    HVAC_MODE_HEAT,
-    HVAC_MODE_OFF,
-    SUPPORT_FAN_MODE,
-    SUPPORT_PRESET_MODE,
-    SUPPORT_TARGET_HUMIDITY,
-    SUPPORT_TARGET_TEMPERATURE,
+from homeassistant.components.climate import (
+    ClimateEntity,
+    ClimateEntityFeature,
+    HVACMode,
+    HVACAction,
 )
 
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
@@ -29,15 +18,15 @@ from .__init__ import NilanEntity
 SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 HVAC_MODE_TO_STATE = {
-    1: HVAC_MODE_HEAT,
-    2: HVAC_MODE_COOL,
-    3: HVAC_MODE_AUTO,
+    1: HVACMode.HEAT,
+    2: HVACMode.COOL,
+    3: HVACMode.AUTO,
 }
 
 STATE_TO_HVAC_MODE = {
-    HVAC_MODE_HEAT: 1,
-    HVAC_MODE_COOL: 2,
-    HVAC_MODE_AUTO: 3,
+    HVACMode.HEAT: 1,
+    HVACMode.COOL: 2,
+    HVACMode.AUTO: 3,
 }
 
 PRESET_TO_HVAC = {
@@ -55,7 +44,7 @@ HVAC_TO_PRESET = {
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Add climate entities for a config entry."""
-    supported_features = SUPPORT_FAN_MODE
+    supported_features = ClimateEntityFeature.FAN_MODE
 
     hvac_basic_attributes = [
         "get_run_state",
@@ -63,9 +52,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         "get_ventilation_step",
         "get_control_state",
     ]
-    hvac_status_attributes = [
+    hvac_extra_status_attributes = [
         "get_ventilation_state",
-        "get_inlet_speed_step",
+        "get_supply_fan_level",
     ]
     hvac_temperature_attributes = [
         "get_user_temperature_setpoint",
@@ -81,30 +70,30 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         "get_humidity",
     ]
 
-    # refine to select supported features automatically
     entities = []
-    status_attributes_supported = False
+    extra_status_attributes = False
     device = hass.data[DOMAIN][config_entry.entry_id]
     if all(attribute in device.get_attributes for attribute in hvac_basic_attributes):
         if all(
             attribute in device.get_attributes
             for attribute in hvac_temperature_attributes
         ):
-            supported_features |= SUPPORT_TARGET_TEMPERATURE
+            supported_features |= ClimateEntityFeature.TARGET_TEMPERATURE
         if all(
             attribute in device.get_attributes for attribute in hvac_preset_attributes
         ):
-            supported_features |= SUPPORT_PRESET_MODE
+            supported_features |= ClimateEntityFeature.PRESET_MODE
         if all(
             attribute in device.get_attributes for attribute in hvac_humidity_attributes
         ):
-            supported_features |= SUPPORT_TARGET_HUMIDITY
+            supported_features |= ClimateEntityFeature.TARGET_HUMIDITY
         if all(
-            attribute in device.get_attributes for attribute in hvac_status_attributes
+            attribute in device.get_attributes
+            for attribute in hvac_extra_status_attributes
         ):
-            status_attributes_supported = True
+            extra_status_attributes = True
         entities.append(
-            NilanClimate(device, supported_features, status_attributes_supported)
+            NilanClimate(device, supported_features, extra_status_attributes)
         )
     async_add_entities(entities, True)
 
@@ -112,7 +101,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class NilanClimate(NilanEntity, ClimateEntity):
     """Define a Nilan HVAC."""
 
-    def __init__(self, device, supported_featrures, status_attributes_supported):
+    def __init__(self, device, supported_featrures, extra_status_attributes):
         """Init the class."""
         super().__init__(device)
         self._hvac_on = False
@@ -122,16 +111,16 @@ class NilanClimate(NilanEntity, ClimateEntity):
         self._attr_max_temp = 30
         self._attr_target_temperature_step = 1
         self._attr_hvac_modes = [
-            HVAC_MODE_COOL,
-            HVAC_MODE_HEAT,
-            HVAC_MODE_AUTO,
-            HVAC_MODE_OFF,
+            HVACMode.COOL,
+            HVACMode.HEAT,
+            HVACMode.AUTO,
+            HVACMode.OFF,
         ]
         self._attr_preset_modes = ["Energy", "Comfort", "Water"]
         self._attr_fan_modes = ["0", "1", "2", "3", "4"]
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_supported_features = supported_featrures
-        self._status_attributes_supported = status_attributes_supported
+        self._extra_status_attributes = extra_status_attributes
 
     async def async_set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
@@ -145,7 +134,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
 
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new target operation mode."""
-        if hvac_mode == HVAC_MODE_OFF:
+        if hvac_mode == HVACMode.OFF:
             await self._device.set_run_state(False)
         else:
             self._hvac_on = await self._device.get_run_state()
@@ -179,25 +168,31 @@ class NilanClimate(NilanEntity, ClimateEntity):
         )
         self._attr_fan_mode = str(await self._device.get_ventilation_step())
         control_state = await self._device.get_control_state()
-        if self._status_attributes_supported:
+        if self._extra_status_attributes:
             ventilation_state = await self._device.get_ventilation_state()
-            fan_inlet_state = await self._device.get_inlet_speed_step()
+            fan_supply_level = await self._device.get_supply_fan_level()
             if ventilation_state == 3:
-                self._attr_hvac_action = CURRENT_HVAC_DRY
-        elif control_state in (7, 17):
-            self._attr_hvac_action = CURRENT_HVAC_HEAT
-        elif control_state in (8, 11):
-            self._attr_hvac_action = CURRENT_HVAC_COOL
-        elif self._status_attributes_supported:
-            if fan_inlet_state > 0:
-                self._attr_hvac_action = CURRENT_HVAC_FAN
-            elif fan_inlet_state == 0 and control_state > 0:
-                self._attr_hvac_action = CURRENT_HVAC_IDLE
+                self._attr_hvac_action = HVACAction.DRYING
+            elif control_state in (7, 17):
+                self._attr_hvac_action = HVACAction.HEATING
+            elif control_state in (8, 11):
+                self._attr_hvac_action = HVACAction.COOLING
+            elif fan_supply_level > 0:
+                self._attr_hvac_action = HVACAction.FAN
+            elif fan_supply_level == 0 and control_state > 0:
+                self._attr_hvac_action = HVACAction.IDLE
+            else:
+                self._attr_hvac_action = HVACAction.OFF
         else:
-            self._attr_hvac_action = CURRENT_HVAC_OFF
+            if control_state in (7, 17):
+                self._attr_hvac_action = HVACAction.HEATING
+            elif control_state in (8, 11):
+                self._attr_hvac_action = HVACAction.COOLING
+            else:
+                self._attr_hvac_action = HVACAction.OFF
 
         if not self._hvac_on:
-            self._attr_hvac_mode = HVAC_MODE_OFF
+            self._attr_hvac_mode = HVACAction.OFF
         else:
             self._attr_hvac_mode = HVAC_MODE_TO_STATE.get(
                 await self._device.get_operation_mode()

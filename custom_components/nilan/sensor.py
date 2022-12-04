@@ -262,7 +262,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             SensorStateClass.MEASUREMENT,
-            None,
+            EntityCategory.DIAGNOSTIC,
             None,
             AFTER_HEATING_TYPES,
         )
@@ -417,6 +417,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             SensorStateClass.MEASUREMENT,
             None,
+            None,
+            None,
+        )
+    ],
+    "get_bus_version": [
+        Map(
+            "ModBus Version",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
             None,
             None,
         )

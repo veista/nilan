@@ -5,9 +5,8 @@ from datetime import timedelta
 
 from homeassistant.components.water_heater import (
     WaterHeaterEntity,
+    WaterHeaterEntityFeature,
     STATE_OFF,
-    SUPPORT_TARGET_TEMPERATURE,
-    SUPPORT_OPERATION_MODE,
 )
 
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
@@ -53,7 +52,8 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_operation_list = ["Off", "On"]
         self._attr_supported_features = (
-            SUPPORT_TARGET_TEMPERATURE | SUPPORT_OPERATION_MODE
+            WaterHeaterEntityFeature.TARGET_TEMPERATURE
+            | WaterHeaterEntityFeature.OPERATION_MODE
         )
 
     async def async_set_temperature(self, **kwargs):
@@ -135,7 +135,8 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_operation_list = ["Off", "On"]
         self._attr_supported_features = (
-            SUPPORT_TARGET_TEMPERATURE | SUPPORT_OPERATION_MODE
+            WaterHeaterEntityFeature.TARGET_TEMPERATURE
+            | WaterHeaterEntityFeature.OPERATION_MODE
         )
 
     async def async_set_temperature(self, **kwargs):

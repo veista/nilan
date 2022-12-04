@@ -7,21 +7,13 @@ from homeassistant.core import HomeAssistant
 from .registers import CTS602InputRegisters, CTS602HoldingRegisters
 
 COMFORT_SUPPORTED_ENTITIES = {
+    "get_display_led_1_state": "binary_sensor",
+    "get_display_led_2_state": "binary_sensor",
     "get_t8_outdoor_temperature": "sensor",
     "get_t3_exhaust_temperature": "sensor",
     "get_t4_outlet": "sensor",
-    "get_display_led_1_state": "binary_sensor",
-    "get_display_led_2_state": "binary_sensor",
     "get_display_text_1": "sensor",
     "get_display_text_2": "sensor",
-    "display_escape_button": "button",
-    "display_up_button": "button",
-    "display_down_button": "button",
-    "display_enter_button": "button",
-    "display_off_button": "button",
-    "display_on_button": "button",
-    "display_down_escape_button": "button",
-    "display_clear_down_escape_button": "button",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -61,8 +53,8 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_low_temperature_curve": "number",
     "get_high_temperature_curve": "number",
     "get_average_humidity": "sensor",
-    "get_inlet_speed_step": "sensor",
-    "get_outlet_speed_step": "sensor",
+    "get_supply_fan_level": "sensor",
+    "get_return_fan_level": "sensor",
     "get_t10_external_temperature": "sensor",
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
@@ -73,6 +65,7 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
     "get_air_heat_select": "select",
+    "get_air_quality_control_type": "select",
 }
 
 COMBI302_SUPPORTED_ENTITIES = {
@@ -107,8 +100,8 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_low_temperature_curve": "number",
     "get_high_temperature_curve": "number",
     "get_average_humidity": "sensor",
-    "get_inlet_speed_step": "sensor",
-    "get_outlet_speed_step": "sensor",
+    "get_supply_fan_level": "sensor",
+    "get_return_fan_level": "sensor",
     "get_t10_external_temperature": "sensor",
     "get_t6_evaporator_temperature": "sensor",
     "get_t5_condenser_temperature": "sensor",
@@ -119,6 +112,7 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_compressor_state": "binary_sensor",
     "get_defrost_state": "binary_sensor",
     "get_bypass_flap_state": "binary_sensor",
+    "get_air_quality_control_type": "select",
 }
 
 COMMON_ENTITIES = {
@@ -128,9 +122,9 @@ COMMON_ENTITIES = {
     "get_user_humidity_setpoint": "climate",
     "get_user_temperature_setpoint": "climate",
     "get_control_temperature": "climate",
+    "get_bus_version": "sensor",
     "get_control_state": "sensor",
     "get_humidity": "sensor",
-    "get_smoke_alarm": "sensor",
     "get_t7_inlet_temperature_after_heater": "sensor",
     "get_t15_user_panel_temperature": "sensor",
     "get_t0_controller_temperature": "sensor",
@@ -138,13 +132,10 @@ COMMON_ENTITIES = {
     "get_time_in_control_state": "sensor",
     "get_summer_state": "sensor",
     "get_time": "sensor",
-    "get_supply_fan_level": "sensor",
-    "get_return_fan_level": "sensor",
     "get_return_fan_speed": "sensor",
     "get_supply_fan_speed": "sensor",
     "get_smoke_alarm_state": "binary_sensor",
     "get_air_filter_alarm_interval": "select",
-    "get_air_quality_control_type": "select",
     "get_cooling_mode_ventilation_step": "select",
     "get_cooling_setpoint": "select",
     "get_low_humidity_step": "select",
@@ -283,6 +274,19 @@ class Device:
         """get hardware type."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.control_type, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        return None
+
+    async def get_bus_version(self) -> int:
+        """get modbus version."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
         )
         if result is not None:
             return int.from_bytes(
@@ -687,7 +691,7 @@ class Device:
         return None
 
     async def get_control_temperature(self) -> float:
-        """get Master Room Temperature."""
+        """get Control Temperature."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.air_temp_temp_control, 1, "input"
         )
@@ -722,57 +726,6 @@ class Device:
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
             CTS602HoldingRegisters.central_heat_heat_extern,
-            1,
-            "holding",
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=True,
-            )
-            return float(value) / 100
-        return None
-
-    async def get_supply_offset(self) -> float:
-        """get supply offset."""
-        result = await self._modbus.async_pymodbus_call(
-            self._unit_id,
-            CTS602HoldingRegisters.central_heat_supply_offset,
-            1,
-            "holding",
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=True,
-            )
-            return float(value) / 100
-        return None
-
-    async def get_min_supply_temperature(self) -> float:
-        """get min supply temperature."""
-        result = await self._modbus.async_pymodbus_call(
-            self._unit_id,
-            CTS602HoldingRegisters.central_heat_supply_min,
-            1,
-            "holding",
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=True,
-            )
-            return float(value) / 100
-        return None
-
-    async def get_man_supply_temperature(self) -> float:
-        """get min supply temperature."""
-        result = await self._modbus.async_pymodbus_call(
-            self._unit_id,
-            CTS602HoldingRegisters.central_heat_supply_max,
             1,
             "holding",
         )
@@ -1942,20 +1895,6 @@ class Device:
         """get supply heater delay."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.air_heat_delay, 1, "holding"
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=False,
-            )
-            return value
-        return None
-
-    async def get_inlet_speed_step(self) -> int:
-        """get supply fan level."""
-        result = await self._modbus.async_pymodbus_call(
-            self._unit_id, CTS602InputRegisters.air_flow_inlet_act, 1, "input"
         )
         if result is not None:
             value = int.from_bytes(
