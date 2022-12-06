@@ -75,6 +75,9 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_air_quality_control_type": "select",
 }
 
+VP18M2_SUPPORTED_ENTITIES = {
+}
+
 COMBI302_SUPPORTED_ENTITIES = {
     "get_hmi_language": "select",
     "get_min_supply_step": "select",
@@ -153,12 +156,14 @@ COMMON_ENTITIES = {
 HW_VERSION_TO_DEVICE = {
     13: COMFORT_SUPPORTED_ENTITIES,
     19: VP18C_SUPPORTED_ENTITIES,
+    21: VP18M2_SUPPORTED_ENTITIES,
     35: COMBI302_SUPPORTED_ENTITIES,
 }
 
 DEVICE_TYPES = {
     13: "COMFORT",
     19: "VP 18c",
+    21: "VP 18 M2",
     35: "COMBI 302",
 }
 
