@@ -401,7 +401,7 @@ ATTRIBUTE_TO_SELECT = {
     "get_pre_heater_deftrost_select": [
         Map(
             "Pre-Heating Effect",
-            "get_pre_heater_deftrost_select",
+            "set_pre_heater_deftrost_select",
             EntityCategory.CONFIG,
             PRE_HEATER_EFFECT_TO_NUMBER,
             NUMBER_TO_PRE_HEATER_EFFECT,
@@ -443,8 +443,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
                     for m in maps
                 ]
             )
-
-    selects.extend([NilanCTS602AlarmSelect(device)])
+    if "alarm_reset" in device.get_assigned("select"):
+        selects.extend([NilanCTS602AlarmSelect(device)])
     async_add_entities(selects, update_before_add=True)
 
 

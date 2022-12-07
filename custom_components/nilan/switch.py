@@ -38,11 +38,11 @@ ATTRIBUTE_TO_SWITCHES = {
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the number platform."""
     device = hass.data[DOMAIN][config_entry.entry_id]
-    numbers = []
+    switches = []
     for attribute in device.get_assigned("switch"):
         if attribute in ATTRIBUTE_TO_SWITCHES:
             maps = ATTRIBUTE_TO_SWITCHES[attribute]
-            numbers.extend(
+            switches.extend(
                 [
                     NilanCTS602Number(
                         device,
@@ -58,7 +58,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
                     for m in maps
                 ]
             )
-    async_add_entities(numbers, update_before_add=True)
+    async_add_entities(switches, update_before_add=True)
 
 
 class NilanCTS602Number(SwitchEntity, NilanEntity):

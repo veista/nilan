@@ -32,7 +32,7 @@ ATTRIBUTE_TO_NUMBERS = {
     "get_scalding_protection_setpoint": [
         Map(
             "Scalding Protection Setpoint",
-            "set_scalding_setpoint",
+            "set_scalding_protection_setpoint",
             EntityCategory.CONFIG,
             60,
             80,
