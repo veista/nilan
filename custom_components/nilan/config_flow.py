@@ -49,7 +49,7 @@ async def validate_device(address, port, unit_id) -> None:
     value_output = int.from_bytes(
         result.registers[0].to_bytes(2, "little", signed=False),
         "little",
-        signed=True,
+        signed=False,
     )
     if not value_output in DEVICE_TYPES:
         _LOGGER.debug(

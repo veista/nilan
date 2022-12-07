@@ -14,13 +14,6 @@ COMFORT_SUPPORTED_ENTITIES = {
     "get_t4_outlet": "sensor",
     "get_display_text_1": "sensor",
     "get_display_text_2": "sensor",
-    "display_escape_button": "button",
-    "display_up_button": "button",
-    "display_down_button": "button",
-    "display_enter_button": "button",
-    "display_off_button": "button",
-    "display_on_button": "button",
-    "display_down_escape_button": "button",
 }
 
 VP18C_SUPPORTED_ENTITIES = {
@@ -38,6 +31,7 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_max_return_step": "select",
     "get_low_outdoor_temperature_ventilation_step": "select",
     "get_defrost_ventilation_level": "select",
+    "get_air_filter_alarm_interval": "select",
     "get_scalding_protection_setpoint": "number",
     "get_max_supply_air_summer_setpoint": "number",
     "get_max_supply_air_winter_setpoint": "number",
@@ -76,6 +70,25 @@ VP18C_SUPPORTED_ENTITIES = {
 }
 
 VP18M2_SUPPORTED_ENTITIES = {
+    "get_air_exchange_mode": "climate",
+    "get_electric_water_heater_setpoint": "water_heater",
+    "get_electric_water_heater_state": "water_heater",
+    "get_compressor_water_heater_setpoint": "water_heater",
+    "get_t12_compressor_water_heater_temperature": "water_heater",
+    "get_t11_electric_water_heater_temperature": "water_heater",
+    "get_display_led_1_state": "binary_sensor",
+    "get_display_led_2_state": "binary_sensor",
+    "get_compressor_state": "binary_sensor",
+    "get_display_text_1": "sensor",
+    "get_display_text_2": "sensor",
+    "get_t10_external_temperature": "sensor",
+    "get_t6_evaporator_temperature": "sensor",
+    "get_t5_condenser_temperature": "sensor",
+    "get_t1_intake_temperature": "sensor",
+    "get_t13_return_temperature": "sensor",
+    "get_t14_supply_temperature": "sensor",
+    "get_t16_sacrificial_anode_temperature": "sensor",
+    "get_anode_state": "sensor",
 }
 
 COMBI302_SUPPORTED_ENTITIES = {
@@ -88,6 +101,7 @@ COMBI302_SUPPORTED_ENTITIES = {
     "get_pre_heater_deftrost_select": "select",
     "get_pre_heater_temp_set": "select",
     "get_air_quality_control_type": "select",
+    "get_air_filter_alarm_interval": "select",
     "get_supply_power_at_level_1": "number",
     "get_supply_power_at_level_2": "number",
     "get_supply_power_at_level_3": "number",
@@ -140,7 +154,6 @@ COMMON_ENTITIES = {
     "get_return_fan_speed": "sensor",
     "get_supply_fan_speed": "sensor",
     "get_smoke_alarm_state": "binary_sensor",
-    "get_air_filter_alarm_interval": "select",
     "get_cooling_mode_ventilation_step": "select",
     "get_cooling_setpoint": "select",
     "get_low_humidity_step": "select",
@@ -229,7 +242,7 @@ class Device:
                 self._attributes = COMMON_ENTITIES
                 self._attributes.update(HW_VERSION_TO_DEVICE[hw_type])
                 self._device_type = DEVICE_TYPES[hw_type]
-                if hw_type not in (13,):
+                if hw_type not in (13, 21):
                     self._device_hw_ver = await self.get_controller_hardware_version()
                     if await self.get_co2_present():
                         self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
@@ -418,6 +431,19 @@ class Device:
         """get user menu state."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.user_user_menu_open, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        return None
+
+    async def get_anode_state(self) -> int:
+        """get user menu state."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.hot_water_anode_state, 1, "input"
         )
         if result is not None:
             return int.from_bytes(

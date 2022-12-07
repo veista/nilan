@@ -75,6 +75,13 @@ USER_MENU_STATES = {
     2: "No Off Key",
 }
 
+ANODE_STATES = {
+    0: "Off",
+    1: "OK",
+    2: "Service",
+    3: "Error",
+}
+
 Map = namedtuple(
     "map", "name default_unit device_class state_class entity_category icon enum"
 )
@@ -190,6 +197,28 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_t13_return_temperature": [
+        Map(
+            "Return Water Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
+    "get_t14_supply_temperature": [
+        Map(
+            "Supply Water Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_t15_user_panel_temperature": [
         Map(
             "User Panel Temperature",
@@ -197,6 +226,17 @@ ATTRIBUTE_TO_SENSORS = {
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
+            None,
+            None,
+        )
+    ],
+    "get_t16_sacrificial_anode_temperature": [
+        Map(
+            "Anode Temperature",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
             None,
             None,
         )
@@ -353,6 +393,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             USER_MENU_STATES,
+        )
+    ],
+    "get_anode_state": [
+        Map(
+            "Anode State",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            ANODE_STATES,
         )
     ],
     "get_supply_fan_level": [
