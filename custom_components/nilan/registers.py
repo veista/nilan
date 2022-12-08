@@ -115,10 +115,10 @@ class CTS602InputRegisters:
     air_qual_co2_enable = 3003
     air_flow_room_reduce = 3004
     air_flow_last_test_day = 3005
-    air_flow_since_filt_day = 3006
+    display_air_flow_since_filt_day = 3006
     air_flow_winter_reduce = 3007
     air_temp_temp_set = 3008
-    air_temp_temp_control = 3009
+    display_air_temp_temp_control = 3009
 
     alarm_event_log_id = 3050
     alarm_log_date = 3051
@@ -292,7 +292,7 @@ class CTS602HoldingRegisters:
     display_air_flow_cool_vent = 4001
     air_flow_winter_temp = 4002
     air_flow_winter_vent = 4003
-    air_flow_test_select = 4004
+    display_air_flow_test_select = 4004
     air_heat_type = 4005
     air_heat_delay = 4006
     display_air_temp_temp_min_sum = 4007
