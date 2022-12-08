@@ -2,12 +2,10 @@
 # Nilan
 Nilan integration for Home Assistant
 
-CTS602/HMI350T supported devices(as typed in HMI menu):
+CTS602 supported devices(as typed in HMI menu):
 - VP 18c
 - COMBI 302
-
-CTS602 supported devices:
-- Comfort 250/300/450/600
+- COMFORT
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
