@@ -73,28 +73,6 @@ VP18C_SUPPORTED_ENTITIES = {
     "get_air_quality_control_type": "select",
 }
 
-VP18M2_SUPPORTED_ENTITIES = {
-    "get_air_exchange_mode": "climate",
-    "get_electric_water_heater_setpoint": "water_heater",
-    "get_electric_water_heater_state": "water_heater",
-    "get_compressor_water_heater_setpoint": "water_heater",
-    "get_t12_compressor_water_heater_temperature": "water_heater",
-    "get_t11_electric_water_heater_temperature": "water_heater",
-    "get_display_led_1_state": "binary_sensor",
-    "get_display_led_2_state": "binary_sensor",
-    "get_compressor_state": "binary_sensor",
-    "get_display_text_1": "sensor",
-    "get_display_text_2": "sensor",
-    "get_t10_external_temperature": "sensor",
-    "get_t6_evaporator_temperature": "sensor",
-    "get_t5_condenser_temperature": "sensor",
-    "get_t1_intake_temperature": "sensor",
-    "get_t13_return_temperature": "sensor",
-    "get_t14_supply_temperature": "sensor",
-    "get_t16_sacrificial_anode_temperature": "sensor",
-    "get_anode_state": "sensor",
-}
-
 COMBI302_SUPPORTED_ENTITIES = {
     "get_hmi_language": "select",
     "get_min_supply_step": "select",
@@ -174,14 +152,12 @@ COMMON_ENTITIES = {
 HW_VERSION_TO_DEVICE = {
     13: COMFORT_SUPPORTED_ENTITIES,
     19: VP18C_SUPPORTED_ENTITIES,
-    21: VP18M2_SUPPORTED_ENTITIES,
     35: COMBI302_SUPPORTED_ENTITIES,
 }
 
 DEVICE_TYPES = {
     13: "COMFORT",
     19: "VP 18c",
-    21: "VP 18 M2",
     35: "COMBI 302",
 }
 
