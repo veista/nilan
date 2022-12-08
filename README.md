@@ -39,6 +39,7 @@ The easiest way is to purchase one, but you can also build one easily with an ES
   - Turn on debug logging for the integration and try installing the integration again. Take note of the debug log and submit it with the issue.
   - Take a picture of the device type plate and submit it with the issue.
   - If you have HMI350T - Touch screen HMI - installed on your device, take a picture of the device info page and submit it with the issue.
+  - If you have CTS602 HMI, take a picture of "SHOW DATA" -> "TYPE" and submit it with the issue.
 
 ## Support
 If you like the integration, please leave a star and concider donating or becoming a sponsor.
