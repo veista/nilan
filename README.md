@@ -40,6 +40,8 @@ The easiest way is to purchase one, but you can also build one easily with an ES
   - Take a picture of the device type plate and submit it with the issue.
   - If you have HMI350T - Touch screen HMI - installed on your device, take a picture of the device info page and submit it with the issue.
   - If you have CTS602 HMI, take a picture of "SHOW DATA" -> "TYPE" and submit it with the issue.
+4. On other Issues:
+  - Submit the following: Logs, Modbus Version, Device Type - as Shown in the Integration, Device Version - as Shown in the Integration
 
 ## Support
 If you like the integration, please leave a star and concider donating or becoming a sponsor.
