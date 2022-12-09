@@ -1,10 +1,23 @@
 {
   "config": {
     "step": {
-      "user": {
+      "menu": {
+        "menu_options":{
+          "tcp": "[%key:common::config_flow::menu_options::tcp%]",
+          "serial": "[%key:common::config_flow::menu_options::serial%]"
+        }
+      },
+      "tcp": {
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
           "host_ip": "[%key:common::config_flow::data::host_ip%]",
+          "host_port": "[%key:common::config_flow::data::host_port%]",
+          "unit_id": "[%key:common::config_flow::data::unit_id%]"
+        }
+      },
+      "serial": {
+        "data": {
+          "name": "[%key:common::config_flow::data::name%]",
           "host_port": "[%key:common::config_flow::data::host_port%]",
           "unit_id": "[%key:common::config_flow::data::unit_id%]"
         }
