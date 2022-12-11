@@ -65,6 +65,8 @@ class Device:
             self._device_type = CTS602_DEVICE_TYPES[hw_type]
             if bus_version >= 10:  # PH
                 co2_present = await self.get_co2_present()
+            else:
+                co2_present = True
             for entity, value in CTS602_ENTITY_MAP.items():
                 if bus_version >= value["min_bus_version"] and (
                     hw_type in value["supported_devices"]
@@ -80,6 +82,8 @@ class Device:
                             self._attributes[entity] = value["entity_type"]
                     else:
                         self._attributes[entity] = value["entity_type"]
+        if "get_controller_hardware_version" in self._attributes:
+            self._device_hw_ver = await self.get_controller_hardware_version()
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
