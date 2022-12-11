@@ -571,12 +571,12 @@ CTS602_ENTITY_MAP = {
     "get_user_menu_state": {
         "entity_type": "sensor",
         "min_bus_version": 20,
-        "supported_devices": (None,),
+        "supported_devices": ("all",),
     },
     "get_hmi_language": {
         "entity_type": "select",
         "min_bus_version": 22,
-        "supported_devices": (None,),
+        "supported_devices": ("all",),
     },
     "get_low_outdoor_temperature_setpoint": {
         "entity_type": "number",
@@ -631,7 +631,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": ("all",),
     },
     "get_fan_startup_delay": {
-        "entity_type": "select",
+        "entity_type": "number",
         "min_bus_version": 22,
         "supported_devices": (
             19,
