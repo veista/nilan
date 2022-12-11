@@ -458,10 +458,10 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-lines",
         )
     ],
-    "get_min_supply_air_temperature": [
+    "get_ch_min_supply_temperature": [
         Map(
-            "Minimum Supply Air Temperature",
-            "set_min_supply_air_temperature",
+            "Central Heating Min. Supply Temperature",
+            "set_ch_min_supply_temperature",
             EntityCategory.CONFIG,
             5,
             40,
@@ -471,13 +471,13 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-low",
         )
     ],
-    "get_max_supply_air_temperature": [
+    "get_ch_max_supply_temperature": [
         Map(
-            "Maximum Supply Air Temperature",
-            "set_max_supply_air_temperature",
+            "Central Heating Max. Supply Temperature",
+            "set_ch_max_supply_temperature",
             EntityCategory.CONFIG,
             20,
-            50,
+            70,
             1,
             NumberMode.BOX,
             TEMP_CELSIUS,

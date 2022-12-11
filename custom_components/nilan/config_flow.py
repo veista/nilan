@@ -12,7 +12,7 @@ from homeassistant import config_entries
 from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
 from pymodbus.exceptions import ModbusException
 
-from .device import DEVICE_TYPES
+from .device import CTS602_DEVICE_TYPES
 
 from .registers import CTS602HoldingRegisters
 
@@ -70,7 +70,7 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
         "little",
         signed=False,
     )
-    if not value_output in DEVICE_TYPES:
+    if not value_output in CTS602_DEVICE_TYPES:
         _LOGGER.debug(
             "Device Type %s not found in supported devices list",
             str(value_output),

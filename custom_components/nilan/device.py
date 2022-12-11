@@ -7,7 +7,7 @@ import logging
 from homeassistant.components.modbus import modbus
 from homeassistant.core import HomeAssistant
 from .registers import CTS602InputRegisters, CTS602HoldingRegisters
-from .device_map import DEVICE_TYPES, ENTITY_MAP
+from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,6 +37,7 @@ class Device:
         self._client_config = {
             "name": self._device_name,
             "type": self._com_type,
+            "method": "rtu",
             "delay": 0,
             "port": self._host_port,
             "timeout": 1,
@@ -59,44 +60,26 @@ class Device:
         if success:
             hw_type = await self.get_machine_type()
             bus_version = await self.get_bus_version()
-            # add check for CO2 and AFTER HEATING
-        if hw_type in DEVICE_TYPES:
+        if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
-            self._device_type = DEVICE_TYPES[hw_type]
-            for entity, value in ENTITY_MAP.items():
+            self._device_type = CTS602_DEVICE_TYPES[hw_type]
+            if bus_version >= 10:  # PH
+                co2_present = await self.get_co2_present()
+            for entity, value in CTS602_ENTITY_MAP.items():
                 if bus_version >= value["min_bus_version"] and (
                     hw_type in value["supported_devices"]
                     or "all" in value["supported_devices"]
                 ):
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
+                            self._attributes[entity] = value["entity_type"]
+                        else:
+                            continue
                     if "max_bus_version" in value:
                         if bus_version <= value["max_bus_version"]:
                             self._attributes[entity] = value["entity_type"]
                     else:
                         self._attributes[entity] = value["entity_type"]
-            print(self._attributes)
-
-            # if hw_type in HW_VERSION_TO_DEVICE:
-            #     self._device_sw_ver = await self.get_controller_software_version()
-            #     self._attributes = COMMON_ENTITIES
-            #     self._attributes.update(HW_VERSION_TO_DEVICE[hw_type])
-            #     self._device_type = DEVICE_TYPES[hw_type]
-            #     if hw_type not in (13, 21):
-            #         self._device_hw_ver = await self.get_controller_hardware_version()
-            #         if await self.get_co2_present():
-            #             self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
-            #         after_heater_type = await self.get_after_heating_type()
-            #         if after_heater_type == 1:
-            #             self._attributes.update(
-            #                 ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-            #             )
-            #         if after_heater_type == 2:
-            #             self._attributes.update(
-            #                 ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-            #             )
-            #         if after_heater_type == 3:
-            #             self._attributes.update(
-            #                 WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-            #             )
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
@@ -1201,7 +1184,7 @@ class Device:
         _LOGGER.error("Could not read get_compressor_water_heater_setpoint")
         return None
 
-    async def get_min_supply_air_temperature(self) -> float:
+    async def get_ch_min_supply_temperature(self) -> float:
         """get minimum supply air temperature setpoint."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
@@ -1216,10 +1199,10 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
-        _LOGGER.error("Could not read get_min_supply_air_temperature")
+        _LOGGER.error("Could not read get_ch_min_supply_temperature")
         return None
 
-    async def get_max_supply_air_temperature(self) -> float:
+    async def get_ch_max_supply_temperature(self) -> float:
         """get max supply air temperature setpoint."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
@@ -1234,7 +1217,7 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
-        _LOGGER.error("Could not read get_max_supply_air_temperature")
+        _LOGGER.error("Could not read get_ch_max_supply_temperature")
         return None
 
     async def get_min_supply_air_summer_setpoint(self) -> float:
@@ -1528,10 +1511,28 @@ class Device:
             value = int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
-                signed=True,
+                signed=False,
             )
             return value
         _LOGGER.error("Could not read get_hmi_language")
+        return None
+
+    async def get_circulation_pump_mode(self) -> int:
+        """get Circulation Pump Mode."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_circ_pump_mode,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_circulation_pump_mode")
         return None
 
     async def get_low_humidity_step(self) -> int:
@@ -2517,6 +2518,18 @@ class Device:
             return True
         return False
 
+    async def set_circulation_pump_mode(self, mode: int) -> bool:
+        """set Circulation Pump Mode."""
+        if mode in (0, 1):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_circ_pump_mode,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
     async def set_alarm_reset_code(self, mode: int) -> bool:
         """set alarm reset code."""
         if mode >= 0 and mode <= 254 or mode == 255:
@@ -2801,7 +2814,7 @@ class Device:
                 "write_registers",
             )
 
-    async def set_min_supply_air_temperature(self, value: float):
+    async def set_ch_min_supply_temperature(self, value: float):
         """set min supply temperature."""
         if value >= 5 and value <= 40:
             value = int(value * 100)
@@ -2815,9 +2828,9 @@ class Device:
                 "write_registers",
             )
 
-    async def set_max_supply_air_temperature(self, value: float):
+    async def set_ch_max_supply_temperature(self, value: float):
         """set max supply temperature."""
-        if value >= 20 and value <= 50:
+        if value >= 0 and value <= 100:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False

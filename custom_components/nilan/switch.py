@@ -23,7 +23,7 @@ Map = namedtuple(
 ATTRIBUTE_TO_SWITCHES = {
     "get_supply_air_after_heating": [
         Map(
-            "Supply Air After Heating Installed",
+            "Supply Air After Heating",
             "set_supply_air_after_heating",
             EntityCategory.CONFIG,
             0,

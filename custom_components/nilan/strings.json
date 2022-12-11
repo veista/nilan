@@ -2,12 +2,14 @@
   "config": {
     "step": {
       "menu": {
+        "title": "[%key:common::config_flow::menu::title%]",
         "menu_options":{
           "tcp": "[%key:common::config_flow::menu_options::tcp%]",
           "serial": "[%key:common::config_flow::menu_options::serial%]"
         }
       },
       "tcp": {
+        "title": "[%key:common::config_flow::tcp::title%]",
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
           "host_ip": "[%key:common::config_flow::data::host_ip%]",
@@ -16,6 +18,7 @@
         }
       },
       "serial": {
+        "title": "[%key:common::config_flow::serial::title%]",
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
           "host_port": "[%key:common::config_flow::data::host_port%]",
@@ -25,8 +28,8 @@
     },
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-      "invalid_response": "[%key:common::config_flow::error::invalid_auth%]",
-      "unsupported_device": "[%key:common::config_flow::error::invalid_auth%]",
+      "invalid_response": "[%key:common::config_flow::error::invalid_response%]",
+      "unsupported_device": "[%key:common::config_flow::error::invalid_device%]",
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {

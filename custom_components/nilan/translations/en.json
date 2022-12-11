@@ -11,12 +11,14 @@
         },
         "step": {
             "menu": {
+                "title": "Select Interface Type",
                 "menu_options": {
                     "tcp": "TCP",
                     "serial": "Serial"
                 }
             },
             "tcp": {
+                "title": "TCP Configuration",
                 "data": {
                     "name": "Device Name",
                     "host_ip": "IP Address",
@@ -25,6 +27,7 @@
                 }
             },
             "serial": {
+                "title": "Serial Configuration",
                 "data": {
                     "name": "Device Name",
                     "host_port": "Path",
