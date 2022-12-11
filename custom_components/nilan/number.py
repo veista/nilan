@@ -410,7 +410,7 @@ ATTRIBUTE_TO_NUMBERS = {
         Map(
             "CO2 Low Limit",
             "set_co2_low_limit_setpoint",
-            None,
+            EntityCategory.CONFIG,
             400,
             750,
             1,
@@ -423,7 +423,7 @@ ATTRIBUTE_TO_NUMBERS = {
         Map(
             "CO2 High Limit",
             "set_co2_high_limit_setpoint",
-            None,
+            EntityCategory.CONFIG,
             650,
             2500,
             1,
