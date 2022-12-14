@@ -65,7 +65,7 @@ CTS602_ENTITY_MAP = {
     "get_t4_outlet": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (13,),
+        "supported_devices": (13, 35),
     },
     "get_t5_condenser_temperature": {
         "entity_type": "sensor",

@@ -181,7 +181,7 @@ class Device:
             self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
         )
         if bus_version is not None:
-            if int(bus_version.registers[0]) > 7:
+            if int(bus_version.registers[0]) > 19:
                 if result is not None:
                     for value in result.registers:
                         char1 = chr(value >> 8)
