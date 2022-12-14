@@ -46,7 +46,7 @@ class Device:
             "retry_on_empty": "true",
             "host": self._host_ip,
             "parity": "E",
-            "baudrate": "19200",
+            "baudrate": 19200,
             "bytesize": 8,
             "stopbits": 1,
         }

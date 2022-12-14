@@ -143,7 +143,8 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if not errors:
                 # Input is valid, set data.
                 self.data = user_input
-                self.data.update({"com_type": "tcp"})
+                self.data.update({"com_type": "serial"})
+                self.data.update({"host_ip": None})
                 return self.async_create_entry(title=user_input["name"], data=self.data)
         return self.async_show_form(
             step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
