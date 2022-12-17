@@ -3,9 +3,11 @@
 Nilan integration for Home Assistant
 
 CTS602 supported devices (as typed in HMI menu):
-- VP 18c
-- COMBI 302
+
 - COMFORT
+- VP 18c
+- VP 18cek
+- COMBI 302
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
@@ -13,12 +15,15 @@ If you have CTS700 or another device you will have to help me with that.
 
 ## Installation
 ### Hardware
-You must have a ModBus RTU to Modbus TCP Bridge installed on your Nilan device for this integration to work.
+You must have one interface type installed on your Nilan device for this Integration to work 
 
-The easiest way is to purchase one, but you can also build one easily with an ESP8266/ESP32 https://github.com/veista/modbus_bridge
+#### Supported Interface Types
+- ModBus RTU to Modbus TCP Bridge 
+- USB to RS485 adaptor
 
 #### Tested Known-to-work Bridge Devices
 * USR-TCP232-410S
+* Waveshare RS485 TO ETH (B)
 * https://github.com/veista/modbus_bridge
 
 ### Software

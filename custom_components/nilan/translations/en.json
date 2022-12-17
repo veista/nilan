@@ -1,20 +1,36 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Device is Already Configured"
         },
         "error": {
-            "cannot_connect": "Failed to connect",
+            "cannot_connect": "Failed to Connect",
             "invalid_response": "Invalid Response from Device",
             "unsupported_device": "Unsupported Device",
             "unknown": "Unexpected error"
         },
         "step": {
-            "user": {
+            "menu": {
+                "title": "Select Interface Type",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Serial"
+                }
+            },
+            "tcp": {
+                "title": "TCP Configuration",
                 "data": {
                     "name": "Device Name",
                     "host_ip": "IP Address",
                     "host_port": "Port",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "serial": {
+                "title": "Serial Configuration",
+                "data": {
+                    "name": "Device Name",
+                    "host_port": "Path",
                     "unit_id": "Unit ID"
                 }
             }

@@ -7,189 +7,22 @@ import logging
 from homeassistant.components.modbus import modbus
 from homeassistant.core import HomeAssistant
 from .registers import CTS602InputRegisters, CTS602HoldingRegisters
+from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
 
 _LOGGER = logging.getLogger(__name__)
-
-COMFORT_SUPPORTED_ENTITIES = {
-    "get_display_led_1_state": "binary_sensor",
-    "get_display_led_2_state": "binary_sensor",
-    "get_t8_outdoor_temperature": "sensor",
-    "get_t3_exhaust_temperature": "sensor",
-    "get_t4_outlet": "sensor",
-    "get_display_text_1": "sensor",
-    "get_display_text_2": "sensor",
-}
-
-VP18C_SUPPORTED_ENTITIES = {
-    "get_air_exchange_mode": "climate",
-    "get_electric_water_heater_setpoint": "water_heater",
-    "get_electric_water_heater_state": "water_heater",
-    "get_compressor_water_heater_setpoint": "water_heater",
-    "get_t12_compressor_water_heater_temperature": "water_heater",
-    "get_t11_electric_water_heater_temperature": "water_heater",
-    "get_legionella_day": "select",
-    "get_hmi_language": "select",
-    "get_compressor_priority": "select",
-    "get_min_supply_step": "select",
-    "get_min_return_step": "select",
-    "get_max_return_step": "select",
-    "get_low_outdoor_temperature_ventilation_step": "select",
-    "get_defrost_ventilation_level": "select",
-    "get_air_filter_alarm_interval": "select",
-    "get_scalding_protection_setpoint": "number",
-    "get_max_supply_air_summer_setpoint": "number",
-    "get_max_supply_air_winter_setpoint": "number",
-    "get_supply_power_at_level_1": "number",
-    "get_supply_power_at_level_2": "number",
-    "get_supply_power_at_level_3": "number",
-    "get_supply_power_at_level_4": "number",
-    "get_return_power_at_level_1": "number",
-    "get_return_power_at_level_2": "number",
-    "get_return_power_at_level_3": "number",
-    "get_return_power_at_level_4": "number",
-    "get_fan_startup_delay": "number",
-    "get_compressor_stop_time": "number",
-    "get_defrost_start_setpoint": "number",
-    "get_defrost_stop_setpoint": "number",
-    "get_defrost_time": "number",
-    "get_low_temperature_compressor_start_setpoint": "number",
-    "get_low_outdoor_temperature_setpoint": "number",
-    "get_low_room_temperature_setpoint": "number",
-    "get_low_temperature_curve": "number",
-    "get_high_temperature_curve": "number",
-    "get_average_humidity": "sensor",
-    "get_supply_fan_level": "sensor",
-    "get_return_fan_level": "sensor",
-    "get_t10_external_temperature": "sensor",
-    "get_t6_evaporator_temperature": "sensor",
-    "get_t5_condenser_temperature": "sensor",
-    "get_t1_intake_temperature": "sensor",
-    "get_ventilation_state": "sensor",
-    "get_days_since_air_filter_change": "sensor",
-    "get_days_to_air_filter_change": "sensor",
-    "get_compressor_state": "binary_sensor",
-    "get_defrost_state": "binary_sensor",
-    "get_air_heat_select": "select",
-    "get_air_quality_control_type": "select",
-}
-
-COMBI302_SUPPORTED_ENTITIES = {
-    "get_hmi_language": "select",
-    "get_min_supply_step": "select",
-    "get_min_return_step": "select",
-    "get_max_return_step": "select",
-    "get_low_outdoor_temperature_ventilation_step": "select",
-    "get_air_heat_select": "select",
-    "get_pre_heater_deftrost_select": "select",
-    "get_pre_heater_temp_set": "select",
-    "get_air_quality_control_type": "select",
-    "get_air_filter_alarm_interval": "select",
-    "get_supply_power_at_level_1": "number",
-    "get_supply_power_at_level_2": "number",
-    "get_supply_power_at_level_3": "number",
-    "get_supply_power_at_level_4": "number",
-    "get_return_power_at_level_1": "number",
-    "get_return_power_at_level_2": "number",
-    "get_return_power_at_level_3": "number",
-    "get_return_power_at_level_4": "number",
-    "get_maximum_compressor_defrost_time": "number",
-    "get_maximum_outlet_defrost_time": "number",
-    "get_time_between_defrost": "number",
-    "get_compressor_stop_time": "number",
-    "get_defrost_start_setpoint": "number",
-    "get_defrost_stop_setpoint": "number",
-    "get_low_temperature_compressor_start_setpoint": "number",
-    "get_low_outdoor_temperature_setpoint": "number",
-    "get_low_room_temperature_setpoint": "number",
-    "get_average_humidity": "sensor",
-    "get_supply_fan_level": "sensor",
-    "get_return_fan_level": "sensor",
-    "get_t10_external_temperature": "sensor",
-    "get_t6_evaporator_temperature": "sensor",
-    "get_t5_condenser_temperature": "sensor",
-    "get_t1_intake_temperature": "sensor",
-    "get_ventilation_state": "sensor",
-    "get_days_since_air_filter_change": "sensor",
-    "get_days_to_air_filter_change": "sensor",
-    "get_compressor_state": "binary_sensor",
-    "get_defrost_state": "binary_sensor",
-    "get_bypass_flap_state": "binary_sensor",
-}
-
-COMMON_ENTITIES = {
-    "get_run_state": "climate",
-    "get_ventilation_step": "climate",
-    "get_operation_mode": "climate",
-    "get_user_humidity_setpoint": "climate",
-    "get_user_temperature_setpoint": "climate",
-    "get_control_temperature": "climate",
-    "get_bus_version": "sensor",
-    "get_control_state": "sensor",
-    "get_humidity": "sensor",
-    "get_t7_inlet_temperature_after_heater": "sensor",
-    "get_t15_user_panel_temperature": "sensor",
-    "get_t0_controller_temperature": "sensor",
-    "get_alarm_count": "sensor",
-    "get_time_in_control_state": "sensor",
-    "get_summer_state": "sensor",
-    "get_time": "sensor",
-    "get_return_fan_speed": "sensor",
-    "get_supply_fan_speed": "sensor",
-    "get_smoke_alarm_state": "binary_sensor",
-    "get_cooling_mode_ventilation_step": "select",
-    "get_cooling_setpoint": "select",
-    "get_low_humidity_step": "select",
-    "get_high_humidity_step": "select",
-    "alarm_reset": "select",
-    "get_max_high_humidity_vent_time": "number",
-    "get_min_supply_air_summer_setpoint": "number",
-    "get_min_supply_air_winter_setpoint": "number",
-    "get_summer_state_change_setpoint": "number",
-    "get_user_function_1_state": "binary_sensor",
-    "get_user_function_2_state": "binary_sensor",
-}
-
-HW_VERSION_TO_DEVICE = {
-    13: COMFORT_SUPPORTED_ENTITIES,
-    19: VP18C_SUPPORTED_ENTITIES,
-    35: COMBI302_SUPPORTED_ENTITIES,
-}
-
-DEVICE_TYPES = {
-    13: "COMFORT",
-    19: "VP 18c",
-    35: "COMBI 302",
-}
-
-CO2_PRESENT_TO_ATTRIBUTES = {
-    "get_co2_sensor_value": "sensor",
-    "get_co2_ventilation_high_step": "select",
-    "get_co2_low_limit_setpoint": "number",
-    "get_co2_high_limit_setpoint": "number",
-}
-
-ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {
-    "get_after_heating_type": "sensor",
-    "get_after_heating_element_capacity": "sensor",
-    "get_central_heat_select": "select",
-    "get_supply_heating_pid_time": "number",
-    "get_central_heat_supply_curve_offset": "number",
-    "get_central_heat_supply_curve": "number",
-    "get_min_supply_air_temperature": "number",
-    "get_max_supply_air_temperature": "number",
-    "get_supply_heater_delay": "number",
-    "get_supply_air_after_heating": "switch",
-}
-
-ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
-
-WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES = {}
-
 
 class Device:
     """Nilan Device"""
 
-    def __init__(self, hass: HomeAssistant, name, host_ip, host_port, unit_id):
+    def __init__(
+        self,
+        hass: HomeAssistant,
+        name,
+        com_type,
+        host_ip: str | None,
+        host_port,
+        unit_id,
+    ):
         """Create new entity of Device Class"""
         self.hass = hass
         self._device_name = name
@@ -199,9 +32,11 @@ class Device:
         self._host_ip = host_ip
         self._host_port = host_port
         self._unit_id = int(unit_id)
+        self._com_type = com_type
         self._client_config = {
             "name": self._device_name,
-            "type": "tcp",
+            "type": self._com_type,
+            "method": "rtu",
             "delay": 0,
             "port": self._host_port,
             "timeout": 1,
@@ -209,37 +44,45 @@ class Device:
             "retries": 10,
             "retry_on_empty": "true",
             "host": self._host_ip,
+            "parity": "E",
+            "baudrate": 19200,
+            "bytesize": 8,
+            "stopbits": 1,
         }
         self._modbus = modbus.ModbusHub(self.hass, self._client_config)
         self._attributes = {}
 
     async def setup(self):
         """Setup Modbus and attribute map for Nilan Device"""
+        hw_type = None
         success = await self._modbus.async_setup()
         if success:
             hw_type = await self.get_machine_type()
-            if hw_type in HW_VERSION_TO_DEVICE:
-                self._device_sw_ver = await self.get_controller_software_version()
-                self._attributes = COMMON_ENTITIES
-                self._attributes.update(HW_VERSION_TO_DEVICE[hw_type])
-                self._device_type = DEVICE_TYPES[hw_type]
-                if hw_type not in (13, 21):
-                    self._device_hw_ver = await self.get_controller_hardware_version()
-                    if await self.get_co2_present():
-                        self._attributes.update(CO2_PRESENT_TO_ATTRIBUTES)
-                    after_heater_type = await self.get_after_heating_type()
-                    if after_heater_type == 1:
-                        self._attributes.update(
-                            ELECTRIC_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-                        )
-                    if after_heater_type == 2:
-                        self._attributes.update(
-                            ELECTRIC_RELAY_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-                        )
-                    if after_heater_type == 3:
-                        self._attributes.update(
-                            WATER_AFTER_HEATER_PRESENT_TO_ATTRIBUTES
-                        )
+            bus_version = await self.get_bus_version()
+        if hw_type in CTS602_DEVICE_TYPES:
+            self._device_sw_ver = await self.get_controller_software_version()
+            self._device_type = CTS602_DEVICE_TYPES[hw_type]
+            if bus_version >= 10:  # PH
+                co2_present = await self.get_co2_present()
+            else:
+                co2_present = True
+            for entity, value in CTS602_ENTITY_MAP.items():
+                if bus_version >= value["min_bus_version"] and (
+                    hw_type in value["supported_devices"]
+                    or "all" in value["supported_devices"]
+                ):
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
+                            self._attributes[entity] = value["entity_type"]
+                        else:
+                            continue
+                    if "max_bus_version" in value:
+                        if bus_version <= value["max_bus_version"]:
+                            self._attributes[entity] = value["entity_type"]
+                    else:
+                        self._attributes[entity] = value["entity_type"]
+        if "get_controller_hardware_version" in self._attributes:
+            self._device_hw_ver = await self.get_controller_hardware_version()
 
     def get_assigned(self, platform: str):
         """get platform assignment"""
@@ -337,7 +180,7 @@ class Device:
             self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
         )
         if bus_version is not None:
-            if int(bus_version.registers[0]) > 7:
+            if int(bus_version.registers[0]) > 19:
                 if result is not None:
                     for value in result.registers:
                         char1 = chr(value >> 8)
@@ -1344,7 +1187,7 @@ class Device:
         _LOGGER.error("Could not read get_compressor_water_heater_setpoint")
         return None
 
-    async def get_min_supply_air_temperature(self) -> float:
+    async def get_ch_min_supply_temperature(self) -> float:
         """get minimum supply air temperature setpoint."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
@@ -1359,10 +1202,10 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
-        _LOGGER.error("Could not read get_min_supply_air_temperature")
+        _LOGGER.error("Could not read get_ch_min_supply_temperature")
         return None
 
-    async def get_max_supply_air_temperature(self) -> float:
+    async def get_ch_max_supply_temperature(self) -> float:
         """get max supply air temperature setpoint."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id,
@@ -1377,7 +1220,7 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
-        _LOGGER.error("Could not read get_max_supply_air_temperature")
+        _LOGGER.error("Could not read get_ch_max_supply_temperature")
         return None
 
     async def get_min_supply_air_summer_setpoint(self) -> float:
@@ -1671,10 +1514,28 @@ class Device:
             value = int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
-                signed=True,
+                signed=False,
             )
             return value
         _LOGGER.error("Could not read get_hmi_language")
+        return None
+
+    async def get_circulation_pump_mode(self) -> int:
+        """get Circulation Pump Mode."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id,
+            CTS602HoldingRegisters.central_heat_circ_pump_mode,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_circulation_pump_mode")
         return None
 
     async def get_low_humidity_step(self) -> int:
@@ -2660,6 +2521,18 @@ class Device:
             return True
         return False
 
+    async def set_circulation_pump_mode(self, mode: int) -> bool:
+        """set Circulation Pump Mode."""
+        if mode in (0, 1):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.central_heat_circ_pump_mode,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
     async def set_alarm_reset_code(self, mode: int) -> bool:
         """set alarm reset code."""
         if mode >= 0 and mode <= 254 or mode == 255:
@@ -2944,7 +2817,7 @@ class Device:
                 "write_registers",
             )
 
-    async def set_min_supply_air_temperature(self, value: float):
+    async def set_ch_min_supply_temperature(self, value: float):
         """set min supply temperature."""
         if value >= 5 and value <= 40:
             value = int(value * 100)
@@ -2958,9 +2831,9 @@ class Device:
                 "write_registers",
             )
 
-    async def set_max_supply_air_temperature(self, value: float):
+    async def set_ch_max_supply_temperature(self, value: float):
         """set max supply temperature."""
-        if value >= 20 and value <= 50:
+        if value >= 0 and value <= 100:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False

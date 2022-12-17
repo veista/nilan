@@ -7,6 +7,7 @@ from homeassistant.helpers.entity import Entity
 
 from .device import Device
 
+import logging
 
 from .const import DOMAIN
 
@@ -20,6 +21,8 @@ PLATFORMS = [
     "switch",
 ]
 
+_LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Nilan CTS602 Modbus TCP from a config entry."""
@@ -27,16 +30,34 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = entry.data
 
     name = entry.data["name"]
-    host_ip = entry.data["host_ip"]
     host_port = entry.data["host_port"]
     unit_id = entry.data["unit_id"]
+    com_type = entry.data["com_type"]
+    host_ip = entry.data["host_ip"]
 
-    device = Device(hass, name, host_ip, host_port, unit_id)
+    device = Device(hass, name, com_type, host_ip, host_port, unit_id)
     await device.setup()
 
     hass.data[DOMAIN][entry.entry_id] = device
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
+    return True
+
+
+async def async_migrate_entry(hass, config_entry: ConfigEntry):
+    """Migrate old entry."""
+    _LOGGER.debug("Migrating from version %s", config_entry.version)
+
+    if config_entry.version == 1:
+
+        new = {**config_entry.data}
+        new.update({"com_type": "tcp"})
+
+        config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, data=new)
+
+    _LOGGER.info("Migration to version %s successful", config_entry.version)
+
     return True
 
 

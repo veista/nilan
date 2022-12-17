@@ -410,7 +410,7 @@ ATTRIBUTE_TO_NUMBERS = {
         Map(
             "CO2 Low Limit",
             "set_co2_low_limit_setpoint",
-            None,
+            EntityCategory.CONFIG,
             400,
             750,
             1,
@@ -423,7 +423,7 @@ ATTRIBUTE_TO_NUMBERS = {
         Map(
             "CO2 High Limit",
             "set_co2_high_limit_setpoint",
-            None,
+            EntityCategory.CONFIG,
             650,
             2500,
             1,
@@ -458,10 +458,10 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-lines",
         )
     ],
-    "get_min_supply_air_temperature": [
+    "get_ch_min_supply_temperature": [
         Map(
-            "Minimum Supply Air Temperature",
-            "set_min_supply_air_temperature",
+            "Central Heating Min. Supply Temperature",
+            "set_ch_min_supply_temperature",
             EntityCategory.CONFIG,
             5,
             40,
@@ -471,13 +471,13 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-low",
         )
     ],
-    "get_max_supply_air_temperature": [
+    "get_ch_max_supply_temperature": [
         Map(
-            "Maximum Supply Air Temperature",
-            "set_max_supply_air_temperature",
+            "Central Heating Max. Supply Temperature",
+            "set_ch_max_supply_temperature",
             EntityCategory.CONFIG,
             20,
-            50,
+            70,
             1,
             NumberMode.BOX,
             TEMP_CELSIUS,

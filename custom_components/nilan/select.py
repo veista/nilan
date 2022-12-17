@@ -166,18 +166,27 @@ CENTRAL_HEAT_SELECT_TO_NUMBER = {
 NUMBER_TO_AIR_TEMP_HEAT_SELECT = {
     0: "Off",
     1: "HP",
-    2: "HP + Afterheat",
-    3: "Afterheat",
-    4: "Afterheat + HP",
+    # 2: "HP + Afterheat",
+    # 3: "Afterheat",
+    # 4: "Afterheat + HP",
 }
 
 AIR_TEMP_HEAT_SELECT_TO_NUMBER = {
     "Off": 0,
     "HP": 1,
-    "HP + Afterheat": 2,
-    "Afterheat": 3,
-    "Afterheat + HP": 4,
+    # "HP + Afterheat": 2,
+    # "Afterheat": 3,
+    # "Afterheat + HP": 4,
 }
+NUMBER_TO_CIRCULATION_PUMP_MODE = {
+    0: "Energy",
+    1: "Continuous",
+}
+CIRCULATION_PUMP_MODE_TO_NUMBER = {
+    "Energy": 0,
+    "Continuous": 1,
+}
+
 
 NUMBER_TO_DEFROST_VENTILATION = {0: "None", 1: "Constant Flow", 2: "Low Flow"}
 
@@ -370,7 +379,7 @@ ATTRIBUTE_TO_SELECT = {
     ],
     "get_central_heat_type": [
         Map(
-            "Air Heating Type",
+            "Central Heating Type",
             "set_central_heat_type",
             EntityCategory.CONFIG,
             CENTRAL_HEAT_TYPE_TO_NUMBER,
@@ -416,6 +425,16 @@ ATTRIBUTE_TO_SELECT = {
             PRE_HEATER_TEMP_TO_NUMBER,
             NUMBER_TO_PRE_HEATER_TEMP,
             "mdi:snowflake-melt",
+        )
+    ],
+    "get_circulation_pump_mode": [
+        Map(
+            "Circulation Pump Mode",
+            "set_circulation_pump_mode",
+            EntityCategory.CONFIG,
+            CIRCULATION_PUMP_MODE_TO_NUMBER,
+            NUMBER_TO_CIRCULATION_PUMP_MODE,
+            "mdi:pump",
         )
     ],
 }
