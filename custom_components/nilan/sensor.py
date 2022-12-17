@@ -256,9 +256,10 @@ ATTRIBUTE_TO_SENSORS = {
         Map(
             "Exchanger Efficiency",
             PERCENTAGE,
+            None,
             SensorStateClass.MEASUREMENT,
             None,
-            None,
+            "mdi:air-filter",
             None,
         )
     ],
