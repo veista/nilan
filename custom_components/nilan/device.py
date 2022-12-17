@@ -1944,7 +1944,7 @@ class Device:
         _LOGGER.error("Could not read get_humidity")
         return None
 
-    async def get_AirTemp_EffPct(self) -> float:
+    async def get_airTemp_effpct(self) -> float:
         """get AirTemp Efficiency Pct"""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.air_temp_eff_pct, 1, "input"
