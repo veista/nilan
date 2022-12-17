@@ -3,6 +3,7 @@
 Nilan integration for Home Assistant
 
 CTS602 supported devices (as typed in HMI menu):
+
 - COMFORT
 - VP 18c
 - VP 18cek

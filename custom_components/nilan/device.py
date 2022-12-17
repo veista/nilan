@@ -11,7 +11,6 @@ from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
 
 _LOGGER = logging.getLogger(__name__)
 
-
 class Device:
     """Nilan Device"""
 
