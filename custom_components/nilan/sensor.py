@@ -252,6 +252,16 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_air_temp_eff_pct": [
+        Map(
+            "Exchanger Efficiency",
+            PERCENTAGE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_average_humidity": [
         Map(
             "24h Average Humidity",
