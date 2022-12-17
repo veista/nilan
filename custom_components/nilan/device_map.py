@@ -140,6 +140,11 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": ("all",),
     },
+    "get_air_temp_eff_pct": {
+        "entity_type": "sensor",
+        "min_bus_version": 1,
+        "supported_devices": ("all",),
+    },
     "get_co2_sensor_value": {
         "entity_type": "sensor",
         "min_bus_version": 1,
