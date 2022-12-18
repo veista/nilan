@@ -11,6 +11,7 @@ from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class Device:
     """Nilan Device"""
 
@@ -1864,6 +1865,74 @@ class Device:
                 return True
             return False
         _LOGGER.error("Could not read get_electric_water_heater_state")
+        return None
+
+    async def get_circulation_pump_state(self) -> bool:
+        """get state of ch circulation pump."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.output_cen_circ_pump, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            if value:
+                return True
+            return False
+        _LOGGER.error("Could not read get_circulation_pump_state")
+        return None
+
+    async def get_heater_relay_1_state(self) -> bool:
+        """get state of heater relay 1."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.output_cen_heat_1, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            if value:
+                return True
+            return False
+        _LOGGER.error("Could not read get_heater_relay_1_state")
+        return None
+
+    async def get_heater_relay_2_state(self) -> bool:
+        """get state of heater relay 2."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.output_cen_heat_2, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            if value:
+                return True
+            return False
+        _LOGGER.error("Could not read get_heater_relay_2_state")
+        return None
+
+    async def get_heater_relay_3_state(self) -> bool:
+        """get state of heater relay 3."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602HoldingRegisters.output_cen_heat_3, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            if value:
+                return True
+            return False
+        _LOGGER.error("Could not read get_heater_relay_3_state")
         return None
 
     async def get_compressor_priority(self) -> int:

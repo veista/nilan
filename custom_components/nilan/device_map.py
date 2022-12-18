@@ -278,6 +278,26 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (19, 21),
     },
+    "get_circulation_pump_state": {
+        "entity_type": "binary_sensor",
+        "min_bus_version": 1,
+        "supported_devices": (21,),
+    },
+    "get_heater_relay_1_state": {
+        "entity_type": "binary_sensor",
+        "min_bus_version": 1,
+        "supported_devices": (21,),
+    },
+    "get_heater_relay_2_state": {
+        "entity_type": "binary_sensor",
+        "min_bus_version": 1,
+        "supported_devices": (21,),
+    },
+    "get_heater_relay_3_state": {
+        "entity_type": "binary_sensor",
+        "min_bus_version": 1,
+        "supported_devices": (21,),
+    },
     "get_defrost_state": {
         "entity_type": "binary_sensor",
         "min_bus_version": 1,

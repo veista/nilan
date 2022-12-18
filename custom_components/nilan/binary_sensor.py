@@ -94,6 +94,42 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             "mdi:led-off",
         )
     ],
+    "get_circulation_pump_state": [
+        Map(
+            "Circulation Pump",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            "mdi:pump",
+            "mdi:pump-off",
+        )
+    ],
+    "get_heater_relay_1_state": [
+        Map(
+            "Heater Relay 1",
+            None,
+            None,
+            "mdi:electric-switch-closed",
+            "mdi:electric-switch",
+        )
+    ],
+    "get_heater_relay_2_state": [
+        Map(
+            "Heater Relay 2",
+            None,
+            None,
+            "mdi:electric-switch-closed",
+            "mdi:electric-switch",
+        )
+    ],
+    "get_heater_relay_3_state": [
+        Map(
+            "Heater Relay 3",
+            None,
+            None,
+            "mdi:electric-switch-closed",
+            "mdi:electric-switch",
+        )
+    ],
 }
 
 
