@@ -252,17 +252,6 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
-    "get_air_temp_eff_pct": [
-        Map(
-            "Exchanger Efficiency",
-            PERCENTAGE,
-            None,
-            SensorStateClass.MEASUREMENT,
-            None,
-            "mdi:air-filter",
-            None,
-        )
-    ],
     "get_average_humidity": [
         Map(
             "24h Average Humidity",
@@ -371,6 +360,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             "mdi:sun-snowflake",
             SEASON_STATES,
+        )
+    ],
+    "get_exchanger_efficiency": [
+        Map(
+            "Exchanger Efficiency",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:air-filter",
+            None,
         )
     ],
     "get_time": [
