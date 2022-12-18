@@ -206,6 +206,11 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (None,),
     },
+    "get_exchanger_efficiency": {
+        "entity_type": "sensor",
+        "min_bus_version": 1,
+        "supported_devices": ("all",),
+    },
     "get_anode_state": {
         "entity_type": "sensor",
         "min_bus_version": 1,
