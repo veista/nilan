@@ -1344,7 +1344,7 @@ class Device:
         _LOGGER.error("Could not read get_operation_mode")
         return None
 
-    async def get_pre_heater_deftrost_select(self) -> int:
+    async def get_pre_heater_defrost_select(self) -> int:
         """get Select anti frost also during evap. defrost."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602HoldingRegisters.preheat_defrost, 1, "holding"
@@ -1356,7 +1356,7 @@ class Device:
                 signed=False,
             )
             return value
-        _LOGGER.error("Could not read get_pre_heater_deftrost_select")
+        _LOGGER.error("Could not read get_pre_heater_defrost_select")
         return None
 
     async def get_pre_heater_temp_set(self) -> int:
@@ -2533,7 +2533,7 @@ class Device:
             return True
         return False
 
-    async def set_pre_heater_deftrost_select(self, mode: int) -> bool:
+    async def set_pre_heater_defrost_select(self, mode: int) -> bool:
         """set Select anti frost also during evap. defrost."""
         if mode in (0, 1):
             await self._modbus.async_pymodbus_call(

@@ -407,10 +407,10 @@ ATTRIBUTE_TO_SELECT = {
             "mdi:radiator",
         )
     ],
-    "get_pre_heater_deftrost_select": [
+    "get_pre_heater_defrost_select": [
         Map(
             "Pre-Heating Effect",
-            "set_pre_heater_deftrost_select",
+            "set_pre_heater_defrost_select",
             EntityCategory.CONFIG,
             PRE_HEATER_EFFECT_TO_NUMBER,
             NUMBER_TO_PRE_HEATER_EFFECT,
@@ -486,7 +486,7 @@ class NilanCTS602Select(SelectEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = "Nilan: " + name
+        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._options = options
@@ -540,7 +540,7 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
         self._device = device
         self._available = True
         self._name = "Reset Alarm"
-        self._attr_name = "Nilan: " + self._name
+        self._attr_name = self._device.get_device_name + ": " + self._name
         self._attr_entity_category = EntityCategory.CONFIG
 
     @property

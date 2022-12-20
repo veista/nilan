@@ -543,7 +543,7 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = "Nilan: " + name
+        self._attr_name = self._device.get_device_name + ": " + name
         self._attr_native_unit_of_measurement = default_unit
         self._attr_device_class = device_class
         self._attr_state_class = state_class

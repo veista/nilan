@@ -80,10 +80,12 @@ class NilanEntity(Entity):
     @property
     def device_info(self):
         """Device Info"""
+        unique_id = self._device.get_device_name + self._device.get_device_type
+
         return {
             "identifiers": {
                 # Serial numbers are unique identifiers within a specific domain
-                (DOMAIN, self._device.get_device_type)
+                (DOMAIN, unique_id),
             },
             "name": self._device.get_device_name,
             "manufacturer": "Nilan",
