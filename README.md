@@ -6,6 +6,7 @@ CTS602 supported devices (as typed in HMI menu):
 
 - COMFORT
 - VP 18c
+- VP 18ek
 - VP 18cek
 - COMBI 302
 
