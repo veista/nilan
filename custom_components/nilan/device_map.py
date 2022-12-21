@@ -695,14 +695,9 @@ CTS602_ENTITY_MAP = {
         "supported_devices": ("all",),
     },
     "get_after_heating_type": {
-        "entity_type": "select",
+        "entity_type": "sensor",
         "min_bus_version": 10,  # PH
-        "supported_devices": (
-            13,
-            20,
-            21,
-            35,
-        ),
+        "supported_devices": ("all",),
     },
     "get_supply_heater_delay": {
         "entity_type": "number",
