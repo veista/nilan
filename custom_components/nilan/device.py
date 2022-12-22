@@ -2572,6 +2572,18 @@ class Device:
             return True
         return False
 
+    async def set_user_menu_state(self, mode: int) -> bool:
+        """set User Menu Access."""
+        if mode in (0, 1, 2):
+            await self._modbus.async_pymodbus_call(
+                self._unit_id,
+                CTS602HoldingRegisters.user_user_menu_open,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
     async def set_air_heat_select(self, mode: int) -> bool:
         """set air heating."""
         if mode in (0, 1, 2, 3, 4):

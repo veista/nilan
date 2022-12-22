@@ -69,11 +69,6 @@ AFTER_HEATING_TYPES = {
     3: "Water",
 }
 
-USER_MENU_STATES = {
-    0: "Closed",
-    1: "Open",
-    2: "No Off Key",
-}
 
 ANODE_STATES = {
     0: "Off",
@@ -404,17 +399,6 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             "mdi:state-machine",
             VENTILATION_STATES,
-        )
-    ],
-    "get_user_menu_state": [
-        Map(
-            "User Menu State",
-            None,
-            None,
-            SensorStateClass.MEASUREMENT,
-            None,
-            None,
-            USER_MENU_STATES,
         )
     ],
     "get_anode_state": [

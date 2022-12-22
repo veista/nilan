@@ -187,6 +187,18 @@ CIRCULATION_PUMP_MODE_TO_NUMBER = {
     "Continuous": 1,
 }
 
+NUMBER_TO_USER_MENU_STATE = {
+    0: "Locked",
+    1: "Open",
+    2: "Disable Off Key",
+}
+
+USER_MENU_STATE_TO_NUMBER = {
+    "Locked": 0,
+    "Open": 1,
+    "Disable Off Key": 2,
+}
+
 
 NUMBER_TO_DEFROST_VENTILATION = {0: "None", 1: "Constant Flow", 2: "Low Flow"}
 
@@ -435,6 +447,16 @@ ATTRIBUTE_TO_SELECT = {
             CIRCULATION_PUMP_MODE_TO_NUMBER,
             NUMBER_TO_CIRCULATION_PUMP_MODE,
             "mdi:pump",
+        )
+    ],
+    "get_user_menu_state": [
+        Map(
+            "User Menu Lock",
+            "set_user_menu_state",
+            EntityCategory.CONFIG,
+            USER_MENU_STATE_TO_NUMBER,
+            NUMBER_TO_USER_MENU_STATE,
+            "mdi:menu",
         )
     ],
 }

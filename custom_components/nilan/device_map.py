@@ -687,7 +687,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (None,),
     },
     "get_user_menu_state": {
-        "entity_type": "sensor",
+        "entity_type": "select",
         "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
