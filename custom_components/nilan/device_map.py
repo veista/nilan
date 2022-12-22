@@ -115,7 +115,7 @@ CTS602_ENTITY_MAP = {
         ),
     },
     "get_t11_electric_water_heater_temperature": {
-        "entity_type": "sensor",
+        "entity_type": "water_heater",
         "min_bus_version": 1,
         "supported_devices": (
             19,
@@ -124,7 +124,7 @@ CTS602_ENTITY_MAP = {
         ),
     },
     "get_t12_compressor_water_heater_temperature": {
-        "entity_type": "sensor",
+        "entity_type": "water_heater",
         "min_bus_version": 1,
         "supported_devices": (
             19,
@@ -235,6 +235,14 @@ CTS602_ENTITY_MAP = {
         "entity_type": "sensor",
         "min_bus_version": 1,
         "supported_devices": (None,),
+    },
+    "get_central_heating_setpoint": {
+        "entity_type": "sensor",
+        "min_bus_version": 1,
+        "supported_devices": (
+            20,
+            21,
+        ),
     },
     "get_display_led_1_state": {
         "entity_type": "binary_sensor",
@@ -561,7 +569,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_central_heat_select": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -714,7 +722,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_supply_air_after_heating": {
         "entity_type": "switch",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": (None,),
     },
     "get_min_supply_step": {

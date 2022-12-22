@@ -241,6 +241,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_central_heating_setpoint": [
+        Map(
+            "Central Heating Setpoint",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_humidity": [
         Map(
             "Humidity",

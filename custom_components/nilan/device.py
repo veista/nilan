@@ -592,6 +592,21 @@ class Device:
         _LOGGER.error("Could not read get_room_master_temperature")
         return None
 
+    async def get_central_heating_setpoint(self) -> float:
+        """get Central Heating Temperature Setpoint."""
+        result = await self._modbus.async_pymodbus_call(
+            self._unit_id, CTS602InputRegisters.central_heat_heat_ext_set, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        _LOGGER.error("Could not read get_central_heating_setpoint")
+        return None
+
     async def get_exchanger_efficiency(self) -> float:
         """get AirTemp Efficiency Pct"""
         result = await self._modbus.async_pymodbus_call(
