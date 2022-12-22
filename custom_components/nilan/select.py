@@ -401,7 +401,7 @@ ATTRIBUTE_TO_SELECT = {
     ],
     "get_central_heat_select": [
         Map(
-            "After Heating Mode",
+            "Central Heating Mode",
             "set_central_heat_select",
             EntityCategory.CONFIG,
             CENTRAL_HEAT_SELECT_TO_NUMBER,
