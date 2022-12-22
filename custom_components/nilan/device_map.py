@@ -233,8 +233,12 @@ CTS602_ENTITY_MAP = {
     },
     "get_anode_state": {
         "entity_type": "sensor",
-        "min_bus_version": 1,
-        "supported_devices": (None,),
+        "min_bus_version": 19,
+        "supported_devices": (
+            19,
+            20,
+            21,
+        ),
     },
     "get_central_heating_setpoint": {
         "entity_type": "sensor",
@@ -288,12 +292,12 @@ CTS602_ENTITY_MAP = {
     },
     "get_average_humidity": {
         "entity_type": "sensor",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_ventilation_state": {
         "entity_type": "sensor",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_compressor_state": {
@@ -417,7 +421,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_air_filter_alarm_interval": {
         "entity_type": "select",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_cooling_setpoint": {
@@ -466,7 +470,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_air_heat_select": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -476,7 +480,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_low_temperature_curve": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -485,7 +489,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_high_temperature_curve": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -494,7 +498,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_low_temperature_compressor_start_setpoint": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -504,7 +508,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_compressor_stop_time": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -532,7 +536,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_compressor_priority": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -541,7 +545,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_scalding_protection_setpoint": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -550,7 +554,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_legionella_day": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -578,7 +582,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_ch_min_supply_temperature": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -587,7 +591,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_ch_max_supply_temperature": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -596,7 +600,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_central_heat_supply_curve_offset": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -605,7 +609,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_central_heat_supply_curve": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -614,7 +618,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_circulation_pump_mode": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -622,7 +626,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_central_heat_type": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -631,7 +635,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_supply_heating_pid_time": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             20,
             21,
@@ -684,12 +688,12 @@ CTS602_ENTITY_MAP = {
     },
     "get_user_menu_state": {
         "entity_type": "sensor",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_hmi_language": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_low_outdoor_temperature_setpoint": {
@@ -727,22 +731,22 @@ CTS602_ENTITY_MAP = {
     },
     "get_min_supply_step": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_min_return_step": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_max_return_step": {
         "entity_type": "select",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_fan_startup_delay": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -795,7 +799,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_minimum_defrost_time": {
         "entity_type": "number",
-        "min_bus_version": 22,
+        "min_bus_version": 19,  # PH
         "supported_devices": (
             19,
             20,
@@ -804,57 +808,57 @@ CTS602_ENTITY_MAP = {
     },
     "get_supply_power_at_level_1": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_supply_power_at_level_2": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_supply_power_at_level_3": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_supply_power_at_level_4": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_return_power_at_level_1": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_return_power_at_level_2": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_return_power_at_level_3": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_return_power_at_level_4": {
         "entity_type": "number",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_air_quality_control_type": {
         "entity_type": "select",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": ("all",),
     },
     "get_pre_heater_defrost_select": {
         "entity_type": "select",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": (35,),
     },
     "get_pre_heater_temp_set": {
         "entity_type": "select",
-        "min_bus_version": 20,
+        "min_bus_version": 19,  # PH
         "supported_devices": (35,),
     },
 }
