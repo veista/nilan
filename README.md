@@ -35,6 +35,7 @@ You must have one interface type installed on your Nilan device for this Integra
 
 #### HACS
 - This integration is available from HACS
+- Add Nilan from Integrations
 
 ## Issues
 1. Before submitting an issue, read the previous <a href="https://github.com/veista/nilan/issues?q=">issues</a>, <a href="https://github.com/veista/nilan/wiki">wiki</a>, <a href="https://github.com/veista/nilan/discussions">discussions</a> and <a href="https://github.com/veista/nilan/releases">release notes</a>.
