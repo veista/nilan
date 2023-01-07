@@ -187,6 +187,18 @@ CIRCULATION_PUMP_MODE_TO_NUMBER = {
     "Continuous": 1,
 }
 
+NUMBER_TO_USER_MENU_STATE = {
+    0: "Locked",
+    1: "Open",
+    2: "Disable Off Key",
+}
+
+USER_MENU_STATE_TO_NUMBER = {
+    "Locked": 0,
+    "Open": 1,
+    "Disable Off Key": 2,
+}
+
 
 NUMBER_TO_DEFROST_VENTILATION = {0: "None", 1: "Constant Flow", 2: "Low Flow"}
 
@@ -389,7 +401,7 @@ ATTRIBUTE_TO_SELECT = {
     ],
     "get_central_heat_select": [
         Map(
-            "After Heating Mode",
+            "Central Heating Mode",
             "set_central_heat_select",
             EntityCategory.CONFIG,
             CENTRAL_HEAT_SELECT_TO_NUMBER,
@@ -407,10 +419,10 @@ ATTRIBUTE_TO_SELECT = {
             "mdi:radiator",
         )
     ],
-    "get_pre_heater_deftrost_select": [
+    "get_pre_heater_defrost_select": [
         Map(
             "Pre-Heating Effect",
-            "set_pre_heater_deftrost_select",
+            "set_pre_heater_defrost_select",
             EntityCategory.CONFIG,
             PRE_HEATER_EFFECT_TO_NUMBER,
             NUMBER_TO_PRE_HEATER_EFFECT,
@@ -435,6 +447,16 @@ ATTRIBUTE_TO_SELECT = {
             CIRCULATION_PUMP_MODE_TO_NUMBER,
             NUMBER_TO_CIRCULATION_PUMP_MODE,
             "mdi:pump",
+        )
+    ],
+    "get_user_menu_state": [
+        Map(
+            "User Menu Lock",
+            "set_user_menu_state",
+            EntityCategory.CONFIG,
+            USER_MENU_STATE_TO_NUMBER,
+            NUMBER_TO_USER_MENU_STATE,
+            "mdi:menu",
         )
     ],
 }
@@ -486,7 +508,7 @@ class NilanCTS602Select(SelectEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = "Nilan: " + name
+        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._options = options
@@ -540,7 +562,7 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
         self._device = device
         self._available = True
         self._name = "Reset Alarm"
-        self._attr_name = "Nilan: " + self._name
+        self._attr_name = self._device.get_device_name + ": " + self._name
         self._attr_entity_category = EntityCategory.CONFIG
 
     @property

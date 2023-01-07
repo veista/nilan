@@ -81,7 +81,7 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = "Nilan: " + name
+        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._off_icon = off_icon

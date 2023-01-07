@@ -69,11 +69,6 @@ AFTER_HEATING_TYPES = {
     3: "Water",
 }
 
-USER_MENU_STATES = {
-    0: "Closed",
-    1: "Open",
-    2: "No Off Key",
-}
 
 ANODE_STATES = {
     0: "Off",
@@ -241,6 +236,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_central_heating_setpoint": [
+        Map(
+            "Central Heating Setpoint",
+            TEMP_CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            None,
+        )
+    ],
     "get_humidity": [
         Map(
             "Humidity",
@@ -395,17 +401,6 @@ ATTRIBUTE_TO_SENSORS = {
             VENTILATION_STATES,
         )
     ],
-    "get_user_menu_state": [
-        Map(
-            "User Menu State",
-            None,
-            None,
-            SensorStateClass.MEASUREMENT,
-            None,
-            None,
-            USER_MENU_STATES,
-        )
-    ],
     "get_anode_state": [
         Map(
             "Anode State",
@@ -543,7 +538,7 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = "Nilan: " + name
+        self._attr_name = self._device.get_device_name + ": " + name
         self._attr_native_unit_of_measurement = default_unit
         self._attr_device_class = device_class
         self._attr_state_class = state_class

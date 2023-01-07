@@ -6,6 +6,7 @@ CTS602 supported devices (as typed in HMI menu):
 
 - COMFORT
 - VP 18c
+- VP 18ek
 - VP 18cek
 - COMBI 302
 
@@ -36,7 +37,7 @@ You must have one interface type installed on your Nilan device for this Integra
 - This integration is available from HACS
 
 ## Issues
-1. Before submitting an issue, read the previous issues.
+1. Before submitting an issue, read the previous <a href="https://github.com/veista/nilan/issues?q=">issues</a>, <a href="https://github.com/veista/nilan/wiki">wiki</a>, <a href="https://github.com/veista/nilan/discussions">discussions</a> and <a href="https://github.com/veista/nilan/releases">release notes</a>.
 2. If you have a CTS700 device, it is a long road to get it supported by this integration, open an issue and we will go forward there
 3. If you have a CTS602 device and you get a device not supported error during installation:
   - Turn on debug logging for the integration and try installing the integration again. Take note of the debug log and submit it with the issue.
