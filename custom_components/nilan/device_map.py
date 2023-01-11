@@ -1,7 +1,7 @@
 """defines devices, entity types, supported entities per device and per version"""
 
 CTS602_DEVICE_TYPES = {
-    4: "VPL 15 c",
+    4: "VPL 15c",
     13: "COMFORT",
     19: "VP 18c",
     20: "VP 18ek",
