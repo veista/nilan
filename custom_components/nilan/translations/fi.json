@@ -1,0 +1,39 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Laite on jo asennettu"
+        },
+        "error": {
+            "cannot_connect": "Ei voitu yhdistää",
+            "invalid_response": "Laite lähetti virheellisen viestin",
+            "unsupported_device": "Laitetta ei tueta",
+            "unknown": "Odottamaton virhe"
+        },
+        "step": {
+            "menu": {
+                "title": "Valitse liitäntätyyppi",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Sarjaportti"
+                }
+            },
+            "tcp": {
+                "title": "TCP-asetukset",
+                "data": {
+                    "name": "Laiteen nimi",
+                    "host_ip": "IP-osoite",
+                    "host_port": "Portti",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "serial": {
+                "title": "Sarjaportin asetukset",
+                "data": {
+                    "name": "Laitteen nimi",
+                    "host_port": "Polku",
+                    "unit_id": "Unit ID"
+                }
+            }
+        }
+    }
+}

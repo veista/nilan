@@ -8,6 +8,7 @@ from homeassistant.components.climate import (
     ClimateEntityFeature,
     HVACMode,
     HVACAction,
+    PRESET_COMFORT,
 )
 
 from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
@@ -31,13 +32,13 @@ STATE_TO_HVAC_MODE = {
 
 PRESET_TO_HVAC = {
     "Energy": 0,
-    "Comfort": 1,
+    PRESET_COMFORT: 1,
     "Water": 2,
 }
 
 HVAC_TO_PRESET = {
     0: "Energy",
-    1: "Comfort",
+    1: PRESET_COMFORT,
     2: "Water",
 }
 
@@ -116,11 +117,13 @@ class NilanClimate(NilanEntity, ClimateEntity):
             HVACMode.AUTO,
             HVACMode.OFF,
         ]
-        self._attr_preset_modes = ["Energy", "Comfort", "Water"]
+        self._attr_preset_modes = ["Energy", PRESET_COMFORT, "Water"]
         self._attr_fan_modes = ["0", "1", "2", "3", "4"]
         self._attr_temperature_unit = TEMP_CELSIUS
         self._attr_supported_features = supported_featrures
         self._extra_status_attributes = extra_status_attributes
+        self._attr_translation_key = "hvac"
+        self._attr_has_entity_name = True
 
     async def async_set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
