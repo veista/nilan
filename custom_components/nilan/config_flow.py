@@ -9,7 +9,7 @@ import logging
 
 from homeassistant import config_entries
 
-from pymodbus.client.sync import ModbusTcpClient, ModbusSerialClient
+from pymodbus.client import ModbusTcpClient, ModbusSerialClient
 from pymodbus.exceptions import ModbusException
 
 from .device import CTS602_DEVICE_TYPES
