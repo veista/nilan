@@ -1,10 +1,10 @@
 {
   "domain": "nilan",
   "name": "Nilan",
-  "version": "1.1.13",
+  "version": "1.1.14",
   "config_flow": true,
   "documentation": "https://github.com/veista/nilan",
-  "requirements": ["pymodbus==2.5.3"],
+  "requirements": ["pymodbus==3.1.2"],
   "dependencies": ["modbus"],
   "issue_tracker": "https://github.com/veista/nilan/issues",
   "codeowners": ["@veista"],
