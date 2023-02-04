@@ -307,7 +307,7 @@ ATTRIBUTE_TO_SENSORS = {
             "After Heating Type",
             None,
             None,
-            SensorStateClass.MEASUREMENT,
+            None,
             EntityCategory.DIAGNOSTIC,
             None,
             AFTER_HEATING_TYPES,
@@ -362,7 +362,7 @@ ATTRIBUTE_TO_SENSORS = {
             "Climate Season",
             None,
             None,
-            SensorStateClass.MEASUREMENT,
+            None,
             None,
             "mdi:sun-snowflake",
             SEASON_STATES,
@@ -384,7 +384,7 @@ ATTRIBUTE_TO_SENSORS = {
             "Time",
             None,
             None,
-            SensorStateClass.MEASUREMENT,
+            None,
             None,
             "mdi:calendar-clock",
             None,
@@ -461,7 +461,7 @@ ATTRIBUTE_TO_SENSORS = {
             "Display Text Line 1",
             None,
             None,
-            SensorStateClass.MEASUREMENT,
+            None,
             None,
             None,
             None,
@@ -472,7 +472,7 @@ ATTRIBUTE_TO_SENSORS = {
             "Display Text Line 2",
             None,
             None,
-            SensorStateClass.MEASUREMENT,
+            None,
             None,
             None,
             None,
@@ -553,6 +553,11 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         _name = self._device.get_device_name.lower().replace(" ", "_")
         _unique_id = self._name.lower().replace(" ", "_")
         return f"{_name}.{_unique_id}"
+
+    @property
+    def translation_key(self) -> str | None:
+        _translation_key = self._name.lower().replace(" ", "_")
+        return _translation_key
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
