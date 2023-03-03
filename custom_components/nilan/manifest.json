@@ -1,12 +1,12 @@
 {
-  "domain": "nilan",
-  "name": "Nilan",
-  "version": "1.1.14",
+  "codeowners": ["@veista"],
   "config_flow": true,
   "documentation": "https://github.com/veista/nilan",
-  "requirements": ["pymodbus==3.1.2"],
+  "domain": "nilan",
   "dependencies": ["modbus"],
+  "iot_class": "local_polling",
   "issue_tracker": "https://github.com/veista/nilan/issues",
-  "codeowners": ["@veista"],
-  "iot_class": "local_polling"
+  "name": "Nilan",
+  "requirements": ["pymodbus==3.1.2"],
+  "version": "1.1.16"
 }
