@@ -1,6 +1,7 @@
 """defines devices, entity types, supported entities per device and per version"""
 
 CTS602_DEVICE_TYPES = {
+    2: "Comfort light"
     4: "VPL 15c",
     13: "COMFORT",
     19: "VP 18c",
@@ -66,12 +67,12 @@ CTS602_ENTITY_MAP = {
     "get_t3_exhaust_temperature": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (13,),
+        "supported_devices": (2, 13,),
     },
     "get_t4_outlet": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (13, 35),
+        "supported_devices": (2, 13, 35),
     },
     "get_t5_condenser_temperature": {
         "entity_type": "sensor",
@@ -105,7 +106,7 @@ CTS602_ENTITY_MAP = {
     "get_t8_outdoor_temperature": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (13,),
+        "supported_devices": (2, 13,),
     },
     "get_t9_heater_temperature": {
         "entity_type": "sensor",
@@ -286,6 +287,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "binary_sensor",
         "min_bus_version": 11,
         "supported_devices": (
+            2,
             13,
             35,
         ),
@@ -467,6 +469,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "number",
         "min_bus_version": 4,
         "supported_devices": (
+            2,
             4,
             13,
             19,
@@ -479,6 +482,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "number",
         "min_bus_version": 4,
         "supported_devices": (
+            2,
             4,
             13,
             19,
@@ -751,6 +755,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "number",
         "min_bus_version": 11,
         "supported_devices": (
+            2,
             4,
             13,
             25,
