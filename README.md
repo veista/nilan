@@ -13,6 +13,7 @@ CTS602 supported devices (as typed in HMI menu):
 - VP 18cek
 - VPL 25c
 - COMBI 302
+- COMBI 302 T
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
