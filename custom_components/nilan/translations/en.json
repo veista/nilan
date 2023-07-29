@@ -385,7 +385,7 @@
           "condenser_temperature_t5": {"name": "Condenser Temperature (T5)"},
           "waste_air_temperature_t6": {"name": "Waste Air Temperature (T6)"},
           "supply_air_temperature_t7": {"name": "Supply Air Temperature (T7)"},
-          "fresh_air_intake_temperature_(t8)": {"name": "Fresh Air Intake Temperature (T8)"},
+          "fresh_air_intake_temperature_t8": {"name": "Fresh Air Intake Temperature (T8)"},
           "return_air_temperature_t10": {"name": "Return Air Temperature (T10)"},
           "return_water_temperature_t13": {"name": "Return Water Temperature (T13)"},
           "supply_water_temperature_t14": {"name": "Supply Water Temperature (T14)"},
