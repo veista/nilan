@@ -35,7 +35,7 @@ Map = namedtuple(
 ATTRIBUTE_TO_SENSORS = {
     "get_t0_controller_temperature": [
         Map(
-            "controller_board_temperature_(t0)",
+            "controller_board_temperature_t0",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -45,7 +45,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t1_intake_temperature": [
         Map(
-            "fresh_air_intake_temperature_(t1)",
+            "fresh_air_intake_temperature_t1",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -55,7 +55,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t2_inlet_temperature": [
         Map(
-            "supply_air_temperature_(t2)",
+            "supply_air_temperature_t2",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -65,7 +65,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t3_exhaust_temperature": [
         Map(
-            "return_air_temperature_(t3)",
+            "return_air_temperature_t3",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -75,7 +75,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t4_outlet": [
         Map(
-            "waste_air_temperature_(t4)",
+            "waste_air_temperature_t4",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -85,7 +85,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t5_condenser_temperature": [
         Map(
-            "condenser_temperature_(t5)",
+            "condenser_temperature_t5",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -95,7 +95,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t6_evaporator_temperature": [
         Map(
-            "waste_air_temperature_(t6)",
+            "waste_air_temperature_t6",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -105,7 +105,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t7_inlet_temperature_after_heater": [
         Map(
-            "supply_air_temperature_(t7)",
+            "supply_air_temperature_t7",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -115,7 +115,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t8_outdoor_temperature": [
         Map(
-            "fresh_air_intake_temperature_(t8)",
+            "fresh_air_intake_temperature_t8",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -125,7 +125,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t10_external_temperature": [
         Map(
-            "return_air_temperature_(t10)",
+            "return_air_temperature_t10",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -135,7 +135,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t13_return_temperature": [
         Map(
-            "return_water_temperature_(t13)",
+            "return_water_temperature_t13",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -145,7 +145,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t14_supply_temperature": [
         Map(
-            "supply_water_temperature_(t14)",
+            "supply_water_temperature_t14",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -155,7 +155,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t15_user_panel_temperature": [
         Map(
-            "user_panel_temperature_(t15)",
+            "user_panel_temperature_t15",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -165,7 +165,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_t16_sacrificial_anode_temperature": [
         Map(
-            "anode_temperature_(t16)",
+            "anode_temperature_t16",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
