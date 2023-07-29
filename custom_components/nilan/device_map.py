@@ -71,7 +71,10 @@ CTS602_ENTITY_MAP = {
     "get_t3_exhaust_temperature": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (2, 13,),
+        "supported_devices": (
+            2,
+            13,
+        ),
     },
     "get_t4_outlet": {
         "entity_type": "sensor",
@@ -114,7 +117,10 @@ CTS602_ENTITY_MAP = {
     "get_t8_outdoor_temperature": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (2, 13,),
+        "supported_devices": (
+            2,
+            13,
+        ),
     },
     "get_t9_heater_temperature": {
         "entity_type": "sensor",
@@ -768,7 +774,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_hmi_language": {
         "entity_type": "select",
-        "min_bus_version": 19,
+        "min_bus_version": 22,
         "supported_devices": ("all",),
     },
     "get_low_outdoor_temperature_setpoint": {
@@ -946,11 +952,17 @@ CTS602_ENTITY_MAP = {
     "get_pre_heater_defrost_select": {
         "entity_type": "select",
         "min_bus_version": 19,
-        "supported_devices": (35, 36,),
+        "supported_devices": (
+            35,
+            36,
+        ),
     },
     "get_pre_heater_temp_set": {
         "entity_type": "select",
         "min_bus_version": 19,
-        "supported_devices": (35, 36,),
+        "supported_devices": (
+            35,
+            36,
+        ),
     },
 }
