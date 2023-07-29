@@ -435,8 +435,8 @@
           "climate_season": {
               "name": "Climate Season",
               "state": {
-                  "False": "Winter",
-                  "True": "Summer"
+                  "0": "Winter",
+                  "1": "Summer"
               }
           },
           "exchanger_efficiency": {"name": "Exchanger Efficiency"},

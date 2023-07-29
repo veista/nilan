@@ -1770,7 +1770,7 @@ class Device:
         _LOGGER.error("Could not read get_air_exchange_mode")
         return None
 
-    async def get_summer_state(self) -> bool:
+    async def get_summer_state(self) -> int:
         """get summer state."""
         result = await self._modbus.async_pymodbus_call(
             self._unit_id, CTS602InputRegisters.air_temp_is_summer, 1, "input"
@@ -1781,9 +1781,7 @@ class Device:
                 "little",
                 signed=False,
             )
-            if value:
-                return True
-            return False
+            return value
         _LOGGER.error("Could not read get_summer_state")
         return None
 

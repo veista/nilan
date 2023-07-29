@@ -434,8 +434,8 @@
           "climate_season": {
               "name": "Kausi",
               "state": {
-                  "False": "Winter",
-                  "True": "Summer"
+                  "0": "Winter",
+                  "1": "Summer"
               }
           },
           "exchanger_efficiency": {"name": "Hyötysuhde"},
