@@ -23,7 +23,7 @@ class Device:
         host_ip: str | None,
         host_port,
         unit_id,
-    ):
+    ) -> None:
         """Create new entity of Device Class"""
         self.hass = hass
         self._device_name = name

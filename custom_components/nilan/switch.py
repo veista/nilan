@@ -23,7 +23,7 @@ Map = namedtuple(
 ATTRIBUTE_TO_SWITCHES = {
     "get_supply_air_after_heating": [
         Map(
-            "Supply Air After Heating",
+            "supply_air_after_heating",
             "set_supply_air_after_heating",
             EntityCategory.CONFIG,
             0,
@@ -35,9 +35,9 @@ ATTRIBUTE_TO_SWITCHES = {
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Set up the number platform."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     switches = []
     for attribute in device.get_assigned("switch"):
         if attribute in ATTRIBUTE_TO_SWITCHES:
@@ -81,7 +81,6 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         self._attribute = attribute
         self._device = device
         self._available = True
-        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._off_icon = off_icon
@@ -89,13 +88,9 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         self._name = name
         self._off_value = off_value
         self._on_value = on_value
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = self._name.lower().replace(" ", "_")
-        return f"{_name}.{_unique_id}"
+        self._attr_translation_key = self._name
+        self._attr_has_entity_name = True
+        self._attr_unique_id = self._name
 
     @property
     def icon(self) -> str | None:

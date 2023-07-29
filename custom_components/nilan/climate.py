@@ -11,7 +11,7 @@ from homeassistant.components.climate import (
     PRESET_COMFORT,
 )
 
-from homeassistant.const import ATTR_TEMPERATURE, TEMP_CELSIUS
+from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
 from .const import DOMAIN, SCAN_INTERVAL_TIME
 from .__init__ import NilanEntity
@@ -31,19 +31,19 @@ STATE_TO_HVAC_MODE = {
 }
 
 PRESET_TO_HVAC = {
-    "Energy": 0,
-    PRESET_COMFORT: 1,
-    "Water": 2,
+    "energy": 0,
+    "comfort": 1,
+    "water": 2,
 }
 
 HVAC_TO_PRESET = {
-    0: "Energy",
-    1: PRESET_COMFORT,
-    2: "Water",
+    0: "energy",
+    1: "comfort",
+    2: "water",
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Add climate entities for a config entry."""
     supported_features = ClimateEntityFeature.FAN_MODE
 
@@ -73,7 +73,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 
     entities = []
     extra_status_attributes = False
-    device = hass.data[DOMAIN][config_entry.entry_id]
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     if all(attribute in device.get_attributes for attribute in hvac_basic_attributes):
         if all(
             attribute in device.get_attributes
@@ -102,9 +102,12 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
 class NilanClimate(NilanEntity, ClimateEntity):
     """Define a Nilan HVAC."""
 
-    def __init__(self, device, supported_featrures, extra_status_attributes):
+    def __init__(self, device, supported_featrures, extra_status_attributes) -> None:
         """Init the class."""
         super().__init__(device)
+        self._attr_translation_key = "hvac"
+        self._attr_has_entity_name = True
+        self._attr_unique_id = "hvac"
         self._hvac_on = False
         self._attr_max_humidity = 45
         self._attr_min_humidity = 15
@@ -117,13 +120,11 @@ class NilanClimate(NilanEntity, ClimateEntity):
             HVACMode.AUTO,
             HVACMode.OFF,
         ]
-        self._attr_preset_modes = ["Energy", PRESET_COMFORT, "Water"]
+        self._attr_preset_modes = ["energy", "comfort", "water"]
         self._attr_fan_modes = ["0", "1", "2", "3", "4"]
-        self._attr_temperature_unit = TEMP_CELSIUS
+        self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_supported_features = supported_featrures
         self._extra_status_attributes = extra_status_attributes
-        self._attr_translation_key = "hvac"
-        self._attr_has_entity_name = True
 
     async def async_set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
@@ -169,6 +170,8 @@ class NilanClimate(NilanEntity, ClimateEntity):
 
         self._attr_fan_mode = str(await self._device.get_ventilation_step())
         control_state = await self._device.get_control_state()
+        if control_state is None:
+            return
 
         if self._attr_supported_features & ClimateEntityFeature.PRESET_MODE:
             self._attr_preset_mode = HVAC_TO_PRESET.get(
@@ -203,16 +206,3 @@ class NilanClimate(NilanEntity, ClimateEntity):
             self._attr_hvac_mode = HVAC_MODE_TO_STATE.get(
                 await self._device.get_operation_mode()
             )
-
-    @property
-    def name(self) -> str | None:
-        """Return a name"""
-        _name = self._device.get_device_name
-        return f"{_name}: HVAC"
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = "hvac"
-        return f"{_name}.{_unique_id}"
