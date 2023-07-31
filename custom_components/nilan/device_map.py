@@ -772,7 +772,7 @@ CTS602_ENTITY_MAP = {
     },
     "get_hmi_language": {
         "entity_type": "select",
-        "min_bus_version": 19,
+        "min_bus_version": 22,
         "supported_devices": ("all",),
     },
     "get_low_outdoor_temperature_setpoint": {
