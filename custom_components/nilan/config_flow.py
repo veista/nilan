@@ -9,7 +9,7 @@ import logging
 
 from homeassistant import config_entries
 
-from pymodbus.client import ModbusTcpClient, ModbusSerialClient
+from pymodbus.client import AsyncModbusTcpClient, AsyncModbusSerialClient
 from pymodbus.exceptions import ModbusException
 
 from .device import CTS602_DEVICE_TYPES
@@ -44,9 +44,9 @@ _LOGGER = logging.getLogger(__name__)
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
     """validate device model"""
     if com_type == "tcp":
-        client = ModbusTcpClient(address, port)
+        client = AsyncModbusTcpClient(address, port)
     else:
-        client = ModbusSerialClient(
+        client = AsyncModbusSerialClient(
             method="rtu",
             port=port,
             stopbits=1,
@@ -56,7 +56,8 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
             timeout=1,
         )
     try:
-        result = client.read_holding_registers(
+        await client.connect()
+        result = await client.read_holding_registers(
             CTS602HoldingRegisters.control_type, 1, slave=int(unit_id)
         )
     except ModbusException as value_error:
