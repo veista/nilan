@@ -9,6 +9,7 @@ CTS602_DEVICE_TYPES = {
     20: "VP 18ek",
     21: "VP 18cek",
     25: "VPL 25c",
+    31: "COMFORTn",
     35: "COMBI 302",
     36: "COMBI 302 T",
 }
@@ -74,12 +75,13 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             13,
+            31,
         ),
     },
     "get_t4_outlet": {
         "entity_type": "sensor",
         "min_bus_version": 1,
-        "supported_devices": (2, 12, 13, 35, 36),
+        "supported_devices": (2, 12, 13, 31, 35, 36),
     },
     "get_t5_condenser_temperature": {
         "entity_type": "sensor",
@@ -120,6 +122,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             13,
+            31,
         ),
     },
     "get_t9_heater_temperature": {
@@ -308,6 +311,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             13,
+            31,
             35,
             36,
         ),
@@ -510,6 +514,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            31,
         ),
     },
     "get_max_supply_air_winter_setpoint": {
@@ -523,6 +528,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            31,
         ),
     },
     "get_summer_state_change_setpoint": {
@@ -806,6 +812,7 @@ CTS602_ENTITY_MAP = {
             12,
             13,
             25,
+            31,
             35,
             36,
         ),
