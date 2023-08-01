@@ -1,8 +1,6 @@
 """Platform for select integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -13,9 +11,7 @@ from homeassistant.components.select import (
     SelectEntity,
 )
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
+from .const import DOMAIN
 
 Map = namedtuple("map", "name set_attr entity_category options icon")
 
@@ -264,7 +260,6 @@ class NilanCTS602Select(SelectEntity, NilanEntity):
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._options = options

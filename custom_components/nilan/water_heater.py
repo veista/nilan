@@ -1,8 +1,6 @@
 """Platform for water heater integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from homeassistant.components.water_heater import (
     WaterHeaterEntity,
     WaterHeaterEntityFeature,
@@ -13,12 +11,9 @@ from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
 from .const import (
     DOMAIN,
-    SCAN_INTERVAL_TIME,
 )
 
 from .__init__ import NilanEntity
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 
 async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):

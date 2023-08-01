@@ -1,8 +1,6 @@
 """Platform for switch integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -11,10 +9,7 @@ from homeassistant.components.switch import SwitchEntity
 
 from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
-
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
+from .const import DOMAIN
 
 Map = namedtuple(
     "map", "name set_attr entity_category off_value on_value off_icon on_icon"
@@ -36,7 +31,7 @@ ATTRIBUTE_TO_SWITCHES = {
 
 
 async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
-    """Set up the number platform."""
+    """Set up the switch platform."""
     device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     switches = []
     for attribute in device.get_assigned("switch"):
@@ -44,7 +39,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
             maps = ATTRIBUTE_TO_SWITCHES[attribute]
             switches.extend(
                 [
-                    NilanCTS602Number(
+                    NilanCTS602Switch(
                         device,
                         attribute,
                         m.name,
@@ -61,7 +56,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     async_add_entities(switches, update_before_add=True)
 
 
-class NilanCTS602Number(SwitchEntity, NilanEntity):
+class NilanCTS602Switch(SwitchEntity, NilanEntity):
     """Representation of a Switch."""
 
     def __init__(
@@ -76,11 +71,10 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         off_icon,
         on_icon,
     ) -> None:
-        """Init Number"""
+        """Init Switch"""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._off_icon = off_icon

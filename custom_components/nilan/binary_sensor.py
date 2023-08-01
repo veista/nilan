@@ -1,8 +1,6 @@
 """Platform for binary sensor integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -14,10 +12,7 @@ from homeassistant.components.binary_sensor import (
 
 from .const import (
     DOMAIN,
-    SCAN_INTERVAL_TIME,
 )
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 Map = namedtuple("map", "name device_class entity_category on_icon off_icon")
 
@@ -174,7 +169,6 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
         self._attr_device_class = device_class
         self._attr_entity_category = entity_category
         self._name = name

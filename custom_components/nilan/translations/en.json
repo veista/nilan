@@ -52,6 +52,9 @@
             "heater_relay_2": {"name": "Heater Relay 2"},
             "heater_relay_3": {"name": "Heater Relay 3"}
         },
+        "button": {
+          "sync_time": {"name": "Synchronize Time and Date"}
+        },
         "climate": {
           "hvac": {
             "name": "HVAC",

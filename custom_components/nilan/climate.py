@@ -1,22 +1,17 @@
 """Platform for climate integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
     HVACMode,
     HVACAction,
-    PRESET_COMFORT,
 )
 
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
+from .const import DOMAIN
 from .__init__ import NilanEntity
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 HVAC_MODE_TO_STATE = {
     1: HVACMode.HEAT,

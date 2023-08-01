@@ -417,6 +417,11 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": ("all",),
     },
+    "set_time": {
+        "entity_type": "button",
+        "min_bus_version": 1,
+        "supported_devices": ("all",),
+    },
     "get_machine_type": {
         "entity_type": "config",
         "min_bus_version": 3,

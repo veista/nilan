@@ -1,11 +1,7 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
-
-from homeassistant.helpers.typing import UndefinedType
 
 from .__init__ import NilanEntity
 
@@ -24,9 +20,7 @@ from homeassistant.const import (
     UnitOfTime,
 )
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
+from .const import DOMAIN
 
 Map = namedtuple(
     "map", "name default_unit device_class state_class entity_category icon"
@@ -449,7 +443,6 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
         self._attr_native_unit_of_measurement = default_unit
         self._attr_device_class = device_class
         self._attr_state_class = state_class

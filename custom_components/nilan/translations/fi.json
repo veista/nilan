@@ -51,6 +51,9 @@
             "heater_relay_2": {"name": "Lämmitysrele 2"},
             "heater_relay_3": {"name": "Lämmitysrele 3"}
         },
+        "button": {
+          "sync_time": {"name": "Synkronoi Aika ja Päivämäärä"}
+        },
         "climate": {
           "hvac": {
             "name": "Ilmanvaihto",
