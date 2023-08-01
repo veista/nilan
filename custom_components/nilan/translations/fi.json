@@ -1,0 +1,497 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Laite on jo asennettu"
+        },
+        "error": {
+            "cannot_connect": "Ei voitu yhdistää",
+            "invalid_response": "Laite lähetti virheellisen viestin",
+            "unsupported_device": "Laitetta ei tueta",
+            "unknown": "Odottamaton virhe"
+        },
+        "step": {
+            "menu": {
+                "title": "Valitse liitäntätyyppi",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Sarjaportti"
+                }
+            },
+            "tcp": {
+                "title": "TCP-asetukset",
+                "data": {
+                    "name": "Laiteen nimi",
+                    "host_ip": "IP-osoite",
+                    "host_port": "Portti",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "serial": {
+                "title": "Sarjaportin asetukset",
+                "data": {
+                    "name": "Laitteen nimi",
+                    "host_port": "Polku",
+                    "unit_id": "Unit ID"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "compressor": {"name": "Kompressori"},
+            "smoke_alarm": {"name": "Palovaroitin"},
+            "defrost": {"name": "Sulatus"},
+            "bypass_flap": {"name": "Ohivirtaus Ohjain"},
+            "user_selection_1": {"name": "Käyttäjän Valinta 1"},
+            "user_selection_2": {"name": "Käyttäjän Valinta 2"},
+            "display_led_1": {"name": "Näyttö LED 1"},
+            "display_led_2": {"name": "Näyttö LED 2"},
+            "circulation_pump": {"name": "Kiertopumppu"},
+            "heater_relay_1": {"name": "Lämmitysrele 1"},
+            "heater_relay_2": {"name": "Lämmitysrele 2"},
+            "heater_relay_3": {"name": "Lämmitysrele 3"}
+        },
+        "button": {
+          "sync_time": {"name": "Synkronoi Aika ja Päivämäärä"}
+        },
+        "climate": {
+          "hvac": {
+            "name": "Ilmanvaihto",
+            "state": {
+              "auto": "Automaatti",
+              "cool": "Viilennys",
+              "heat": "Lämmitys",
+              "off": "Pois"
+            },
+            "state_attributes": {
+              "current_humidity": {
+                "name": "Kosteus"
+              },
+              "current_temperature": {
+                "name": "Lämpötila"
+              },
+              "fan_mode": {
+                "name": "Tuuletusnopeus"
+              },
+              "fan_modes": {
+                "name": "Tuuletusnopeudet"
+              },
+              "humidity": {
+                "name": "Tavoitekosteus"
+              },
+              "hvac_action": {
+                "name": "Nykyinen Tila",
+                "state": {
+                  "off": "Sammutettu",
+                  "cooling": "Viilentää",
+                  "heating": "Lämmittää",
+                  "drying": "Kuivattaa",
+                  "idle": "Toimeton",
+                  "fan": "Tuulettaa"
+                }
+              },
+              "hvac_modes": {
+                "name": "Ilmanvaihdon tilat"
+              },
+              "max_humidity": {
+                "name": "Suurin tavoitekosteus"
+              },
+              "max_temp": {
+                "name": "Suurin tavoitelämpötila"
+              },
+              "min_humidity": {
+                "name": "Pienin tavoitekosteus"
+              },
+              "min_temp": {
+                "name": "Pienin tavoitelämpötila"
+              },
+              "preset_mode": {
+                "name": "Esiasetus",
+                "state": {
+                  "water": "Vesi",
+                  "comfort": "Mukavuus",
+                  "energy": "Säästö"
+                }
+              },
+              "preset_modes": {
+                "name": "Esiasetukset"
+              },
+              "target_temp_high": {
+                "name": "Tavoitelämpötilan yläraja"
+              },
+              "target_temp_low": {
+                "name": "Tavoitelämpötilan alaraja"
+              },
+              "target_temp_step": {
+                "name": "Tavoitelämpötilan pykälä"
+              },
+              "temperature": {
+                "name": "Tavoitelämpötila"
+              }
+            }
+          }
+        },
+        "number": {
+          "scalding_protection_setpoint": {"name": "Suurin Veden Lämpötila"},
+          "maximum_time_in_high_humidity_ventilation": {"name": "Suurin Aika Kosteudenpoistoilmanvaihdossa"},
+          "low_temperature_curve": {"name": "Pienen Lämpötilan Käyrä"},
+          "high_temperature_curve": {"name": "Korkean Lämpötilan Käyrä"},
+          "low_temperature_compressor_start_setpoint": {"name": "Kompressorin Käynnistyslämpötila Kylmässä"},
+          "low_outdoor_temp_setpoint": {"name": "Alhaisen Lämpötilan Raja"},
+          "minimum_supply_air_temperature_in_summer": {"name": "Pienin Tuloilman Lämpötila Kesälla"},
+          "minimum_supply_air_temperature_in_winter": {"name": "Pienin Tuloilman Lämpötila Talvella"},
+          "maximum_supply_air_temperature_in_summer": {"name": "Suurin Tuloilman Lämpötila Kesälla"},
+          "maximum_supply_air_temperature_in_winter": {"name": "Suurin Tuloilman Lämpötila Talvella"},
+          "room_temperature_neutral_zone": {"name": "Huonelämpötilan Neutraali Alue"},
+          "change_to_summer_state_setpoint": {"name": "Kesätilan Raja-arvo"},
+          "supply_fan_power_at_level_1": {"name": "Tuloilman Teho Tasolla 1"},
+          "supply_fan_power_at_level_2": {"name": "Tuloilman Teho Tasolla 2"},
+          "supply_fan_power_at_level_3": {"name": "Tuloilman Teho Tasolla 3"},
+          "supply_fan_power_at_level_4": {"name": "Tuloilman Teho Tasolla 4"},
+          "return_fan_power_at_level_1": {"name": "Paluuilman Teho Tasolla 1"},
+          "return_fan_power_at_level_2": {"name": "Paluuilman Teho Tasolla 1"},
+          "return_fan_power_at_level_3": {"name": "Paluuilman Teho Tasolla 1"},
+          "return_fan_power_at_level_4": {"name": "Paluuilman Teho Tasolla 1"},
+          "fan_start_up_delay": {"name": "Ilmanvaihdon Käynnistysviive"},
+          "defrost_start_setpoint": {"name": "Sulatuksen Aloituslämpötila"},
+          "defrost_stop_setpoint": {"name": "Sulatuksen Lopetuslämpötila"},
+          "minimum_defrost_time": {"name": "Pienin Sulatusaika"},
+          "maximum_evaporator_defrost_time": {"name": "Suurin Höyrystimen Sulatusaika"},
+          "maximum_outlet_defrost_time": {"name": "Suurin Poiston Sulatusaika"},
+          "time_between_defrost_cycles": {"name": "Sulatusten Väinen Viive"},
+          "supply_air_pid_integration_time": {"name": "Tuloilman PID Integrointiaika"},
+          "compressor_stop_time": {"name": "Kompressorin Taukoaika"},
+          "co2_low_limit": {"name": "Hiilidioksidin Alaraja"},
+          "co2_high_limit": {"name": "Hiilidioksidin Yläraja"},
+          "low_room_temperature_setpoint": {"name": "Huonelämpötilan Alaraja"},
+          "supply_heater_curve_offset": {"name": "Tuloilman Lämmittimen Käyräpoikkeama"},
+          "central_heating_min_supply_temperature": {"name": "Keskuslämmityksen Alaraja"},
+          "central_heating_max_supply_temperature": {"name": "Keskuslämmityksen Yläraja"},
+          "outdoor_temperature_compensation_curve": {"name": "Ulkolämpötilan Kompensointikäyrä"},
+          "supply_heater_delay": {"name": "Tuloilman Lämmittimen Viive"}
+        },
+        "select": {
+            "air_filter_alarm_interval": {
+                "name": "Suodatinhälyytyksen Sykli",
+                "state": {
+                    "1": "30 Päivää",
+                    "2": "90 Päivää",
+                    "3": "180 Päivää",
+                    "4": "360 Päivää"
+                }
+            },
+            "legionella_day": {
+                "name": "Legionella Päivä",
+                "state": {
+                    "0": "Pois",
+                    "1": "Maanantai",
+                    "2": "Tiistai",
+                    "3": "Keskiviikko",
+                    "4": "Torstai",
+                    "5": "Perjantai",
+                    "6": "Lauantai",
+                    "7": "Sunnuntai"
+                }
+            },
+            "indoor_air_quality_control": {
+                "name": "Sisäilman Laadunohjaus",
+                "state": {
+                    "0": "Pois",
+                    "1": "Kosteus",
+                    "2": "Kosteus + Hiilidioksidi"
+                }
+            },
+            "compressor_heating_priority": {
+                "name": "Kompressorin Lämmitysprioriteetti",
+                "state": {
+                    "0": "Vesi",
+                    "1": "Ilma"
+                }
+            },
+            "cooling_mode_ventilation_level": {
+                "name": "Ilmanvaihtotaso Viilennyksessä",
+                "state": {
+                    "0": "Ei Muutosta"
+                }
+            },
+            "cooling_setpoint_offset": {
+                "name": "Viilennyksen Lämpötilapoikkeama",
+                "state": {
+                    "0": "Viilennys Estetty"
+                }
+            },
+            "low_humidity_ventilation_level": {"name": "Low Humidity Ventilation Level"},
+            "high_humidity_ventilation_level": {"name": "High Humidity Ventilation Level"},
+            "hmi_language": {
+                "name": "Käyttöpaneelin Kieli",
+                "state": {
+                    "0": "Englanti",
+                    "1": "Saksa",
+                    "2": "Ranska",
+                    "3": "Ruotsi",
+                    "4": "Tanska",
+                    "5": "Norja",
+                    "6": "Suomi",
+                    "7": "Tšekki",
+                    "8": "Puola",
+                    "9": "Italia"
+                }
+            },
+            "low_outdoor_temp_ventilation_level": {"name": "Alhaisen Lämpötilan Tuuletustaso"},
+            "minimum_ventilation_supply_level": {"name": "Pienin Tuloilman Taso"},
+            "minimum_ventilation_return_level": {"name": "Pienin Poistoilman Taso"},
+            "maximum_ventilation_return_level": {"name": "Suurin Poistoilman Taso"},
+            "co2_high_ventilation_level": {"name": "Korkean Hiilidioksidipitoisuuden Tuuletustaso"},
+            "defrost_ventilation_level": {
+                "name": "Sulatuksen Tuuletustaso",
+                "state": {
+                    "0": "Pois",
+                    "1": "Jatkuva Tuuletus",
+                    "2": "Alhainen Tuuletus"
+                }
+            },
+            "central_heating_type": {
+                "name": "Keskuslämmityksen Lämmitystyyppi",
+                "state": {
+                    "0": "Pois",
+                    "1": "Sähkövastus",
+                    "2": "Lämpöpumppu",
+                    "3": "Molemmat"
+                }
+            },
+            "central_heating_mode": {
+                "name": "Keskuslämmityksen Tila",
+                "state": {
+                    "0": "Pois",
+                    "1": "Lämmitys",
+                    "2": "Vaadittaessa"
+                }
+            },
+            "heat_source_select": {
+                "name": "Lämmönlähteen Valinta",
+                "state": {
+                    "0": "Pois",
+                    "1": "Lämpöpumppu",
+                    "2": "LP + Jälkilämmitys",
+                    "3": "Jälkilämmitys",
+                    "4": "Jälkilämmitys + LP"
+                }
+            },
+            "pre_heating_effect": {
+                "name": "Esilämmityksen Vaikutus",
+                "state": {
+                    "0": "Vakio",
+                    "1": "Lisä"
+                }
+            },
+            "pre_heating_temperature": {
+                "name": "Esilämmityksen Lämpötila",
+                "state": {
+                    "0": "Pois"
+                }
+            },
+            "circulation_pump_mode": {
+                "name": "Kiertopumpun Tila",
+                "state": {
+                    "0": "Säästö",
+                    "1": "Jatkuva"
+                }
+            },
+            "user_menu_lock": {
+                "name": "Käyttövalikon Lukitus",
+                "state": {
+                    "0": "Lukittu",
+                    "1": "Avoin",
+                    "2": "Lukitse Sammutus"
+                }
+            },
+            "reset_alarm": {
+                "name": "Kuittaa Hälytys",
+                "state": {
+                    "1": "E01 Laitevika",
+                    "2": "E02 Hälytyksen Aikakatkaisu",
+                    "3": "E03 Savuhälytin",
+                    "4": "E04 Painekytkin",
+                    "5": "E05 Tarkastusluukku Avoinna",
+                    "6": "E06 Sulatushäiriö",
+                    "7": "E07 Sulatustermostaatti",
+                    "8": "E08 Sulatustermostaatti",
+                    "9": "E09 Lämminvesivaraja Ylikuumentunut",
+                    "10": "E10 Sähköinen Jälkilämmitys Ylikuumentunut",
+                    "11": "E11 Liian Pieni Ilmavirta Sähkövastuksen Yli",
+                    "12": "E12 Tuuletusmoottori Ylikuumentunut",
+                    "13": "E13 Lämminvesivaraajan Vastus Ylikuumentunut",
+                    "14": "E14 Anturivika",
+                    "15": "E15 Huonelämpötila Liian Pieni",
+                    "16": "E16 Ohjelmistovika",
+                    "17": "E17 Watchdog Varoitus",
+                    "18": "E18 Tietokannan Tiedot Vaihtuneet",
+                    "19": "E19 Vaihda Ilmansuodatin",
+                    "20": "E20 Virhe Legionellakäsittelyssä",
+                    "21": "E21 Tarkista Aika ja Päivämäärä",
+                    "22": "E22 Vika Ilman Lämpötilassa",
+                    "23": "E23 Vika Veden Lämpötilassa",
+                    "24": "E24 Vika Keskuslämmityksen Lämpötilassa",
+                    "25": "E25 Modeemivika",
+                    "26": "E26 Verkkovirhe",
+                    "27": "E27 Lämpöanturivika",
+                    "28": "E28 Lämpöanturivika",
+                    "29": "E29 Lämpöanturivika",
+                    "30": "E30 Lämpöanturivika",
+                    "31": "E31 Lämpöanturivika",
+                    "32": "E32 Lämpöanturivika",
+                    "33": "E33 Lämpöanturivika",
+                    "34": "E34 Lämpöanturivika",
+                    "35": "E35 Lämpöanturivika",
+                    "36": "E36 Lämpöanturivika",
+                    "37": "E37 Lämpöanturivika",
+                    "38": "E38 Lämpöanturivika",
+                    "39": "E39 Lämpöanturivika",
+                    "40": "E40 Lämpöanturivika",
+                    "41": "E41 Lämpöanturivika",
+                    "42": "E42 Lämpöanturivika",
+                    "43": "E43 Lämpöanturivika",
+                    "44": "E44 Lämpöanturivika",
+                    "45": "E45 Lämpöanturivika",
+                    "46": "E46 Lämpöanturivika",
+                    "47": "E47 Lämpöanturivika",
+                    "48": "E48 Lämpöanturivika",
+                    "49": "E49 Lämpöanturivika",
+                    "50": "E50 Lämpöanturivika",
+                    "51": "E51 Lämpöanturivika",
+                    "52": "E52 Lämpöanturivika",
+                    "53": "E53 Lämpöanturivika",
+                    "54": "E54 Lämpöanturivika",
+                    "55": "E55 Lämpöanturivika",
+                    "56": "E56 Lämpöanturivika",
+                    "57": "E57 Lämpöanturivika",
+                    "58": "E58 Lämpöanturivika",
+                    "70": "E70 Anodivika",
+                    "71": "E71 Vika Sulatuksen Lämmönvaihtimessa",
+                    "72": "E72 Epänormaalin Alhainen Lämpötila Höyrystimessä",
+                    "90": "E90 Slave IO",
+                    "91": "E91 Optiomoduuli Puuttuu",
+                    "92": "E92 Varmuuskopiointivirhe",
+                    "95": "E95 Ohjelmistopäivitys Hylätty",
+                    "96": "E96 Vika Ilmanohjaimen Testissä",
+                    "255": "Kaikki Hälytykset"
+                }
+            }
+        },
+        "sensor": {
+          "controller_board_temperature_t0": {"name": "Ohjainkortin Lämpötila (T0)"},
+          "fresh_air_intake_temperature_t1": {"name": "Raitisilman Lämpötila(T1)"},
+          "supply_air_temperature_t2": {"name": "Tuloilman Lämpötila (T2)"},
+          "return_air_temperature_t3": {"name": "Paluuilman Lämpötila (T3)"},
+          "waste_air_temperature_t4": {"name": "Jäteilman Lämpötila (T4)"},
+          "condenser_temperature_t5": {"name": "Lauhdittimen Lämpötila (T5)"},
+          "waste_air_temperature_t6": {"name": "Jäteilman Lämpötila (T6)"},
+          "supply_air_temperature_t7": {"name": "Tuloilman Lämpötila (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Raitisilman Lämpötila (T8)"},
+          "return_air_temperature_t10": {"name": "Paluuilman Lämpötila (T10)"},
+          "return_water_temperature_t13": {"name": "Paluuveden Lämpötila (T13)"},
+          "supply_water_temperature_t14": {"name": "Tuloveden Lämpötila (T14)"},
+          "user_panel_temperature_t15": {"name": "Käyttöpaneelin Lämpötila (T15)"},
+          "anode_temperature_t16": {"name": "Anodin Lämpötila (T16)"},
+          "central_heating_setpoint": {"name": "Keskuslämmityksen Tavoitelämpötila"},
+          "humidity": {"name": "Kosteus"},
+          "24h_average_humidity": {"name": "24h Kosteuden Keskiarvo"},
+          "after_heating_element_capacity": {"name": "Jälkilämmityselementin Kapasiteetti"},
+          "co2_sensor": {"name": "Hiilidioksidi"},
+          "control_state": {
+              "name": "Ohjaustila",
+              "state": {
+                "0": "Sammutettu",
+                "1": "Vaihto",
+                "2": "Pysäytetty",
+                "3": "Käynnistetty",
+                "4": "Valmiustila",
+                "5": "Ilmanvaihto Pysäytetty",
+                "6": "Ilmanvaihto",
+                "7": "Lämmittää",
+                "8": "Viilentää",
+                "9": "Lämmin Vesi",
+                "10": "Legionella",
+                "11": "Viilentää + Lämmin Vesi",
+                "12": "Keskuslämmitys",
+                "13": "Sulatus",
+                "14": "Jään-esto",
+                "15": "Huolto",
+                "16": "Hälytys",
+                "17": "Lämmittää + Lämmin Vesi"
+              }
+            },
+          "after_heating_type": {
+              "name": "Jälkilämmityksen Tyyppi",
+              "state": {
+                  "0": "Ei Lämmitintä",
+                  "1": "Sähköinen",
+                  "2": "Sähköinen, Releistetty",
+                  "3": "Vesi"
+              }
+          },
+          "time_in_control_state": {"name": "Aika Ohaustilassa"},
+          "alarms_active": {"name": "Aktiivisia Hälytyksiä"},
+          "days_since_air_filter_change": {"name": "Päiviä Suodatinvaihdosta"},
+          "days_to_air_filter_change": {"name": "Päiviä Suodatinvaihtoon"},
+          "climate_season": {
+              "name": "Kausi",
+              "state": {
+                  "0": "Winter",
+                  "1": "Summer"
+              }
+          },
+          "exchanger_efficiency": {"name": "Hyötysuhde"},
+          "time": {"name": "Time"},
+          "ventilation_state": {
+              "name": "Ilmanvaihdon Tila",
+              "state": {
+                  "0": "Sammutettu",
+                  "1": "Normaali",
+                  "2": "Alhainen Kosteus",
+                  "3": "Korkea Kosteus",
+                  "4": "Korkea Hiilidioksidi",
+                  "5": "Alhainen Huonelämpötila",
+                  "6": "Alhainen Ulkolämpötila"
+              }
+          },
+          "anode_state": {
+              "name": "Anodin Tila",
+              "state": {
+                  "0": "Pois",
+                  "1": "OK",
+                  "2": "Huolla",
+                  "3": "Vikaantunut"
+              }
+          },
+          "supply_fan_level": {"name": "Tuloilman Taso"},
+          "return_fan_level": {"name": "Poistoilman Taso"},
+          "return_fan_speed": {"name": "Poistoilmatuulettimen Nopeus"},
+          "supply_fan_speed": {"name": "Tuloilmatuulettimen Nopeus"},
+          "display_text_line_1": {"name": "Näyttöteksti 1"},
+          "display_text_line_2": {"name": "Näyttöteksti 2"},
+          "modbus_version": {"name": "ModBus Versio"}
+        },
+        "switch": {
+          "supply_air_after_heating": {"name": "Tuloilman Jälkilämmitys"}
+        },
+        "water_heater": {
+          "top_water_heater": {
+            "name": "Ylempi Lämminvesivaraaja",
+            "state": {
+              "off": "Sammutettu",
+              "idle": "Joutilas",
+              "heating": "Lämmittää"
+            }
+          },
+          "bottom_water_heater": {
+            "name": "Alempi Lämmivesivaraaja",
+            "state": {
+                "off": "Sammutettu",
+                "idle": "Joutilas",
+                "heating": "Lämmittää"
+            }
+          }
+        }
+      }
+    }

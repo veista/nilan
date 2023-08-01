@@ -1,8 +1,6 @@
 """Platform for binary sensor integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -14,17 +12,14 @@ from homeassistant.components.binary_sensor import (
 
 from .const import (
     DOMAIN,
-    SCAN_INTERVAL_TIME,
 )
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
 
 Map = namedtuple("map", "name device_class entity_category on_icon off_icon")
 
 ATTRIBUTE_TO_BINARY_SENSORS = {
     "get_compressor_state": [
         Map(
-            "Compressor",
+            "compressor",
             BinarySensorDeviceClass.RUNNING,
             None,
             None,
@@ -33,7 +28,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_smoke_alarm_state": [
         Map(
-            "Smoke Alarm",
+            "smoke_alarm",
             BinarySensorDeviceClass.SMOKE,
             None,
             None,
@@ -42,7 +37,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_defrost_state": [
         Map(
-            "Defrost",
+            "defrost",
             BinarySensorDeviceClass.RUNNING,
             None,
             "mdi:snowflake-melt",
@@ -51,7 +46,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_bypass_flap_state": [
         Map(
-            "Bypass Flap",
+            "bypass_flap",
             BinarySensorDeviceClass.OPENING,
             None,
             None,
@@ -60,7 +55,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_user_function_1_state": [
         Map(
-            "User Selection 1",
+            "user_selection_1",
             BinarySensorDeviceClass.RUNNING,
             None,
             "mdi:account",
@@ -69,7 +64,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_user_function_2_state": [
         Map(
-            "User Selection 2",
+            "user_selection_2",
             BinarySensorDeviceClass.RUNNING,
             None,
             "mdi:account",
@@ -78,7 +73,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_display_led_1_state": [
         Map(
-            "Display LED 1",
+            "display_led_1",
             BinarySensorDeviceClass.LIGHT,
             None,
             "mdi:led-on",
@@ -87,7 +82,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_display_led_2_state": [
         Map(
-            "Display LED 2",
+            "display_led_2",
             BinarySensorDeviceClass.LIGHT,
             None,
             "mdi:led-on",
@@ -96,7 +91,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_circulation_pump_state": [
         Map(
-            "Circulation Pump",
+            "circulation_pump",
             BinarySensorDeviceClass.RUNNING,
             None,
             "mdi:pump",
@@ -105,7 +100,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_heater_relay_1_state": [
         Map(
-            "Heater Relay 1",
+            "heater_relay_1",
             None,
             None,
             "mdi:electric-switch-closed",
@@ -114,7 +109,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_heater_relay_2_state": [
         Map(
-            "Heater Relay 2",
+            "heater_relay_2",
             None,
             None,
             "mdi:electric-switch-closed",
@@ -123,7 +118,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
     ],
     "get_heater_relay_3_state": [
         Map(
-            "Heater Relay 3",
+            "heater_relay_3",
             None,
             None,
             "mdi:electric-switch-closed",
@@ -133,9 +128,9 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Set up the sensor platform."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     binary_sensors = []
     for attribute in device.get_assigned("binary_sensor"):
         if attribute in ATTRIBUTE_TO_BINARY_SENSORS:
@@ -174,20 +169,14 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
-        self._attr_name = self._device.get_device_name + ": " + name
         self._attr_device_class = device_class
         self._attr_entity_category = entity_category
         self._name = name
         self._on_icon = on_icon
         self._off_icon = off_icon
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = self._name.lower().replace(" ", "_")
-        return f"{_name}.{_unique_id}"
+        self._attr_has_entity_name = True
+        self._attr_translation_key = self._name
+        self._attr_unique_id = self._name
 
     @property
     def icon(self) -> str | None:

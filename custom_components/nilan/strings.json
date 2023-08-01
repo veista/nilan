@@ -35,5 +35,475 @@
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
     }
+  },
+  "entity": {
+    "binary_sensor": {
+      "compressor": {"name": "Compressor"},
+      "smoke_alarm": {"name": "Smoke Alarm"},
+      "defrost": {"name": "Defrost"},
+      "bypass_flap": {"name": "Bypass Flap"},
+      "user_selection_1": {"name": "User Selection 1"},
+      "user_selection_2": {"name": "User Selection 2"},
+      "display_led_1": {"name": "Display LED 1"},
+      "display_led_2": {"name": "Display LED 2"},
+      "circulation_pump": {"name": "Circulation Pump"},
+      "heater_relay_1": {"name": "Heater Relay 1"},
+      "heater_relay_2": {"name": "Heater Relay 2"},
+      "heater_relay_3": {"name": "Heater Relay 3"}
+    },
+    "button": {
+      "sync_time": {"name": "Synchronize Time and Date"}
+    },
+    "climate": {
+      "hvac": {
+        "name": "HVAC",
+        "state": {
+          "auto": "Auto",
+          "cool": "Cool",
+          "heat": "Heat",
+          "off": "[%key:common::state::off%]"
+        },
+        "state_attributes": {
+          "current_humidity": {
+            "name": "Current Humidity"
+          },
+          "current_temperature": {
+            "name": "Current Temperature"
+          },
+          "fan_mode": {
+            "name": "Fan Mode"
+          },
+          "fan_modes": {
+            "name": "Fan Modes"
+          },
+          "humidity": {
+            "name": "Target Humidity"
+          },
+          "hvac_action": {
+            "name": "Current Action",
+            "state": {
+              "off": "[%key:common::state::off%]",
+              "cooling": "Cooling",
+              "heating": "Heating",
+              "drying": "Drying",
+              "idle": "Idle",
+              "fan": "Fan"
+            }
+          },
+          "hvac_modes": {
+            "name": "HVAC modes"
+          },
+          "max_humidity": {
+            "name": "Max target humidity"
+          },
+          "max_temp": {
+            "name": "Max target temperature"
+          },
+          "min_humidity": {
+            "name": "Min target humidity"
+          },
+          "min_temp": {
+            "name": "Min target temperature"
+          },
+          "preset_mode": {
+            "name": "Preset",
+            "state": {
+              "water": "Water",
+              "comfort": "Comfort",
+              "energy": "Energy"
+            }
+          },
+          "preset_modes": {
+            "name": "Presets"
+          },
+          "target_temp_high": {
+            "name": "Upper target temperature"
+          },
+          "target_temp_low": {
+            "name": "Lower target temperature"
+          },
+          "target_temp_step": {
+            "name": "Target temperature step"
+          },
+          "temperature": {
+            "name": "Target temperature"
+          }
+        }
+      }
+    },
+    "number": {
+      "scalding_protection_setpoint": {"name": "Scalding Protection Setpoint"},
+      "maximum_time_in_high_humidity_ventilation": {"name": "Maximum Time in High Humidity Ventilation"},
+      "low_temperature_curve": {"name": "Low Temperature Curve"},
+      "high_temperature_curve": {"name": "High Temperature Curve"},
+      "low_temperature_compressor_start_setpoint": {"name": "Low Temperature Compressor Start Setpoint"},
+      "low_outdoor_temp_setpoint": {"name": "Low Outdoor Temp Setpoint"},
+      "minimum_supply_air_temperature_in_summer": {"name": "Minimum Supply Air Temperature in Summer"},
+      "minimum_supply_air_temperature_in_winter": {"name": "Minimum Supply Air Temperature in Winter"},
+      "maximum_supply_air_temperature_in_summer": {"name": "Maximum Supply Air Temperature in Summer"},
+      "maximum_supply_air_temperature_in_winter": {"name": "Maximum Supply Air Temperature in Winter"},
+      "room_temperature_neutral_zone": {"name": "Room Temperature Neutral Zone"},
+      "change_to_summer_state_setpoint": {"name": "Change to Summer State Setpoint"},
+      "supply_fan_power_at_level_1": {"name": "Supply Fan Power at Level 1"},
+      "supply_fan_power_at_level_2": {"name": "Supply Fan Power at Level 2"},
+      "supply_fan_power_at_level_3": {"name": "Supply Fan Power at Level 3"},
+      "supply_fan_power_at_level_4": {"name": "Supply Fan Power at Level 4"},
+      "return_fan_power_at_level_1": {"name": "Return Fan Power at Level 1"},
+      "return_fan_power_at_level_2": {"name": "Return Fan Power at Level 2"},
+      "return_fan_power_at_level_3": {"name": "Return Fan Power at Level 3"},
+      "return_fan_power_at_level_4": {"name": "Return Fan Power at Level 4"},
+      "fan_start_up_delay": {"name": "Fan Start-Up Delay"},
+      "defrost_start_setpoint": {"name": "Defrost Start Setpoint"},
+      "defrost_stop_setpoint": {"name": "Defrost Stop Setpoint"},
+      "minimum_defrost_time": {"name": "Minimum Defrost Time"},
+      "maximum_evaporator_defrost_time": {"name": "Maximum Evaporator Defrost Time"},
+      "maximum_outlet_defrost_time": {"name": "Maximum Outlet Defrost Time"},
+      "time_between_defrost_cycles": {"name": "Time Between Defrost Cycles"},
+      "supply_air_pid_integration_time": {"name": "Supply Air PID Integration Time"},
+      "compressor_stop_time": {"name": "Compressor Stop Time"},
+      "co2_low_limit": {"name": "CO2 Low Limit"},
+      "co2_high_limit": {"name": "CO2 High Limit"},
+      "low_room_temperature_setpoint": {"name": "Low Room Temperature Setpoint"},
+      "supply_heater_curve_offset": {"name": "Supply Heater Curve Offset"},
+      "central_heating_min_supply_temperature": {"name": "Central Heating Min. Supply Temperature"},
+      "central_heating_max_supply_temperature": {"name": "Central Heating Max. Supply Temperature"},
+      "outdoor_temperature_compensation_curve": {"name": "Outdoor Temperature Compensation Curve"},
+      "supply_heater_delay": {"name": "Supply Heater Delay"}
+    },
+    "select": {
+        "air_filter_alarm_interval": {
+            "name": "Air Filter Alarm Interval",
+            "state": {
+                "1": "30 Days",
+                "2": "90 Days",
+                "3": "180 Days",
+                "4": "360 Days"
+            }
+        },
+        "legionella_day": {
+            "name": "Legionella Day",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "Monday",
+                "2": "Tuesday",
+                "3": "Wednesday",
+                "4": "Thursday",
+                "5": "Friday",
+                "6": "Saturday",
+                "7": "Sunday"
+            }
+        },
+        "indoor_air_quality_control": {
+            "name": "Indoor Air Quality Control",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "Humidity",
+                "2": "Humidity + CO2"
+            }
+        },
+        "compressor_heating_priority": {
+            "name": "Compressor Heating Priority",
+            "state": {
+                "0": "Water",
+                "1": "Air"
+            }
+        },
+        "cooling_mode_ventilation_level": {
+            "name": "Cooling Mode Ventilation Level",
+            "state": {
+                "0": "No Change"
+            }
+        },
+        "cooling_setpoint_offset": {
+            "name": "Cooling Setpoint Offset",
+            "state": {
+                "0": "Cooling Disabled",
+                "2": "+1 ºC",
+                "3": "+2 ºC",
+                "4": "+3 ºC",
+                "5": "+4 ºC",
+                "6": "+5 ºC",
+                "7": "+7 ºC",
+                "8": "+10 ºC"
+            }
+        },
+        "low_humidity_ventilation_level": {"name": "Low Humidity Ventilation Level"},
+        "high_humidity_ventilation_level": {"name": "High Humidity Ventilation Level"},
+        "hmi_language": {
+            "name": "HMI Language",
+            "state": {
+                "0": "English",
+                "1": "German",
+                "2": "French",
+                "3": "Swedish",
+                "4": "Danish",
+                "5": "Norweigian",
+                "6": "Finnish",
+                "7": "Czech",
+                "8": "Polish",
+                "9": "Italian"
+            }
+        },
+        "low_outdoor_temp_ventilation_level": {"name": "Low Outdoor Temp Ventilation Level"},
+        "minimum_ventilation_supply_level": {"name": "Minimum Ventilation Supply Level"},
+        "minimum_ventilation_return_level": {"name": "Minimum Ventilation Return Level"},
+        "maximum_ventilation_return_level": {"name": "Maximum Ventilation Return Level"},
+        "co2_high_ventilation_level": {"name": "CO2 High Ventilation Level"},
+        "defrost_ventilation_level": {
+            "name": "Defrost Ventilation Level",
+            "state": {
+                "0": "None",
+                "1": "Constant Flow",
+                "2": "Low Flow"
+            }
+        },
+        "central_heating_type": {
+            "name": "Central Heating Type",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "Electric",
+                "2": "Heat Pump",
+                "3": "Both"
+            }
+        },
+        "central_heating_mode": {
+            "name": "Central Heating Mode",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "Heating",
+                "2": "Requirement"
+            }
+        },
+        "heat_source_select": {
+            "name": "Heat Source Select",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "Heat Pump",
+                "2": "HP + Afterheat",
+                "3": "Afterheat",
+                "4": "Afterheat + HP"
+            }
+        },
+        "pre_heating_effect": {
+            "name": "Pre-Heating Effect",
+            "state": {
+                "0": "Standard",
+                "1": "Extra"
+            }
+        },
+        "pre_heating_temperature": {
+            "name": "Pre-Heating Temperature",
+            "state": {
+                "0": "[%key:common::state::off%]",
+                "1": "1 ºC",
+                "2": "2 ºC",
+                "3": "3 ºC",
+                "4": "4 ºC",
+                "5": "5 ºC"
+            }
+        },
+        "circulation_pump_mode": {
+            "name": "Circulation Pump Mode",
+            "state": {
+                "0": "Energy",
+                "1": "Continuous"
+            }
+        },
+        "user_menu_lock": {
+            "name": "User Menu Lock",
+            "state": {
+                "0": "Locked",
+                "1": "Open",
+                "2": "Disable Off Key"
+            }
+        },
+        "reset_alarm": {
+            "name": "Reset Alarm",
+            "state": {
+                "1": "E01 Hardware Error",
+                "2": "E02 Alarm Timeout",
+                "3": "E03 Fire Alarm Activated",
+                "4": "E04 Pressure Switch",
+                "5": "E05 Inspection Door Open",
+                "6": "E06 Error in De-Icing",
+                "7": "E07 Frost Thermostat",
+                "8": "E08 Frost Thermostat",
+                "9": "E09 Boiler Over Temperature",
+                "10": "E10 Over Temperature Electrical After-heating",
+                "11": "E11 Low Flow Over the Electrical Heating Element",
+                "12": "E12 Ventilation Motor Thermal Switch",
+                "13": "E13 Electric Water Heater Over Temperature",
+                "14": "E14 Sensor Defective",
+                "15": "E15 Room Temperature Too Low",
+                "16": "E16 Software Error",
+                "17": "E17 Watchdog Warning",
+                "18": "E18 Contents of Database Changed",
+                "19": "E19 Change Air Filter",
+                "20": "E20 Error in Legionella Treatment",
+                "21": "E21 Check Date and Time",
+                "22": "E22 Error in Air Temperature",
+                "23": "E23 Hot Water Temperature Error",
+                "24": "E24 Central Heating Temperature Error",
+                "25": "E25 Communications Modem Error",
+                "26": "E26 Communications Network Error",
+                "27": "E27 Error in Temperature Sensor",
+                "28": "E28 Error in Temperature Sensor",
+                "29": "E29 Error in Temperature Sensor",
+                "30": "E30 Error in Temperature Sensor",
+                "31": "E31 Error in Temperature Sensor",
+                "32": "E32 Error in Temperature Sensor",
+                "33": "E33 Error in Temperature Sensor",
+                "34": "E34 Error in Temperature Sensor",
+                "35": "E35 Error in Temperature Sensor",
+                "36": "E36 Error in Temperature Sensor",
+                "37": "E37 Error in Temperature Sensor",
+                "38": "E38 Error in Temperature Sensor",
+                "39": "E39 Error in Temperature Sensor",
+                "40": "E40 Error in Temperature Sensor",
+                "41": "E41 Error in Temperature Sensor",
+                "42": "E42 Error in Temperature Sensor",
+                "43": "E43 Error in Temperature Sensor",
+                "44": "E44 Error in Temperature Sensor",
+                "45": "E45 Error in Temperature Sensor",
+                "46": "E46 Error in Temperature Sensor",
+                "47": "E47 Error in Temperature Sensor",
+                "48": "E48 Error in Temperature Sensor",
+                "49": "E49 Error in Temperature Sensor",
+                "50": "E50 Error in Temperature Sensor",
+                "51": "E51 Error in Temperature Sensor",
+                "52": "E52 Error in Temperature Sensor",
+                "53": "E53 Error in Temperature Sensor",
+                "54": "E54 Error in Temperature Sensor",
+                "55": "E55 Error in Temperature Sensor",
+                "56": "E56 Error in Temperature Sensor",
+                "57": "E57 Error in Temperature Sensor",
+                "58": "E58 Error in Temperature Sensor",
+                "70": "E70 Anode Error",
+                "71": "E71 Error De-icing Heat Exchanger",
+                "72": "E72 Abnormally Low Evaporator Temperature",
+                "90": "E90 Slave IO",
+                "91": "E91 Option Module Missing",
+                "92": "E92 Backup Error",
+                "95": "E95 Software Update Rejected",
+                "96": "E96 Self-Test Damper Error",
+                "255": "All Alarms"
+            }
+        }
+    },
+    "sensor": {
+      "controller_board_temperature_t0": {"name": "Controller Board Temperature (T0)"},
+      "fresh_air_intake_temperature_t1": {"name": "Fresh Air Intake Temperature (T1)"},
+      "supply_air_temperature_t2": {"name": "Supply Air Temperature (T2)"},
+      "return_air_temperature_t3": {"name": "Return Air Temperature (T3)"},
+      "waste_air_temperature_t4": {"name": "Waste Air Temperature (T4)"},
+      "condenser_temperature_t5": {"name": "Condenser Temperature (T5)"},
+      "waste_air_temperature_t6": {"name": "Waste Air Temperature (T6)"},
+      "supply_air_temperature_t7": {"name": "Supply Air Temperature (T7)"},
+      "fresh_air_intake_temperature_t8": {"name": "Fresh Air Intake Temperature (T8)"},
+      "return_air_temperature_t10": {"name": "Return Air Temperature (T10)"},
+      "return_water_temperature_t13": {"name": "Return Water Temperature (T13)"},
+      "supply_water_temperature_t14": {"name": "Supply Water Temperature (T14)"},
+      "user_panel_temperature_t15": {"name": "User Panel Temperature (T15)"},
+      "anode_temperature_t16": {"name": "Anode Temperature (T16)"},
+      "central_heating_setpoint": {"name": "Central Heating Setpoint"},
+      "humidity": {"name": "Humidity"},
+      "24h_average_humidity": {"name": "24h Average Humidity"},
+      "after_heating_element_capacity": {"name": "After Heating Element Capacity"},
+      "co2_sensor": {"name": "CO2 Sensor"},
+      "control_state": {
+          "name": "Control State",
+          "state": {
+            "0": "[%key:common::state::off%]",
+            "1": "Shift",
+            "2": "Stop",
+            "3": "Start",
+            "4": "Standby",
+            "5": "Ventilation Stop",
+            "6": "Ventilation",
+            "7": "Heating",
+            "8": "Cooling",
+            "9": "Hot Water",
+            "10": "Legionella",
+            "11": "Cooling + Hot Water",
+            "12": "Central Heating",
+            "13": "Defrost",
+            "14": "Frost Secure",
+            "15": "Service",
+            "16": "Alarm",
+            "17": "Heating + Hot Water"
+          }
+        },
+      "after_heating_type": {
+          "name": "After Heating Type",
+          "state": {
+              "0": "No Heater",
+              "1": "Electrical",
+              "2": "Electric on Binary Relays",
+              "3": "Water"
+          }
+      },
+      "time_in_control_state": {"name": "Time in Control State"},
+      "alarms_active": {"name": "Alarms Active"},
+      "days_since_air_filter_change": {"name": "Days Since Air Filter Change"},
+      "days_to_air_filter_change": {"name": "Days To Air Filter Change"},
+      "climate_season": {
+          "name": "Climate Season",
+          "state": {
+              "0": "Winter",
+              "1": "Summer"
+          }
+      },
+      "exchanger_efficiency": {"name": "Exchanger Efficiency"},
+      "time": {"name": "Time"},
+      "ventilation_state": {
+          "name": "Ventilation State",
+          "state": {
+              "0": "[%key:common::state::off%]",
+              "1": "Normal",
+              "2": "Low Humidity",
+              "3": "High Humidity",
+              "4": "High CO2",
+              "5": "Low Room Temperature",
+              "6": "Low Outdoor Temperature"
+          }
+      },
+      "anode_state": {
+          "name": "Anode State",
+          "state": {
+              "0": "[%key:common::state::off%]",
+              "1": "OK",
+              "2": "Service",
+              "3": "Error"
+          }
+      },
+      "supply_fan_level": {"name": "Supply Fan Level"},
+      "return_fan_level": {"name": "Return Fan Level"},
+      "return_fan_speed": {"name": "Return Fan Speed"},
+      "supply_fan_speed": {"name": "Supply Fan Speed"},
+      "display_text_line_1": {"name": "Display Text Line 1"},
+      "display_text_line_2": {"name": "Display Text Line 2"},
+      "modbus_version": {"name": "ModBus Version"}
+    },
+    "switch": {
+      "supply_air_after_heating": {"name": "Supply Air After Heating"}
+    },
+    "water_heater": {
+      "top_water_heater": {
+        "name": "Top Water Heater",
+        "state": {
+          "off": "[%key:common::state::off%]",
+          "idle": "Idle",
+          "heating": "Heating"
+        }
+      },
+      "bottom_water_heater": {
+        "name": "Bottom Water Heater",
+        "state": {
+            "off": "[%key:common::state::off%]",
+            "idle": "Idle",
+            "heating": "Heating"
+        }
+      }
+    }
   }
 }

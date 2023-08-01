@@ -9,7 +9,7 @@ import logging
 
 from homeassistant import config_entries
 
-from pymodbus.client import ModbusTcpClient, ModbusSerialClient
+from pymodbus.client import AsyncModbusTcpClient, AsyncModbusSerialClient
 from pymodbus.exceptions import ModbusException
 
 from .device import CTS602_DEVICE_TYPES
@@ -18,15 +18,12 @@ from .registers import CTS602HoldingRegisters
 
 from .const import DOMAIN
 
-
-CONF_LOCATION_ID = "location_id"
-
 STEP_TCP_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("name", default="Nilan"): str,
         vol.Required("host_ip"): str,
         vol.Required("host_port", default="502"): str,
-        vol.Required("unit_id", default="30"): str,
+        vol.Required("unit_id", default=30): int,
     }
 )
 
@@ -34,7 +31,7 @@ STEP_SERIAL_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("name", default="Nilan"): str,
         vol.Required("host_port"): str,
-        vol.Required("unit_id", default="30"): str,
+        vol.Required("unit_id", default=30): int,
     }
 )
 
@@ -44,9 +41,9 @@ _LOGGER = logging.getLogger(__name__)
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
     """validate device model"""
     if com_type == "tcp":
-        client = ModbusTcpClient(address, port)
+        client = AsyncModbusTcpClient(address, port)
     else:
-        client = ModbusSerialClient(
+        client = AsyncModbusSerialClient(
             method="rtu",
             port=port,
             stopbits=1,
@@ -56,7 +53,8 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
             timeout=1,
         )
     try:
-        result = client.read_holding_registers(
+        await client.connect()
+        result = await client.read_holding_registers(
             CTS602HoldingRegisters.control_type, 1, slave=int(unit_id)
         )
     except ModbusException as value_error:
@@ -80,15 +78,10 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
     return
 
 
-def format_unique_id(app_id: str, location_id: str) -> str:
-    """Format the unique id for a config entry."""
-    return f"{app_id}_{location_id}"
-
-
 class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Nilan CTS602 Modbus TCP."""
 
-    VERSION = 2
+    VERSION = 3
 
     data: Optional[dict(str, Any)]
 
@@ -124,6 +117,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 # Input is valid, set data.
                 self.data = user_input
                 self.data.update({"com_type": "tcp"})
+                self.data.update({"board_type": "CTS602"})
                 return self.async_create_entry(title=user_input["name"], data=self.data)
         return self.async_show_form(
             step_id="tcp", data_schema=STEP_TCP_DATA_SCHEMA, errors=errors
@@ -145,7 +139,8 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.data = user_input
                 self.data.update({"com_type": "serial"})
                 self.data.update({"host_ip": None})
+                self.data.update({"board_type": "CTS602"})
                 return self.async_create_entry(title=user_input["name"], data=self.data)
-        return self.async_show_form(
-            step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
-        )
+            return self.async_show_form(
+                step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
+            )
