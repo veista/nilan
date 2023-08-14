@@ -12,6 +12,7 @@ import logging
 from .const import DOMAIN
 
 PLATFORMS = [
+    "button",
     "climate",
     "water_heater",
     "sensor",
@@ -34,8 +35,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unit_id = entry.data["unit_id"]
     com_type = entry.data["com_type"]
     host_ip = entry.data["host_ip"]
+    board_type = entry.data["board_type"]
 
-    device = Device(hass, name, com_type, host_ip, host_port, unit_id)
+    device = Device(hass, name, com_type, host_ip, host_port, unit_id, board_type)
     await device.setup()
 
     hass.data[DOMAIN][entry.entry_id] = device
@@ -46,16 +48,21 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 
-async def async_migrate_entry(hass, config_entry: ConfigEntry):
+async def async_migrate_entry(hass: HomeAssistant, config_entry: ConfigEntry):
     """Migrate old entry."""
     _LOGGER.debug("Migrating from version %s", config_entry.version)
 
     if config_entry.version == 1:
-
         new = {**config_entry.data}
         new.update({"com_type": "tcp"})
-
+        new.update({"board_type": "CTS602"})
         config_entry.version = 2
+        hass.config_entries.async_update_entry(config_entry, data=new)
+
+    elif config_entry.version == 2:
+        new = {**config_entry.data}
+        new.update({"board_type": "CTS602"})
+        config_entry.version = 3
         hass.config_entries.async_update_entry(config_entry, data=new)
 
     _LOGGER.info("Migration to version %s successful", config_entry.version)

@@ -1,8 +1,6 @@
 """Platform for sensor integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -18,448 +16,360 @@ from homeassistant.components.sensor import (
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
-    TEMP_CELSIUS,
-    TIME_DAYS,
+    UnitOfTemperature,
+    UnitOfTime,
 )
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
-
-CONTROL_STATES = {
-    0: "Off",
-    1: "Shift",
-    2: "Stop",
-    3: "Start",
-    4: "Standby",
-    5: "Ventilation Stop",
-    6: "Ventilation",
-    7: "Heating",
-    8: "Cooling",
-    9: "Hot Water",
-    10: "Legionella",
-    11: "Cooling + Hot Water",
-    12: "Central Heating",
-    13: "Defrost",
-    14: "Frost Sequre",
-    15: "Service",
-    16: "Alarm",
-    17: "Heating + Hot Water",
-}
-
-VENTILATION_STATES = {
-    0: "Off",
-    1: "Normal",
-    2: "Low Humidity",
-    3: "High Humidity",
-    4: "High CO2",
-    5: "Low Room Temperature",
-    6: "Low Outdoor Temperature",
-}
-
-SEASON_STATES = {
-    False: "Winter",
-    True: "Summer",
-}
-
-AFTER_HEATING_TYPES = {
-    0: "No Heater",
-    1: "Electrical",
-    2: "Electric on Binary Relays",
-    3: "Water",
-}
-
-
-ANODE_STATES = {
-    0: "Off",
-    1: "OK",
-    2: "Service",
-    3: "Error",
-}
+from .const import DOMAIN
 
 Map = namedtuple(
-    "map", "name default_unit device_class state_class entity_category icon enum"
+    "map", "name default_unit device_class state_class entity_category icon"
 )
 
 ATTRIBUTE_TO_SENSORS = {
     "get_t0_controller_temperature": [
         Map(
-            "Controller Board Temperature (T0)",
-            TEMP_CELSIUS,
+            "controller_board_temperature_t0",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
-            None,
             None,
         )
     ],
     "get_t1_intake_temperature": [
         Map(
-            "Fresh Air Intake Temperature (T1)",
-            TEMP_CELSIUS,
+            "fresh_air_intake_temperature_t1",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t2_inlet_temperature": [
         Map(
-            "Supply Air Temperature (T2)",
-            TEMP_CELSIUS,
+            "supply_air_temperature_t2",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t3_exhaust_temperature": [
         Map(
-            "Return Air Temperature (T3)",
-            TEMP_CELSIUS,
+            "return_air_temperature_t3",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t4_outlet": [
         Map(
-            "Waste Air Temperature (T4)",
-            TEMP_CELSIUS,
+            "waste_air_temperature_t4",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t5_condenser_temperature": [
         Map(
-            "Condenser Temperature (T5)",
-            TEMP_CELSIUS,
+            "condenser_temperature_t5",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
-            None,
             None,
         )
     ],
     "get_t6_evaporator_temperature": [
         Map(
-            "Waste Air Temperature (T6)",
-            TEMP_CELSIUS,
+            "waste_air_temperature_t6",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t7_inlet_temperature_after_heater": [
         Map(
-            "Supply Air Temperature (T7)",
-            TEMP_CELSIUS,
+            "supply_air_temperature_t7",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t8_outdoor_temperature": [
         Map(
-            "Fresh Air Intake Temperature (T8)",
-            TEMP_CELSIUS,
+            "fresh_air_intake_temperature_t8",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t10_external_temperature": [
         Map(
-            "Return Air Temperature (T10)",
-            TEMP_CELSIUS,
+            "return_air_temperature_t10",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t13_return_temperature": [
         Map(
-            "Return Water Temperature (T13)",
-            TEMP_CELSIUS,
+            "return_water_temperature_t13",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t14_supply_temperature": [
         Map(
-            "Supply Water Temperature (T14)",
-            TEMP_CELSIUS,
+            "supply_water_temperature_t14",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_t15_user_panel_temperature": [
         Map(
-            "User Panel Temperature (T15)",
-            TEMP_CELSIUS,
+            "user_panel_temperature_t15",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
-            None,
             None,
         )
     ],
     "get_t16_sacrificial_anode_temperature": [
         Map(
-            "Anode Temperature (T16)",
-            TEMP_CELSIUS,
+            "anode_temperature_t16",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_central_heating_setpoint": [
         Map(
-            "Central Heating Setpoint",
-            TEMP_CELSIUS,
+            "central_heating_setpoint",
+            UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_humidity": [
         Map(
-            "Humidity",
+            "humidity",
             PERCENTAGE,
             SensorDeviceClass.HUMIDITY,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_average_humidity": [
         Map(
-            "24h Average Humidity",
+            "24h_average_humidity",
             PERCENTAGE,
             SensorDeviceClass.HUMIDITY,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_after_heating_element_capacity": [
         Map(
-            "After Heating Element Capacity",
+            "after_heating_element_capacity",
             PERCENTAGE,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:radiator",
-            None,
         )
     ],
     "get_co2_sensor_value": [
         Map(
-            "CO2 Sensor",
+            "co2_sensor",
             CONCENTRATION_PARTS_PER_MILLION,
             SensorDeviceClass.CO2,
             SensorStateClass.MEASUREMENT,
-            None,
             None,
             None,
         )
     ],
     "get_control_state": [
         Map(
-            "Control State",
+            "control_state",
             None,
             None,
             None,
             None,
             "mdi:state-machine",
-            CONTROL_STATES,
         )
     ],
     "get_after_heating_type": [
         Map(
-            "After Heating Type",
+            "after_heating_type",
             None,
             None,
             None,
             EntityCategory.DIAGNOSTIC,
             None,
-            AFTER_HEATING_TYPES,
         )
     ],
     "get_time_in_control_state": [
         Map(
-            "Time in Control State",
+            "time_in_control_state",
             None,
             None,
             None,
             None,
             "mdi:calendar-clock",
-            None,
         )
     ],
     "get_alarm_count": [
         Map(
-            "Alarms Active",
+            "alarms_active",
             None,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:alert-circle-outline",
-            None,
         )
     ],
     "get_days_since_air_filter_change": [
         Map(
-            "Days Since Air Filter Change",
-            TIME_DAYS,
+            "days_since_air_filter_change",
+            UnitOfTime.DAYS,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:calendar-start",
-            None,
         )
     ],
     "get_days_to_air_filter_change": [
         Map(
-            "Days To Air Filter Change",
-            TIME_DAYS,
+            "days_to_air_filter_change",
+            UnitOfTime.DAYS,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:calendar-end",
-            None,
         )
     ],
     "get_summer_state": [
         Map(
-            "Climate Season",
+            "climate_season",
             None,
             None,
             None,
             None,
             "mdi:sun-snowflake",
-            SEASON_STATES,
         )
     ],
     "get_exchanger_efficiency": [
         Map(
-            "Exchanger Efficiency",
+            "exchanger_efficiency",
             PERCENTAGE,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:air-filter",
-            None,
         )
     ],
     "get_time": [
         Map(
-            "Time",
+            "time",
             None,
             None,
             None,
             None,
             "mdi:calendar-clock",
-            None,
         )
     ],
     "get_ventilation_state": [
         Map(
-            "Ventilation State",
+            "ventilation_state",
             None,
             None,
             None,
             None,
             "mdi:state-machine",
-            VENTILATION_STATES,
         )
     ],
     "get_anode_state": [
         Map(
-            "Anode State",
+            "anode_state",
             None,
             None,
             None,
             None,
             None,
-            ANODE_STATES,
         )
     ],
     "get_supply_fan_level": [
         Map(
-            "Supply Fan Level",
+            "supply_fan_level",
             None,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
-            None,
         )
     ],
     "get_return_fan_level": [
         Map(
-            "Return Fan Level",
+            "return_fan_level",
             None,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
-            None,
         )
     ],
     "get_return_fan_speed": [
         Map(
-            "Return Fan Speed",
+            "return_fan_speed",
             PERCENTAGE,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
-            None,
         )
     ],
     "get_supply_fan_speed": [
         Map(
-            "Supply Fan Speed",
+            "supply_fan_speed",
             PERCENTAGE,
             None,
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
-            None,
         )
     ],
     "get_display_text_1": [
         Map(
-            "Display Text Line 1",
-            None,
+            "display_text_line_1",
             None,
             None,
             None,
@@ -469,8 +379,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_display_text_2": [
         Map(
-            "Display Text Line 2",
-            None,
+            "display_text_line_2",
             None,
             None,
             None,
@@ -480,21 +389,20 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_bus_version": [
         Map(
-            "ModBus Version",
+            "modbus_version",
             None,
             None,
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
-            None,
             None,
         )
     ],
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Set up the sensor platform."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     sensors = []
     for attribute in device.get_assigned("sensor"):
         if attribute in ATTRIBUTE_TO_SENSORS:
@@ -510,7 +418,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
                         m.state_class,
                         m.entity_category,
                         m.icon,
-                        m.enum,
                     )
                     for m in maps
                 ]
@@ -531,39 +438,21 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         state_class,
         entity_category,
         icon,
-        enum,
     ) -> None:
         """Init Sensor"""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
-        self._attr_name = self._device.get_device_name + ": " + name
         self._attr_native_unit_of_measurement = default_unit
         self._attr_device_class = device_class
         self._attr_state_class = state_class
         self._attr_entity_category = entity_category
         self._attr_icon = icon
-        self._enum = enum
         self._name = name
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = self._name.lower().replace(" ", "_")
-        return f"{_name}.{_unique_id}"
-
-    @property
-    def translation_key(self) -> str | None:
-        _translation_key = self._name.lower().replace(" ", "_")
-        return _translation_key
+        self._attr_has_entity_name = True
+        self._attr_translation_key = self._name
+        self._attr_unique_id = self._name
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
-        if self._enum is not None:
-            self._attr_native_value = self._enum.get(
-                await getattr(self._device, self._attribute)()
-            )
-        else:
-            self._attr_native_value = await getattr(self._device, self._attribute)()
+        self._attr_native_value = await getattr(self._device, self._attribute)()

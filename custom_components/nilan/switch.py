@@ -1,8 +1,6 @@
 """Platform for switch integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -11,10 +9,7 @@ from homeassistant.components.switch import SwitchEntity
 
 from homeassistant.helpers.entity import EntityCategory
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
-
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
+from .const import DOMAIN
 
 Map = namedtuple(
     "map", "name set_attr entity_category off_value on_value off_icon on_icon"
@@ -23,7 +18,7 @@ Map = namedtuple(
 ATTRIBUTE_TO_SWITCHES = {
     "get_supply_air_after_heating": [
         Map(
-            "Supply Air After Heating",
+            "supply_air_after_heating",
             "set_supply_air_after_heating",
             EntityCategory.CONFIG,
             0,
@@ -35,16 +30,16 @@ ATTRIBUTE_TO_SWITCHES = {
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Set up the number platform."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
+    """Set up the switch platform."""
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     switches = []
     for attribute in device.get_assigned("switch"):
         if attribute in ATTRIBUTE_TO_SWITCHES:
             maps = ATTRIBUTE_TO_SWITCHES[attribute]
             switches.extend(
                 [
-                    NilanCTS602Number(
+                    NilanCTS602Switch(
                         device,
                         attribute,
                         m.name,
@@ -61,7 +56,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     async_add_entities(switches, update_before_add=True)
 
 
-class NilanCTS602Number(SwitchEntity, NilanEntity):
+class NilanCTS602Switch(SwitchEntity, NilanEntity):
     """Representation of a Switch."""
 
     def __init__(
@@ -76,12 +71,10 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         off_icon,
         on_icon,
     ) -> None:
-        """Init Number"""
+        """Init Switch"""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
-        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._off_icon = off_icon
@@ -89,13 +82,9 @@ class NilanCTS602Number(SwitchEntity, NilanEntity):
         self._name = name
         self._off_value = off_value
         self._on_value = on_value
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = self._name.lower().replace(" ", "_")
-        return f"{_name}.{_unique_id}"
+        self._attr_translation_key = self._name
+        self._attr_has_entity_name = True
+        self._attr_unique_id = self._name
 
     @property
     def icon(self) -> str | None:

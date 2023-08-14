@@ -1,8 +1,6 @@
 """Platform for number integration."""
 from __future__ import annotations
 
-from datetime import timedelta
-
 from collections import namedtuple
 
 from .__init__ import NilanEntity
@@ -12,17 +10,14 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.components.number import NumberEntity, NumberMode
 
 from homeassistant.const import (
+    UnitOfTemperature,
+    UnitOfTime,
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
-    TEMP_CELSIUS,
-    TIME_MINUTES,
-    TIME_SECONDS,
 )
 
-from .const import DOMAIN, SCAN_INTERVAL_TIME
 
-
-SCAN_INTERVAL = timedelta(seconds=SCAN_INTERVAL_TIME)
+from .const import DOMAIN
 
 Map = namedtuple(
     "map", "name set_attr entity_category min_value max_value step mode unit icon"
@@ -31,163 +26,163 @@ Map = namedtuple(
 ATTRIBUTE_TO_NUMBERS = {
     "get_scalding_protection_setpoint": [
         Map(
-            "Scalding Protection Setpoint",
+            "scalding_protection_setpoint",
             "set_scalding_protection_setpoint",
             EntityCategory.CONFIG,
             60,
             80,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:coolant-temperature",
         )
     ],
     "get_max_high_humidity_vent_time": [
         Map(
-            "Maximum Time in High Humidity Ventilation",
+            "maximum_time_in_high_humidity_ventilation",
             "set_max_high_humidity_vent_time",
             EntityCategory.CONFIG,
             1,
             180,
             1,
             NumberMode.BOX,
-            TIME_MINUTES,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
     "get_low_temperature_curve": [
         Map(
-            "Low Temperature Curve",
+            "low_temperature_curve",
             "set_low_temperature_curve",
             EntityCategory.CONFIG,
             15,
             46,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-chevron-down",
         )
     ],
     "get_high_temperature_curve": [
         Map(
-            "High Temperature Curve",
+            "high_temperature_curve",
             "set_high_temperature_curve",
             EntityCategory.CONFIG,
             39,
             60,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-chevron-up",
         )
     ],
     "get_low_temperature_compressor_start_setpoint": [
         Map(
-            "Low Temperature Compressor Start Setpoint",
+            "low_temperature_compressor_start_setpoint",
             "set_low_temperature_compressor_start_setpoint",
             EntityCategory.CONFIG,
             0,
             15,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_low_outdoor_temperature_setpoint": [
         Map(
-            "Low Outdoor Temp Setpoint",
+            "low_outdoor_temp_setpoint",
             "set_low_outdoor_temperature_setpoint",
             EntityCategory.CONFIG,
             -20,
             10,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_min_supply_air_summer_setpoint": [
         Map(
-            "Minimum Supply Air Temperature in Summer",
+            "minimum_supply_air_temperature_in_summer",
             "set_min_supply_air_summer_setpoint",
             EntityCategory.CONFIG,
             5,
             16,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_min_supply_air_winter_setpoint": [
         Map(
-            "Minimum Supply Air Temperature in Winter",
+            "minimum_supply_air_temperature_in_winter",
             "set_min_supply_air_winter_setpoint",
             EntityCategory.CONFIG,
             14,
             22,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_max_supply_air_summer_setpoint": [
         Map(
-            "Maximum Supply Air Temperature in Summer",
+            "maximum_supply_air_temperature_in_summer",
             "set_max_supply_air_summer_setpoint",
             EntityCategory.CONFIG,
             16,
             25,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-high",
         )
     ],
     "get_max_supply_air_winter_setpoint": [
         Map(
-            "Maximum Supply Air Temperature in Winter",
+            "maximum_supply_air_temperature_in_winter",
             "set_max_supply_air_winter_setpoint",
             EntityCategory.CONFIG,
             22,
             50,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-high",
         )
     ],
     "get_external_heating_offset": [
         Map(
-            "Room Temperature Neutral Zone",
+            "room_temperature_neutral_zone",
             "set_external_heating_offset",
             EntityCategory.CONFIG,
             0,
             10,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-lines",
         )
     ],
     "get_summer_state_change_setpoint": [
         Map(
-            "Change to Summer State Setpoint",
+            "change_to_summer_state_setpoint",
             "set_summer_state_change_setpoint",
             EntityCategory.CONFIG,
             5,
             30,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:sun-thermometer-outline",
         )
     ],
     "get_supply_power_at_level_1": [
         Map(
-            "Supply Fan Power at Level 1",
+            "supply_fan_power_at_level_1",
             "set_supply_power_at_level_1",
             EntityCategory.CONFIG,
             20,
@@ -200,7 +195,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_supply_power_at_level_2": [
         Map(
-            "Supply Fan Power at Level 2",
+            "supply_fan_power_at_level_2",
             "set_supply_power_at_level_2",
             EntityCategory.CONFIG,
             20,
@@ -213,7 +208,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_supply_power_at_level_3": [
         Map(
-            "Supply Fan Power at Level 3",
+            "supply_fan_power_at_level_3",
             "set_supply_power_at_level_3",
             EntityCategory.CONFIG,
             20,
@@ -226,7 +221,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_supply_power_at_level_4": [
         Map(
-            "Supply Fan Power at Level 4",
+            "supply_fan_power_at_level_4",
             "set_supply_power_at_level_4",
             EntityCategory.CONFIG,
             20,
@@ -239,7 +234,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_return_power_at_level_1": [
         Map(
-            "Return Fan Power at Level 1",
+            "return_fan_power_at_level_1",
             "set_return_power_at_level_1",
             EntityCategory.CONFIG,
             20,
@@ -252,7 +247,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_return_power_at_level_2": [
         Map(
-            "Return Fan Power at Level 2",
+            "return_fan_power_at_level_2",
             "set_return_power_at_level_2",
             EntityCategory.CONFIG,
             20,
@@ -265,7 +260,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_return_power_at_level_3": [
         Map(
-            "Return Fan Power at Level 3",
+            "return_fan_power_at_level_3",
             "set_return_power_at_level_3",
             EntityCategory.CONFIG,
             20,
@@ -278,7 +273,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_return_power_at_level_4": [
         Map(
-            "Return Fan Power at Level 4",
+            "return_fan_power_at_level_4",
             "set_return_power_at_level_4",
             EntityCategory.CONFIG,
             20,
@@ -291,124 +286,124 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_fan_startup_delay": [
         Map(
-            "Fan Start-Up Delay",
+            "fan_start_up_delay",
             "set_fan_startup_delay",
             EntityCategory.CONFIG,
             0,
             240,
             1,
             NumberMode.BOX,
-            TIME_SECONDS,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
     "get_defrost_start_setpoint": [
         Map(
-            "Defrost Start Setpoint",
+            "defrost_start_setpoint",
             "set_defrost_start_setpoint",
             EntityCategory.CONFIG,
             -10,
             0,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:snowflake-melt",
         )
     ],
     "get_defrost_stop_setpoint": [
         Map(
-            "Defrost Stop Setpoint",
+            "defrost_stop_setpoint",
             "set_defrost_stop_setpoint",
             EntityCategory.CONFIG,
             2,
             12,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:snowflake-off",
         )
     ],
     "get_minimum_defrost_time": [
         Map(
-            "Minimum Defrost Time",
+            "minimum_defrost_time",
             "set_minimum_defrost_time",
             EntityCategory.CONFIG,
             10,
             120,
             1,
             NumberMode.BOX,
-            TIME_SECONDS,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
     "get_maximum_compressor_defrost_time": [
         Map(
-            "Maximum Evaporator Defrost Time",
+            "maximum_evaporator_defrost_time",
             "set_maximum_compressor_defrost_time",
             EntityCategory.CONFIG,
             2,
             60,
             1,
             NumberMode.BOX,
-            TIME_MINUTES,
+            UnitOfTime.MINUTES,
             "mdi:wrench-clock",
         )
     ],
     "get_maximum_outlet_defrost_time": [
         Map(
-            "Maximum Outlet Defrost Time",
+            "maximum_outlet_defrost_time",
             "set_maximum_outlet_defrost_time",
             EntityCategory.CONFIG,
             5,
             60,
             1,
             NumberMode.BOX,
-            TIME_MINUTES,
+            UnitOfTime.MINUTES,
             "mdi:wrench-clock",
         )
     ],
     "get_time_between_defrost": [
         Map(
-            "Time Between Defrost Cycles",
+            "time_between_defrost_cycles",
             "set_time_between_defrost",
             EntityCategory.CONFIG,
             15,
             720,
             1,
             NumberMode.BOX,
-            TIME_MINUTES,
+            UnitOfTime.MINUTES,
             "mdi:wrench-clock",
         )
     ],
     "get_supply_heating_pid_time": [
         Map(
-            "Supply Air PID Integration Time",
+            "supply_air_pid_integration_time",
             "set_supply_heating_pid_time",
             EntityCategory.CONFIG,
             0,
             25,
             1,
             NumberMode.BOX,
-            TIME_SECONDS,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
     "get_compressor_stop_time": [
         Map(
-            "Compressor Stop Time",
+            "compressor_stop_time",
             "set_compressor_stop_time",
             EntityCategory.CONFIG,
             0,
             3600,
             1,
             NumberMode.BOX,
-            TIME_SECONDS,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
     "get_co2_low_limit_setpoint": [
         Map(
-            "CO2 Low Limit",
+            "co2_low_limit",
             "set_co2_low_limit_setpoint",
             EntityCategory.CONFIG,
             400,
@@ -421,7 +416,7 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_co2_high_limit_setpoint": [
         Map(
-            "CO2 High Limit",
+            "co2_high_limit",
             "set_co2_high_limit_setpoint",
             EntityCategory.CONFIG,
             650,
@@ -434,59 +429,59 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_low_room_temperature_setpoint": [
         Map(
-            "Low Room Temperature Setpoint",
+            "low_room_temperature_setpoint",
             "set_low_room_temperature_setpoint",
             EntityCategory.CONFIG,
             0,
             20,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_central_heat_supply_curve_offset": [
         Map(
-            "Supply Heater Curve Offset",
+            "supply_heater_curve_offset",
             "set_central_heat_supply_curve_offset",
             EntityCategory.CONFIG,
             -15,
             10,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-lines",
         )
     ],
     "get_ch_min_supply_temperature": [
         Map(
-            "Central Heating Min. Supply Temperature",
+            "central_heating_min_supply_temperature",
             "set_ch_min_supply_temperature",
             EntityCategory.CONFIG,
             5,
             40,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-low",
         )
     ],
     "get_ch_max_supply_temperature": [
         Map(
-            "Central Heating Max. Supply Temperature",
+            "central_heating_max_supply_temperature",
             "set_ch_max_supply_temperature",
             EntityCategory.CONFIG,
             20,
             70,
             1,
             NumberMode.BOX,
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:thermometer-high",
         )
     ],
     "get_central_heat_supply_curve": [
         Map(
-            "Outdoor Temperature Compensation Curve",
+            "outdoor_temperature_compensation_curve",
             "set_central_heat_supply_curve",
             EntityCategory.CONFIG,
             1,
@@ -499,23 +494,23 @@ ATTRIBUTE_TO_NUMBERS = {
     ],
     "get_supply_heater_delay": [
         Map(
-            "Supply Heater Delay",
+            "supply_heater_delay",
             "set_supply_heater_delay",
             EntityCategory.CONFIG,
             0,
             30,
             1,
             NumberMode.BOX,
-            TIME_MINUTES,
+            UnitOfTime.SECONDS,
             "mdi:wrench-clock",
         )
     ],
 }
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Set up the number platform."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
+    device = HomeAssistant.data[DOMAIN][config_entry.entry_id]
     numbers = []
     for attribute in device.get_assigned("number"):
         if attribute in ATTRIBUTE_TO_NUMBERS:
@@ -562,8 +557,6 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         super().__init__(device)
         self._attribute = attribute
         self._device = device
-        self._available = True
-        self._attr_name = self._device.get_device_name + ": " + name
         self._set_attr = set_attr
         self._attr_entity_category = entity_category
         self._attr_native_min_value = min_value
@@ -573,13 +566,9 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         self._attr_native_unit_of_measurement = unit
         self._attr_icon = icon
         self._name = name
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique ID."""
-        _name = self._device.get_device_name.lower().replace(" ", "_")
-        _unique_id = self._name.lower().replace(" ", "_")
-        return f"{_name}.{_unique_id}"
+        self._attr_translation_key = self._name
+        self._attr_has_entity_name = True
+        self._attr_unique_id = self._name
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
