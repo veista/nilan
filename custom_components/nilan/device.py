@@ -23,7 +23,6 @@ class Device:
         host_ip: str | None,
         host_port,
         unit_id,
-        board_type,
     ) -> None:
         """Create new entity of Device Class"""
         self.hass = hass
@@ -35,7 +34,6 @@ class Device:
         self._host_port = host_port
         self._unit_id = int(unit_id)
         self._com_type = com_type
-        self._board_type = board_type
         self._client_config = {
             "name": self._device_name,
             "type": self._com_type,
@@ -59,34 +57,33 @@ class Device:
         """Setup Modbus and attribute map for Nilan Device"""
         hw_type = None
         success = await self._modbus.async_setup()
-        if self._board_type == "CTS602":
-            if success:
-                hw_type = await self.get_machine_type()
-                bus_version = await self.get_bus_version()
-            if hw_type in CTS602_DEVICE_TYPES:
-                self._device_sw_ver = await self.get_controller_software_version()
-                self._device_type = CTS602_DEVICE_TYPES[hw_type]
-                if bus_version >= 10:  # PH
-                    co2_present = await self.get_co2_present()
-                else:
-                    co2_present = True
-                for entity, value in CTS602_ENTITY_MAP.items():
-                    if bus_version >= value["min_bus_version"] and (
-                        hw_type in value["supported_devices"]
-                        or "all" in value["supported_devices"]
-                    ):
-                        if "extra_type" in value:
-                            if co2_present and value["extra_type"] == "co2":
-                                self._attributes[entity] = value["entity_type"]
-                            else:
-                                continue
-                        if "max_bus_version" in value:
-                            if bus_version <= value["max_bus_version"]:
-                                self._attributes[entity] = value["entity_type"]
-                        else:
+        if success:
+            hw_type = await self.get_machine_type()
+            bus_version = await self.get_bus_version()
+        if hw_type in CTS602_DEVICE_TYPES:
+            self._device_sw_ver = await self.get_controller_software_version()
+            self._device_type = CTS602_DEVICE_TYPES[hw_type]
+            if bus_version >= 10:  # PH
+                co2_present = await self.get_co2_present()
+            else:
+                co2_present = True
+            for entity, value in CTS602_ENTITY_MAP.items():
+                if bus_version >= value["min_bus_version"] and (
+                    hw_type in value["supported_devices"]
+                    or "all" in value["supported_devices"]
+                ):
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
                             self._attributes[entity] = value["entity_type"]
-            if "get_controller_hardware_version" in self._attributes:
-                self._device_hw_ver = await self.get_controller_hardware_version()
+                        else:
+                            continue
+                    if "max_bus_version" in value:
+                        if bus_version <= value["max_bus_version"]:
+                            self._attributes[entity] = value["entity_type"]
+                    else:
+                        self._attributes[entity] = value["entity_type"]
+        if "get_controller_hardware_version" in self._attributes:
+            self._device_hw_ver = await self.get_controller_hardware_version()
 
     def get_assigned(self, platform: str):
         """get platform assignment"""

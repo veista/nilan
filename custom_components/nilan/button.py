@@ -1,8 +1,6 @@
 """Platform for button integration."""
 from __future__ import annotations
 
-from datetime import datetime
-
 from .__init__ import NilanEntity
 
 from homeassistant.components.button import ButtonEntity
