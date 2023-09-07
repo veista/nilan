@@ -35,9 +35,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unit_id = entry.data["unit_id"]
     com_type = entry.data["com_type"]
     host_ip = entry.data["host_ip"]
-    board_type = entry.data["board_type"]
+    # board_type = entry.data["board_type"]
 
-    device = Device(hass, name, com_type, host_ip, host_port, unit_id, board_type)
+    device = Device(hass, name, com_type, host_ip, host_port, unit_id)
     await device.setup()
 
     hass.data[DOMAIN][entry.entry_id] = device

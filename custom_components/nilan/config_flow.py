@@ -141,6 +141,6 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 self.data.update({"host_ip": None})
                 self.data.update({"board_type": "CTS602"})
                 return self.async_create_entry(title=user_input["name"], data=self.data)
-            return self.async_show_form(
-                step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
-            )
+        return self.async_show_form(
+            step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
+        )
