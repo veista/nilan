@@ -38,7 +38,7 @@ class Device:
             "name": self._device_name,
             "type": self._com_type,
             "method": "rtu",
-            "delay": 1,
+            "delay": 0,
             "port": self._host_port,
             "timeout": 1,
             "close_comm_on_error": "false",
