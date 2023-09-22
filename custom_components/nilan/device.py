@@ -41,9 +41,7 @@ class Device:
             "delay": 0,
             "port": self._host_port,
             "timeout": 1,
-            "close_comm_on_error": "false",
             "retries": 10,
-            "retry_on_empty": "true",
             "host": self._host_ip,
             "parity": "E",
             "baudrate": 19200,
@@ -75,17 +73,15 @@ class Device:
                     if "excluded_bus_versions" in value:
                         if bus_version in value["excluded_bus_versions"]:
                             continue
-                    else:
-                        if "extra_type" in value:
-                            if co2_present and value["extra_type"] == "co2":
-                                self._attributes[entity] = value["entity_type"]
-                            else:
-                                continue
-                        if "max_bus_version" in value:
-                            if bus_version <= value["max_bus_version"]:
-                                self._attributes[entity] = value["entity_type"]
-                        else:
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
                             self._attributes[entity] = value["entity_type"]
+                        else:
+                            continue
+                    if "max_bus_version" in value:
+                        if bus_version >= value["max_bus_version"]:
+                            continue
+                    self._attributes[entity] = value["entity_type"]
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()
 

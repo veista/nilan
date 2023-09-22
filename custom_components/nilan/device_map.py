@@ -549,6 +549,10 @@ CTS602_ENTITY_MAP = {
     "get_air_heat_select": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             4,
             19,
@@ -585,6 +589,10 @@ CTS602_ENTITY_MAP = {
     "get_low_temperature_compressor_start_setpoint": {
         "entity_type": "number",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             4,
             12,
@@ -600,6 +608,10 @@ CTS602_ENTITY_MAP = {
     "get_compressor_stop_time": {
         "entity_type": "number",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             4,
             19,
@@ -676,6 +688,10 @@ CTS602_ENTITY_MAP = {
     "get_central_heat_select": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             12,
             20,
@@ -732,6 +748,10 @@ CTS602_ENTITY_MAP = {
     "get_central_heat_type": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             20,
             21,
@@ -743,6 +763,10 @@ CTS602_ENTITY_MAP = {
     "get_supply_heating_pid_time": {
         "entity_type": "number",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": (
             20,
             21,
@@ -852,16 +876,28 @@ CTS602_ENTITY_MAP = {
     "get_min_supply_step": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": ("all",),
     },
     "get_min_return_step": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": ("all",),
     },
     "get_max_return_step": {
         "entity_type": "select",
         "min_bus_version": 19,
+        "excluded_bus_versions": (
+            20,
+            21,
+        ),
         "supported_devices": ("all",),
     },
     "get_fan_startup_delay": {
