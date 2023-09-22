@@ -1,0 +1,498 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Gerät ist bereits konfiguriert"
+        },
+        "error": {
+            "cannot_connect": "Fehler bei der Verbindung",
+            "invalid_response": "Ungültige Antwort vom Gerät",
+            "unsupported_device": "Gerät wird nicht unterstützt",
+            "unknown": "Unerwarteter Fehler"
+
+        },
+        "step": {
+            "menu": {
+                "title": "Wähle Schnittstellen Typ",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Serial"
+                }
+            },
+            "tcp": {
+                "title": "TCP Konfiguration",
+                "data": {
+                    "name": "Geräte Name",
+                    "host_ip": "IP Addresse",
+                    "host_port": "Port",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "serial": {
+                "title": "Serial Konfiguration",
+                "data": {
+                    "name": "Geräte Name",
+                    "host_port": "Pfad",
+                    "unit_id": "Unit ID"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "compressor": {"name": "Kompressor"},
+            "smoke_alarm": {"name": "Rauch Alarm"},
+            "defrost": {"name": "Auftauen"},
+            "bypass_flap": {"name": "Bypass-Klappe"},
+            "user_selection_1": {"name": "Benutzer Auswahl 1"},
+            "user_selection_2": {"name": "Benutzer Auswahl 2"},
+            "display_led_1": {"name": "Anzeige LED 1"},
+            "display_led_2": {"name": "Anzeige LED 2"},
+            "circulation_pump": {"name": "Umwälzpumpe"},
+            "heater_relay_1": {"name": "Heizungsrelay 1"},
+            "heater_relay_2": {"name": "Heizungsrelay 2"},
+            "heater_relay_3": {"name": "Heizungsrelay 3"}
+        },
+        "button": {
+          "sync_time": {"name": "Synchronisiere Datum und Uhrzeit"}
+        },
+        "climate": {
+          "hvac": {
+            "name": "HVAC",
+            "state": {
+              "auto": "Auto",
+              "cool": "Kühlen",
+              "heat": "Heizen",
+              "off": "Aus"
+            },
+            "state_attributes": {
+              "current_humidity": {
+                "name": "Aktuelle Luftfeuchtigkeit"
+              },
+              "current_temperature": {
+                "name": "Aktuelle Temperatur"
+              },
+              "fan_mode": {
+                "name": "Lüfter Modus"
+              },
+              "fan_modes": {
+                "name": "Lüfter Modi"
+              },
+              "humidity": {
+                "name": "Ziel Luftfeuchtigkeit"
+              },
+              "hvac_action": {
+                "name": "Aktuelle Aktion",
+                "state": {
+                  "off": "Aus",
+                  "cooling": "Kühlen",
+                  "heating": "Heizen",
+                  "drying": "Trocknen",
+                  "idle": "Leerlauf",
+                  "fan": "Lüften"
+                }
+              },
+              "hvac_modes": {
+                "name": "HVAC Modi"
+              },
+              "max_humidity": {
+                "name": "Max Ziel Luftfeuchtigkeit"
+              },
+              "max_temp": {
+                "name": "Max Ziel Temperatur"
+              },
+              "min_humidity": {
+                "name": "Min Ziel Luftfeuchtigkeit"
+              },
+              "min_temp": {
+                "name": "Min Ziel Temperatur"
+              },
+              "preset_mode": {
+                "name": "Voreingestellt",
+                "state": {
+                  "water": "Wasser",
+                  "comfort": "Komfort",
+                  "energy": "Energie"
+                }
+              },
+              "preset_modes": {
+                "name": "Voreinstellungen"
+              },
+              "target_temp_high": {
+                "name": "Obere Ziel Temperatur"
+              },
+              "target_temp_low": {
+                "name": "Untere Ziel Temperatur"
+              },
+              "target_temp_step": {
+                "name": "Ziel Temperatur Schritt"
+              },
+              "temperature": {
+                "name": "Ziel Temperatur"
+              }
+            }
+          }
+        },
+        "number": {
+          "scalding_protection_setpoint": {"name": "Verbrühungsschutz-Sollwert"},
+          "maximum_time_in_high_humidity_ventilation": {"name": "Maximale Zeit für hohe Luftfeutchtigkeitslüftung"},
+          "low_temperature_curve": {"name": "Niedrige Temperaturkurve"},
+          "high_temperature_curve": {"name": "Hohe Temperaturkurve"},
+          "low_temperature_compressor_start_setpoint": {"name": "Start-Sollwert für Kompressor bei Niedrigtemperatur"},
+          "low_outdoor_temp_setpoint": {"name": "Niedrige Außentemperatur Sollwert"},
+          "minimum_supply_air_temperature_in_summer": {"name": "Minimale Zulufttemperatur im Sommer"},
+          "minimum_supply_air_temperature_in_winter": {"name": "Minimale Zulufttemperatur im Winter"},
+          "maximum_supply_air_temperature_in_summer": {"name": "Maximale Zulufttemperatur im Summer"},
+          "maximum_supply_air_temperature_in_winter": {"name": "Maximale Zulufttemperatur im Winter"},
+          "room_temperature_neutral_zone": {"name": "Neutrale Raumtemperaturzone"},
+          "change_to_summer_state_setpoint": {"name": "Sollwert für wechsel in Sommer Status"},
+          "supply_fan_power_at_level_1": {"name": "Lüfterleistung auf Stufe 1 stellen"},
+          "supply_fan_power_at_level_2": {"name": "Lüfterleistung auf Stufe 2 stellen"},
+          "supply_fan_power_at_level_3": {"name": "Lüfterleistung auf Stufe 3 stellen"},
+          "supply_fan_power_at_level_4": {"name": "Lüfterleistung auf Stufe 4 stellen"},
+          "return_fan_power_at_level_1": {"name": "Lüfterleistung auf Stufe 1 zurückstellen"},
+          "return_fan_power_at_level_2": {"name": "Lüfterleistung auf Stufe 2 zurückstellen"},
+          "return_fan_power_at_level_3": {"name": "Lüfterleistung auf Stufe 3 zurückstellen"},
+          "return_fan_power_at_level_4": {"name": "Lüfterleistung auf Stufe 4 zurückstellen"},
+          "fan_start_up_delay": {"name": "Lüfter-Startverzögerung"},
+          "defrost_start_setpoint": {"name": "Abtau Start Sollwert"},
+          "defrost_stop_setpoint": {"name": "Abtau  Stop Sollwert"},
+          "minimum_defrost_time": {"name": "Mindest Abtauzeit"},
+          "maximum_evaporator_defrost_time": {"name": "Maximale Verdampfer-Abtauzeit"},
+          "maximum_outlet_defrost_time": {"name": "Maximale Auslass-Abtauzeit"},
+          "time_between_defrost_cycles": {"name": "Zeit zwischen den Abtauzyklen"},
+          "supply_air_pid_integration_time": {"name": "Zuluft-PID-Integrationszeit"},
+          "compressor_stop_time": {"name": "Stoppzeit des Kompressors"},
+          "co2_low_limit": {"name": "CO2 Untergrenze"},
+          "co2_high_limit": {"name": "CO2 Obergrenze"},
+          "low_room_temperature_setpoint": {"name": "Niedriger Raumtemperatur-Sollwert"},
+          "supply_heater_curve_offset": {"name": "Versatz der Versorgungsheizungskurve"},
+          "central_heating_min_supply_temperature": {"name": "Zentralheizung Min. Versorgungstemperatur"},
+          "central_heating_max_supply_temperature": {"name": "Zentralheizung max. Versorgungstemperatur"},
+          "outdoor_temperature_compensation_curve": {"name": "Außentemperatur-Kompensationskurve"},
+          "supply_heater_delay": {"name": "Verzögerung der Versorgungsheizung"}
+        },
+        "select": {
+            "air_filter_alarm_interval": {
+                "name": "Luftfilter-Alarmintervall",
+                "state": {
+                    "1": "30 Tage",
+                    "2": "90 Tage",
+                    "3": "180 Tage",
+                    "4": "360 Tage"
+                }
+            },
+            "legionella_day": {
+                "name": "Legionellen Tag",
+                "state": {
+                    "0": "Aus",
+                    "1": "Montag",
+                    "2": "Dienstag",
+                    "3": "Mittwoch",
+                    "4": "Donnerstag",
+                    "5": "Freitag",
+                    "6": "Samstag",
+                    "7": "Sonntag"
+                }
+            },
+            "indoor_air_quality_control": {
+                "name": "Kontrolle der Raumluftqualität",
+                "state": {
+                    "0": "Aus",
+                    "1": "Luftfeutchtigkeit",
+                    "2": "Luftfeutchtigkeit + CO2"
+                }
+            },
+            "compressor_heating_priority": {
+                "name": "Priorität der Kompressorheizung",
+                "state": {
+                    "0": "Wasser",
+                    "1": "Luft"
+                }
+            },
+            "cooling_mode_ventilation_level": {
+                "name": "Lüftungsstufe im Kühlmodus",
+                "state": {
+                    "0": "Keine Änderung"
+                }
+            },
+            "cooling_setpoint_offset": {
+                "name": "Offset des Kühlsollwerts",
+                "state": {
+                    "0": "Kühlung deaktiviert"
+                }
+            },
+            "low_humidity_ventilation_level": {"name": "Belüftungsstufe mit niedriger Luftfeuchtigkeit"},
+            "high_humidity_ventilation_level": {"name": "Belüftungsstufe mit hoher Luftfeuchtigkeit"},
+            "hmi_language": {
+                "name": "HMI Sprache",
+                "state": {
+                    "0": "Englisch",
+                    "1": "Deutsch",
+                    "2": "Französisch",
+                    "3": "Schwedisch",
+                    "4": "Dänisch",
+                    "5": "Norwegisch",
+                    "6": "Finnisch",
+                    "7": "Tschechisch",
+                    "8": "Polnisch",
+                    "9": "Italienisch"
+                }
+            },
+            "low_outdoor_temp_ventilation_level": {"name": "Niedrige Außentemperatur-Belüftungsstufe"},
+            "minimum_ventilation_supply_level": {"name": "Minimales Belüftungslevel"},
+            "minimum_ventilation_return_level": {"name": "Minimales Belüftungsrücklauflevel"},
+            "maximum_ventilation_return_level": {"name": "Maximales Belüftungsrücklaufevel"},
+            "co2_high_ventilation_level": {"name": "hohes CO2 Belüftungslevel"},
+            "defrost_ventilation_level": {
+                "name": "Lüftunglevel beim auftauen",
+                "state": {
+                    "0": "Kein",
+                    "1": "Konstanter Fluss",
+                    "2": "Niedriger Fluss"
+                }
+            },
+            "central_heating_type": {
+                "name": "Zentral Heizungstyp",
+                "state": {
+                    "0": "Aus",
+                    "1": "Elektrisch",
+                    "2": "Wärmepumpe",
+                    "3": "Beides"
+                }
+            },
+            "central_heating_mode": {
+                "name": "Zentral Heizungsmodus",
+                "state": {
+                    "0": "Aus",
+                    "1": "Heizen",
+                    "2": "Anforderung"
+                }
+            },
+            "heat_source_select": {
+                "name": "Auswahl der Wärmequelle",
+                "state": {
+                    "0": "Aus",
+                    "1": "Wärmepumpe",
+                    "2": "Wärmepumpe + Nachheizregister",
+                    "3": "Nachheizregister",
+                    "4": "Nachheizregister + Wärmepumpe"
+                }
+            },
+            "pre_heating_effect": {
+                "name": "Vorheizeffekt",
+                "state": {
+                    "0": "Standard",
+                    "1": "Extra"
+                }
+            },
+            "pre_heating_temperature": {
+                "name": "Vorheizeffekt Temperature",
+                "state": {
+                    "0": "Aus"
+                }
+            },
+            "circulation_pump_mode": {
+                "name": "Umwälzpumpen Modus",
+                "state": {
+                    "0": "Energie",
+                    "1": "Kontinuierlich"
+                }
+            },
+            "user_menu_lock": {
+                "name": "Benutzermenü Sperre",
+                "state": {
+                    "0": "Gesperrt",
+                    "1": "Offen",
+                    "2": "Ausschalter deaktivieren"
+                }
+            },
+            "reset_alarm": {
+                "name": "Alarm zurücksetzen",
+                "state": {
+                    "1": "E01 Hardware Fehler",
+                    "2": "E02 Alarm Zeitüberschreitung",
+                    "3": "E03 Feuer Alarm aktiviert",
+                    "4": "E04 Druckschalter",
+                    "5": "E05 Wartungstür geöffnet",
+                    "6": "E06 Fehler beim Abtauen",
+                    "7": "E07 Frost Thermostat",
+                    "8": "E08 Frost Thermostat",
+                    "9": "E09 Übertemperatur im Boiler",
+                    "10": "E10 Übertemperatur bei elektrischem Nachheizregister",
+                    "11": "E11 Niedriger Fluss über das elektrische Nachheizregister",
+                    "12": "E12 Thermoschalter des Lüftungsmotors",
+                    "13": "E13 Elektrischer Warmwasserbereiter überhitzt",
+                    "14": "E14 Sensor defekt",
+                    "15": "E15 Raum Temperatur zu niedrig",
+                    "16": "E16 Software Fehler",
+                    "17": "E17 Überwachungs Warnung",
+                    "18": "E18 Inhalte der Datenbank geändert",
+                    "19": "E19 Luftfilter wechseln",
+                    "20": "E20 Fehler bei der Legionellenbehandlung",
+                    "21": "E21 Prüfe Datum und Uhrzeit",
+                    "22": "E22 Fehler in der Lufttemperatur",
+                    "23": "E23 Fehler bei der Warmwassertemperatur",
+                    "24": "E24 Fehler bei der Zentralheizungstemperatur",
+                    "25": "E25 Fehler beim Kommunikationsmodem",
+                    "26": "E26 Fehler beim Kommunikationsnetzwerk",
+                    "27": "E27 Fehler im Temperatursensor",
+                    "28": "E28 Fehler im Temperatursensor",
+                    "29": "E29 Fehler im Temperatursensor",
+                    "30": "E30 Fehler im Temperatursensor",
+                    "31": "E31 Fehler im Temperatursensor",
+                    "32": "E32 Fehler im Temperatursensor",
+                    "33": "E33 Fehler im Temperatursensor",
+                    "34": "E34 Fehler im Temperatursensor",
+                    "35": "E35 Fehler im Temperatursensor",
+                    "36": "E36 Fehler im Temperatursensor",
+                    "37": "E37 Fehler im Temperatursensor",
+                    "38": "E38 Fehler im Temperatursensor",
+                    "39": "E39 Fehler im Temperatursensor",
+                    "40": "E40 Fehler im Temperatursensor",
+                    "41": "E41 Fehler im Temperatursensor",
+                    "42": "E42 Fehler im Temperatursensor",
+                    "43": "E43 Fehler im Temperatursensor",
+                    "44": "E44 Fehler im Temperatursensor",
+                    "45": "E45 Fehler im Temperatursensor",
+                    "46": "E46 Fehler im Temperatursensor",
+                    "47": "E47 Fehler im Temperatursensor",
+                    "48": "E48 Fehler im Temperatursensor",
+                    "49": "E49 Fehler im Temperatursensor",
+                    "50": "E50 Fehler im Temperatursensor",
+                    "51": "E51 Fehler im Temperatursensor",
+                    "52": "E52 Fehler im Temperatursensor",
+                    "53": "E53 Fehler im Temperatursensor",
+                    "54": "E54 Fehler im Temperatursensor",
+                    "55": "E55 Fehler im Temperatursensor",
+                    "56": "E56 Fehler im Temperatursensor",
+                    "57": "E57 Fehler im Temperatursensor",
+                    "58": "E58 Fehler im Temperatursensor",
+                    "70": "E70 Anoden Fehler",
+                    "71": "E71 Fehler beim Enteisen des Wärmetauschers",
+                    "72": "E72 Ungewöhnlich niedrige Verdampfertemperatur",
+                    "90": "E90 Slave IO",
+                    "91": "E91 Optionsmodul fehlt",
+                    "92": "E92 Backup Fehler",
+                    "95": "E95 Software Update zurückgewiesen",
+                    "96": "E96 Selbsttest-Dämpferfehler",
+                    "255": "Alle Alarme"
+                }
+            }
+        },
+        "sensor": {
+          "controller_board_temperature_t0": {"name": "Temperatur der Controllerplatine (T0)"},
+          "fresh_air_intake_temperature_t1": {"name": "Frischlufteinlasstemperatur (T1)"},
+          "supply_air_temperature_t2": {"name": "Zulufttemperatur (T2)"},
+          "return_air_temperature_t3": {"name": "Rücklufttemperatur (T3)"},
+          "waste_air_temperature_t4": {"name": "Ablufttemperatur (T4)"},
+          "condenser_temperature_t5": {"name": "Kondensattemperatur (T5)"},
+          "waste_air_temperature_t6": {"name": "Ablufttemperatur (T6)"},
+          "supply_air_temperature_t7": {"name": "Zulufttemperatur (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Frischlufteinlasstemperatur (T8)"},
+          "return_air_temperature_t10": {"name": "Rücklufttemperatur (T10)"},
+          "return_water_temperature_t13": {"name": "Rücklaufwassertemperatur (T13)"},
+          "supply_water_temperature_t14": {"name": "Vorlaufwassertemperatur (T14)"},
+          "user_panel_temperature_t15": {"name": "Bedien Panel Temperatur (T15)"},
+          "anode_temperature_t16": {"name": "Anoden Temperatur (T16)"},
+          "central_heating_setpoint": {"name": "Zentralheizungssollwert"},
+          "humidity": {"name": "Luftfeuchtigkeit"},
+          "24h_average_humidity": {"name": "24h-Durchschnittsluftfeuchtigkeit"},
+          "after_heating_element_capacity": {"name": "Nachheizungsregister Kapazität"},
+          "co2_sensor": {"name": "CO2 Sensor"},
+          "control_state": {
+              "name": "Steuerzustand",
+              "state": {
+                "0": "Aus",
+                "1": "Verschiebung",
+                "2": "Stop",
+                "3": "Start",
+                "4": "Standby",
+                "5": "Lüftungs Stop",
+                "6": "Lüftung",
+                "7": "Heizen",
+                "8": "Kühlen",
+                "9": "Heißwasser",
+                "10": "Legionellen",
+                "11": "Kühlen + Heißwasser",
+                "12": "Zentralheizung",
+                "13": "Auftauen",
+                "14": "Frostschutz",
+                "15": "Service",
+                "16": "Alarm",
+                "17": "Heizen + Heißwasser"
+              }
+            },
+          "after_heating_type": {
+              "name": "Nachheizungsregister Typ",
+              "state": {
+                  "0": "kein Nachheizregister",
+                  "1": "Elektrisch",
+                  "2": "Elektrisch auf Binärrelais",
+                  "3": "Wasser"
+              }
+          },
+          "time_in_control_state": {"name": "Zeit im Steuerzustand"},
+          "alarms_active": {"name": "Aktive Alarme"},
+          "days_since_air_filter_change": {"name": "Tage seit dem letzten Filterwechsel"},
+          "days_to_air_filter_change": {"name": "Tage bis zum nächsten Filterwechsel"},
+          "climate_season": {
+              "name": "Klima Saison",
+              "state": {
+                  "0": "Winter",
+                  "1": "Sommer"
+              }
+          },
+          "exchanger_efficiency": {"name": "Wärmetausche Effizienz"},
+          "time": {"name": "Zeit"},
+          "ventilation_state": {
+              "name": "Lüftungs Status",
+              "state": {
+                  "0": "Aus",
+                  "1": "Normal",
+                  "2": "Niedrige Luftfeuchtigkeit",
+                  "3": "Hohe Luftfeuchtigkeit",
+                  "4": "Hoher CO2 Wert",
+                  "5": "Niedrige Raumtemperatur",
+                  "6": "Niedrige Außentemperatur"
+              }
+          },
+          "anode_state": {
+              "name": "Anoden Status",
+              "state": {
+                  "0": "Aus",
+                  "1": "OK",
+                  "2": "Service",
+                  "3": "Fehler"
+              }
+          },
+          "supply_fan_level": {"name": "Zuluftventilator Level"},
+          "return_fan_level": {"name": "Abluftventilator Level"},
+          "return_fan_speed": {"name": "Abluftventilator Geschwindigkeit"},
+          "supply_fan_speed": {"name": "Zuluftventilator Geschwindigkeit"},
+          "display_text_line_1": {"name": "Display Text Zeile 1"},
+          "display_text_line_2": {"name": "Display Text Zeile 2"},
+          "modbus_version": {"name": "ModBus Version"}
+        },
+        "switch": {
+          "supply_air_after_heating": {"name": "Zuluftventilator nach Heizregister"}
+        },
+        "water_heater": {
+          "top_water_heater": {
+            "name": "Oberer Warmwasserbereiter",
+            "state": {
+              "off": "Aus",
+              "idle": "Leerlauf",
+              "heating": "Heizen"
+            }
+          },
+          "bottom_water_heater": {
+            "name": "Unterer Warmwasserbereiter",
+            "state": {
+                "off": "Aus",
+                "idle": "Leerlauf",
+                "heating": "Heizen"
+            }
+          }
+        }
+      }
+    }
