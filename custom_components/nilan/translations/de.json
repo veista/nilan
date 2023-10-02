@@ -195,7 +195,7 @@
                 }
             },
             "indoor_air_quality_control": {
-                "name": "Kontrolle der Raumluftqualität",
+                "name": "Steuerung der Raumluftqualität",
                 "state": {
                     "0": "Aus",
                     "1": "Luftfeuchtigkeit",
@@ -239,12 +239,12 @@
                 }
             },
             "low_outdoor_temp_ventilation_level": {"name": "Niedrige Außentemperatur-Belüftungsstufe"},
-            "minimum_ventilation_supply_level": {"name": "Minimales Belüftungslevel"},
-            "minimum_ventilation_return_level": {"name": "Minimales Belüftungsrücklauflevel"},
-            "maximum_ventilation_return_level": {"name": "Maximales Belüftungsrücklaufevel"},
-            "co2_high_ventilation_level": {"name": "hohes CO2 Belüftungslevel"},
+            "minimum_ventilation_supply_level": {"name": "Minimale Belüftungsstufe"},
+            "minimum_ventilation_return_level": {"name": "Minimale Belüftungsrücklaufstufe"},
+            "maximum_ventilation_return_level": {"name": "Maximale Belüftungsrücklaufstufe"},
+            "co2_high_ventilation_level": {"name": "hohes CO2 Belüftungsstufe"},
             "defrost_ventilation_level": {
-                "name": "Lüftunglevel beim auftauen",
+                "name": "Lüftungstufe beim auftauen",
                 "state": {
                     "0": "Kein",
                     "1": "Konstanter Fluss",
@@ -465,8 +465,8 @@
                   "3": "Fehler"
               }
           },
-          "supply_fan_level": {"name": "Zuluftventilator Level"},
-          "return_fan_level": {"name": "Abluftventilator Level"},
+          "supply_fan_level": {"name": "Zuluftventilator Stufe"},
+          "return_fan_level": {"name": "Abluftventilator Stufe"},
           "return_fan_speed": {"name": "Abluftventilator Geschwindigkeit"},
           "supply_fan_speed": {"name": "Zuluftventilator Geschwindigkeit"},
           "display_text_line_1": {"name": "Display Text Zeile 1"},
