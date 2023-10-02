@@ -134,7 +134,7 @@
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Verbrühungsschutz-Sollwert"},
-          "maximum_time_in_high_humidity_ventilation": {"name": "Maximale Zeit für hohe Luftfeutchtigkeitslüftung"},
+          "maximum_time_in_high_humidity_ventilation": {"name": "Maximale Zeit für hohe Luftfeuchtigkeitslüftung"},
           "low_temperature_curve": {"name": "Niedrige Temperaturkurve"},
           "high_temperature_curve": {"name": "Hohe Temperaturkurve"},
           "low_temperature_compressor_start_setpoint": {"name": "Start-Sollwert für Kompressor bei Niedrigtemperatur"},
@@ -198,8 +198,8 @@
                 "name": "Kontrolle der Raumluftqualität",
                 "state": {
                     "0": "Aus",
-                    "1": "Luftfeutchtigkeit",
-                    "2": "Luftfeutchtigkeit + CO2"
+                    "1": "Luftfeuchtigkeit",
+                    "2": "Luftfeuchtigkeit + CO2"
                 }
             },
             "compressor_heating_priority": {
@@ -442,7 +442,7 @@
                   "1": "Sommer"
               }
           },
-          "exchanger_efficiency": {"name": "Wärmetausche Effizienz"},
+          "exchanger_efficiency": {"name": "Wärmetauscher Effizienz"},
           "time": {"name": "Zeit"},
           "ventilation_state": {
               "name": "Lüftungs Status",
