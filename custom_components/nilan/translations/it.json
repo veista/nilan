@@ -92,7 +92,7 @@
                 }
               },
               "hvac_modes": {
-                "name": "HVAC modes"
+                "name": "Modalità HVAC"
               },
               "max_humidity": {
                 "name": "Umidità massima desiderata"
