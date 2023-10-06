@@ -1,0 +1,498 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Dispositivo già configurato"
+        },
+        "error": {
+            "cannot_connect": "Connessione fallita",
+            "invalid_response": "Risposta non valida dal dispositivo",
+            "unsupported_device": "Dispositivo non supportato",
+            "unknown": "Errore inaspettato"
+
+        },
+        "step": {
+            "menu": {
+                "title": "Selezione tipo di interfaccia",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Seriale"
+                }
+            },
+            "tcp": {
+                "title": "Configurazione TCP",
+                "data": {
+                    "name": "Nome del dispositivo",
+                    "host_ip": "Indirizzo IP",
+                    "host_port": "Porta",
+                    "unit_id": "ID unità"
+                }
+            },
+            "serial": {
+                "title": "Configurazione porta seriale",
+                "data": {
+                    "name": "Nome del dispositivo",
+                    "host_port": "Percorso",
+                    "unit_id": "ID unità"
+                }
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "compressor": {"name": "Compressore"},
+            "smoke_alarm": {"name": "Allarme antincendio"},
+            "defrost": {"name": "Defrost"},
+            "bypass_flap": {"name": "Valvola bypass"},
+            "user_selection_1": {"name": "Configurazione utente 1"},
+            "user_selection_2": {"name": "Configurazione utente 2"},
+            "display_led_1": {"name": "Display LED 1"},
+            "display_led_2": {"name": "Display LED 2"},
+            "circulation_pump": {"name": "Pompa di circolazione"},
+            "heater_relay_1": {"name": "Relè riscaldatore 1"},
+            "heater_relay_2": {"name": "Relè riscaldatore 2"},
+            "heater_relay_3": {"name": "Relè riscaldatore 3"}
+        },
+        "button": {
+          "sync_time": {"name": "Sicronizza orario e data"}
+        },
+        "climate": {
+          "hvac": {
+            "name": "HVAC",
+            "state": {
+              "auto": "Automatico",
+              "cool": "Raffrescamento",
+              "heat": "Riscaldamento",
+              "off": "Spento"
+            },
+            "state_attributes": {
+              "current_humidity": {
+                "name": "Umidità attuale"
+              },
+              "current_temperature": {
+                "name": "Temperatura attuale"
+              },
+              "fan_mode": {
+                "name": "Modalità ventola"
+              },
+              "fan_modes": {
+                "name": "Modalità ventole"
+              },
+              "humidity": {
+                "name": "Umidità desiderata"
+              },
+              "hvac_action": {
+                "name": "Stato attuale",
+                "state": {
+                  "off": "Spento",
+                  "cooling": "Raffrescamento",
+                  "heating": "Riscaldamento",
+                  "drying": "Asciugatura",
+                  "idle": "Stand-by",
+                  "fan": "Ventola"
+                }
+              },
+              "hvac_modes": {
+                "name": "HVAC modes"
+              },
+              "max_humidity": {
+                "name": "Umidità massima desiderata"
+              },
+              "max_temp": {
+                "name": "Temperatura massima desiderata"
+              },
+              "min_humidity": {
+                "name": "Umidità minima desiderata"
+              },
+              "min_temp": {
+                "name": "Temperatura minima desiderata"
+              },
+              "preset_mode": {
+                "name": "Preset",
+                "state": {
+                  "water": "Acqua",
+                  "comfort": "Benessere",
+                  "energy": "Energia"
+                }
+              },
+              "preset_modes": {
+                "name": "Presets"
+              },
+              "target_temp_high": {
+                "name": "Temperatura desiderata superiore"
+              },
+              "target_temp_low": {
+                "name": "Temperatura desiderata inferiore"
+              },
+              "target_temp_step": {
+                "name": "Passo temperatura impostata"
+              },
+              "temperature": {
+                "name": "Temperatura desiderata"
+              }
+            }
+          }
+        },
+        "number": {
+          "scalding_protection_setpoint": {"name": "Punto temperatura antiscottatura"},
+          "maximum_time_in_high_humidity_ventilation": {"name": "Tempo massimo in ventilazione per alta umidità"},
+          "low_temperature_curve": {"name": "Curva basse temperatura"},
+          "high_temperature_curve": {"name": "Curva alte temperatura"},
+          "low_temperature_compressor_start_setpoint": {"name": "Punto di start compressore bassa temperatura"},
+          "low_outdoor_temp_setpoint": {"name": "Punto bassa temperatura esterna"},
+          "minimum_supply_air_temperature_in_summer": {"name": "Minima temperatura aria in immissione estiva"},
+          "minimum_supply_air_temperature_in_winter": {"name": "Minima temperatura aria in immissione invernale"},
+          "maximum_supply_air_temperature_in_summer": {"name": "Massima temperatura aria in immissione estiva"},
+          "maximum_supply_air_temperature_in_winter": {"name": "Massima temperatura aria in immissione invernale"},
+          "room_temperature_neutral_zone": {"name": "Temperatura stanza zona neutra"},
+          "change_to_summer_state_setpoint": {"name": "Punto di cambio modalità estiva"},
+          "supply_fan_power_at_level_1": {"name": "Potenza ventola immissione livello 1"},
+          "supply_fan_power_at_level_2": {"name": "Potenza ventola immissione livello 2"},
+          "supply_fan_power_at_level_3": {"name": "Potenza ventola immissione livello 3"},
+          "supply_fan_power_at_level_4": {"name": "Potenza ventola immissione livello 4"},
+          "return_fan_power_at_level_1": {"name": "Potenza ventola estrazione livello 1"},
+          "return_fan_power_at_level_2": {"name": "Potenza ventola estrazione livello 2"},
+          "return_fan_power_at_level_3": {"name": "Potenza ventola estrazione livello 3"},
+          "return_fan_power_at_level_4": {"name": "Potenza ventola estrazione livello 4"},
+          "fan_start_up_delay": {"name": "Ritardo start-up ventola"},
+          "defrost_start_setpoint": {"name": "Punto d'inizio defrost"},
+          "defrost_stop_setpoint": {"name": "Punto d'arresto defrost"},
+          "minimum_defrost_time": {"name": "Tempo defrost minimo"},
+          "maximum_evaporator_defrost_time": {"name": "Tempo massimo defrost evaporatore"},
+          "maximum_outlet_defrost_time": {"name": "Tempo massimo defrost outlet"},
+          "time_between_defrost_cycles": {"name": "Tempo tra cicli di defrost"},
+          "supply_air_pid_integration_time": {"name": "Aria immissione tempo integrazione PID +"},
+          "compressor_stop_time": {"name": "Tempo stop compressore"},
+          "co2_low_limit": {"name": "CO2 limite inferiore"},
+          "co2_high_limit": {"name": "CO2 limite superiore"},
+          "low_room_temperature_setpoint": {"name": "Punto temperatura stanza bassa"},
+          "supply_heater_curve_offset": {"name": "Offset curva riscaldatore di immissione"},
+          "central_heating_min_supply_temperature": {"name": "Temperatura minima di immissione riscaldamento centrale"},
+          "central_heating_max_supply_temperature": {"name": "Temperatura minima di immissione riscaldamento centrale"},
+          "outdoor_temperature_compensation_curve": {"name": "Curva compensazione temperatura esterna"},
+          "supply_heater_delay": {"name": "Ritardo riscaldatore di immissione"}
+        },
+        "select": {
+            "air_filter_alarm_interval": {
+                "name": "Allarme intervallo filtro aria",
+                "state": {
+                    "1": "30 giorni",
+                    "2": "90 giorni",
+                    "3": "180 giorni",
+                    "4": "360 giorni"
+                }
+            },
+            "legionella_day": {
+                "name": "Giorno antilegionella",
+                "state": {
+                    "0": "Spento",
+                    "1": "Lunedì",
+                    "2": "Martedì",
+                    "3": "Mercoledì",
+                    "4": "Giovedì",
+                    "5": "Venerdì",
+                    "6": "Sabato",
+                    "7": "Domenica"
+                }
+            },
+            "indoor_air_quality_control": {
+                "name": "Controllo qualità aria interna",
+                "state": {
+                    "0": "Spento",
+                    "1": "Umidità",
+                    "2": "Umidità + CO2"
+                }
+            },
+            "compressor_heating_priority": {
+                "name": "Priorità di riscaldamento del compressore",
+                "state": {
+                    "0": "Acqua",
+                    "1": "Aria"
+                }
+            },
+            "cooling_mode_ventilation_level": {
+                "name": "Livello ventilazione modalità raffrescamento",
+                "state": {
+                    "0": "Nessun cambiamento"
+                }
+            },
+            "cooling_setpoint_offset": {
+                "name": "Punto di offset raffrescamento",
+                "state": {
+                    "0": "Raffrescamento disabilitato"
+                }
+            },
+            "low_humidity_ventilation_level": {"name": "Livello ventilazione umidità bassa"},
+            "high_humidity_ventilation_level": {"name": "Livello ventilazione umidità alta"},
+            "hmi_language": {
+                "name": "Lingua IUM",
+                "state": {
+                    "0": "English",
+                    "1": "Deutsch",
+                    "2": "Français",
+                    "3": "Svenska",
+                    "4": "Dansk",
+                    "5": "Norsk",
+                    "6": "Suomi",
+                    "7": "Čeština",
+                    "8": "Polski",
+                    "9": "Italiano"
+                }
+            },
+            "low_outdoor_temp_ventilation_level": {"name": "Livello ventilazione temperatura esterna bassa"},
+            "minimum_ventilation_supply_level": {"name": "Livello ventilazione minima immissione"},
+            "minimum_ventilation_return_level": {"name": "Livello ventilazione minima estrazione"},
+            "maximum_ventilation_return_level": {"name": "Livello ventilazione massima estrazione"},
+            "co2_high_ventilation_level": {"name": "Livello ventilazione CO2 alta"},
+            "defrost_ventilation_level": {
+                "name": "Livello ventilazione defrost",
+                "state": {
+                    "0": "Nessuno",
+                    "1": "Flusso Costante",
+                    "2": "Flusso Basso"
+                }
+            },
+            "central_heating_type": {
+                "name": "Tipologia riscaldamento centralizzato",
+                "state": {
+                    "0": "Spento",
+                    "1": "Elettrico",
+                    "2": "Pompa di calore",
+                    "3": "Entrambi"
+                }
+            },
+            "central_heating_mode": {
+                "name": "Modalità riscaldamento centralizzato",
+                "state": {
+                    "0": "Spento",
+                    "1": "Riscaldamento",
+                    "2": "Richiesta"
+                }
+            },
+            "heat_source_select": {
+                "name": "Selezione fonte riscaldamento",
+                "state": {
+                    "0": "Spento",
+                    "1": "Pompa di calore",
+                    "2": "Pompa di Calore + Postriscaldamento",
+                    "3": "Postriscaldamento",
+                    "4": "Postriscaldamento + Pompa di calore"
+                }
+            },
+            "pre_heating_effect": {
+                "name": "Effetto Preriscaldamento",
+                "state": {
+                    "0": "Standard",
+                    "1": "Extra"
+                }
+            },
+            "pre_heating_temperature": {
+                "name": "Temperatura preriscaldamento",
+                "state": {
+                    "0": "Spento"
+                }
+            },
+            "circulation_pump_mode": {
+                "name": "Modalità circolazione pompa",
+                "state": {
+                    "0": "Energia",
+                    "1": "Continuato"
+                }
+            },
+            "user_menu_lock": {
+                "name": "Blocco menù utente",
+                "state": {
+                    "0": "Bloccato",
+                    "1": "Sbloccato",
+                    "2": "Disabilita chiave spegnimento"
+                }
+            },
+            "reset_alarm": {
+                "name": "Reset allarme",
+                "state": {
+                    "1": "E01 Errore hardware",
+                    "2": "E02 Timeout allarme",
+                    "3": "E03 Allarme incendio attivato",
+                    "4": "E04 Interruttore pressione",
+                    "5": "E05 Porta ispezione aperta",
+                    "6": "E06 Errore sbrinamento",
+                    "7": "E07 Termostato congelato",
+                    "8": "E08 Termostato congelato",
+                    "9": "E09 Temperatura caldaia troppo elevata",
+                    "10": "E10 Postriscaldamento elettrico troppo caldo",
+                    "11": "E11 Basso flusso sulla resistenza ad immersione elettrica",
+                    "12": "E12 Interruttore termico motore ventilazione",
+                    "13": "E13 Temperatura resitenza ad immersione troppo elevata",
+                    "14": "E14 Sensore difettoso",
+                    "15": "E15 Temperatura stanza troppo bassa",
+                    "16": "E16 Errore software",
+                    "17": "E17 Allarme Watchdog",
+                    "18": "E18 Cambio contenuto del database",
+                    "19": "E19 Cambiare filtro aria",
+                    "20": "E20 Errore durante il trattamento antilegionella",
+                    "21": "E21 Controllare data e ora",
+                    "22": "E22 Errore temperatura dell'aria",
+                    "23": "E23 Errore temperatura acqua calda",
+                    "24": "E24 Errore temperatura riscaldamento centralizzato",
+                    "25": "E25 Errore modem",
+                    "26": "E26 Errore di rete",
+                    "27": "E27 Errore sensore di temperatura",
+                    "28": "E28 Errore sensore di temperatura",
+                    "29": "E29 Errore sensore di temperatura",
+                    "30": "E30 Errore sensore di temperatura",
+                    "31": "E31 Errore sensore di temperatura",
+                    "32": "E32 Errore sensore di temperatura",
+                    "33": "E33 Errore sensore di temperatura",
+                    "34": "E34 Errore sensore di temperatura",
+                    "35": "E35 Errore sensore di temperatura",
+                    "36": "E36 Errore sensore di temperatura",
+                    "37": "E37 Errore sensore di temperatura",
+                    "38": "E38 Errore sensore di temperatura",
+                    "39": "E39 Errore sensore di temperatura",
+                    "40": "E40 Errore sensore di temperatura",
+                    "41": "E41 Errore sensore di temperatura",
+                    "42": "E42 Errore sensore di temperatura",
+                    "43": "E43 Errore sensore di temperatura",
+                    "44": "E44 Errore sensore di temperatura",
+                    "45": "E45 Errore sensore di temperatura",
+                    "46": "E46 Errore sensore di temperatura",
+                    "47": "E47 Errore sensore di temperatura",
+                    "48": "E48 Errore sensore di temperatura",
+                    "49": "E49 Errore sensore di temperatura",
+                    "50": "E50 Errore sensore di temperatura",
+                    "51": "E51 Errore sensore di temperatura",
+                    "52": "E52 Errore sensore di temperatura",
+                    "53": "E53 Errore sensore di temperatura",
+                    "54": "E54 Errore sensore di temperatura",
+                    "55": "E55 Errore sensore di temperatura",
+                    "56": "E56 Errore sensore di temperatura",
+                    "57": "E57 Errore sensore di temperatura",
+                    "58": "E58 Errore sensore di temperatura",
+                    "70": "E70 Errore anodo",
+                    "71": "E71 Errore sbrinamento scambiatore di calore",
+                    "72": "E72 Temperatura evaporatore troppo bassa",
+                    "90": "E90 Slave IO",
+                    "91": "E91 Modulo opzionale mancante",
+                    "92": "E92 Errore backup",
+                    "95": "E95 Software Update rigettato",
+                    "96": "E96 Errore damper Self-Test",
+                    "255": "Tutti gli allarmi"
+                }
+            }
+        },
+        "sensor": {
+          "controller_board_temperature_t0": {"name": "Temperatura scheda di controllo (T0)"},
+          "fresh_air_intake_temperature_t1": {"name": "Temperatura aria esterna (T1)"},
+          "supply_air_temperature_t2": {"name": "Temperatura aria in immissione (T2)"},
+          "return_air_temperature_t3": {"name": "Temperatura aria in estrazione (T3)"},
+          "waste_air_temperature_t4": {"name": "Temperatura aria di scarto (dopo scambiatore di calore) (T4)"},
+          "condenser_temperature_t5": {"name": "Temperatura condensatore (T5)"},
+          "waste_air_temperature_t6": {"name": "Temperatura aria di scarto (dopo il condensatore) (T6)"},
+          "supply_air_temperature_t7": {"name": "Temperatura aria immissione (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Temperatura aria esterna (T8)"},
+          "return_air_temperature_t10": {"name": "Temperatura aria in estrazione (T10)"},
+          "return_water_temperature_t13": {"name": "Temperature acqua ritorno (T13)"},
+          "supply_water_temperature_t14": {"name": "Temperatura acqua mandata (T14)"},
+          "user_panel_temperature_t15": {"name": "Temperatura pannello di controllo (T15)"},
+          "anode_temperature_t16": {"name": "Temperatura anodo (T16)"},
+          "central_heating_setpoint": {"name": "Setpoint riscaldamento centralizzato"},
+          "humidity": {"name": "Umidità"},
+          "24h_average_humidity": {"name": "Umidità media 24 ore"},
+          "after_heating_element_capacity": {"name": "Capacità elemento postriscaldamento"},
+          "co2_sensor": {"name": "Sensore CO2"},
+          "control_state": {
+              "name": "Stato",
+              "state": {
+                "0": "Spento",
+                "1": "Shift",
+                "2": "Stop",
+                "3": "Start",
+                "4": "Standby",
+                "5": "Stop ventilazione",
+                "6": "Ventilazione",
+                "7": "Riscaldamento",
+                "8": "Raffrescamento",
+                "9": "Acqua calda",
+                "10": "Antilegionella",
+                "11": "Raffrescamento + acqua calda",
+                "12": "Riscaldamento Centralizzato",
+                "13": "Sbrinamento",
+                "14": "Anti brina",
+                "15": "Manutenzione",
+                "16": "Allarme",
+                "17": "Riscaldamento + acqua calda"
+              }
+            },
+          "after_heating_type": {
+              "name": "Tipo postriscaldamento",
+              "state": {
+                  "0": "Nessun riscaldamento",
+                  "1": "Elettrico",
+                  "2": "Elettrico con relè binari",
+                  "3": "Acqua"
+              }
+          },
+          "time_in_control_state": {"name": "Stato tempo di controllo"},
+          "alarms_active": {"name": "Allarmi attivi"},
+          "days_since_air_filter_change": {"name": "Giorni dal cambio filtri aria"},
+          "days_to_air_filter_change": {"name": "Giorni al cambio filtri aria"},
+          "climate_season": {
+              "name": "Modalità stagione",
+              "state": {
+                  "0": "Inverno",
+                  "1": "Estate"
+              }
+          },
+          "exchanger_efficiency": {"name": "Efficienza scambiatore"},
+          "time": {"name": "Ora"},
+          "ventilation_state": {
+              "name": "Modalità ventilazione",
+              "state": {
+                  "0": "Spento",
+                  "1": "Normale",
+                  "2": "Bassa umidità",
+                  "3": "Alta umidità",
+                  "4": "Alta CO2",
+                  "5": "Temperatura stanza bassa",
+                  "6": "Temperatura esterna bassa"
+              }
+          },
+          "anode_state": {
+              "name": "Stato anodo",
+              "state": {
+                  "0": "Spento",
+                  "1": "OK",
+                  "2": "Manutenzione",
+                  "3": "Errore"
+              }
+          },
+          "supply_fan_level": {"name": "Livello ventola immissione"},
+          "return_fan_level": {"name": "Livello ventola estrazione"},
+          "return_fan_speed": {"name": "Velocità ventola estrazione"},
+          "supply_fan_speed": {"name": "Velocità ventola immissione"},
+          "display_text_line_1": {"name": "Testo display linea 1"},
+          "display_text_line_2": {"name": "Testo display linea 2"},
+          "modbus_version": {"name": "Versione ModBus"}
+        },
+        "switch": {
+          "supply_air_after_heating": {"name": "Aria immissione dopo riscaldamento"}
+        },
+        "water_heater": {
+          "top_water_heater": {
+            "name": "Riscaldatore ad immersione scaldabagno (alto)",
+            "state": {
+              "off": "Spento",
+              "idle": "Inattivo",
+              "heating": "Riscaldamento"
+            }
+          },
+          "bottom_water_heater": {
+            "name": "Pompa di calore scaldabagno (basso)",
+            "state": {
+                "off": "Spento",
+                "idle": "Inattivo",
+                "heating": "Riscaldamento"
+            }
+          }
+        }
+      }
+    }
