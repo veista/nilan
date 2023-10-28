@@ -1,6 +1,6 @@
 {
   "name": "Nilan",
-  "homeassistant": "2023.9.0",
+  "homeassistant": "2023.10.0",
   "render_readme": true,
   "content_in_root": false
 }
