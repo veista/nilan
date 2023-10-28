@@ -64,6 +64,9 @@ class Device:
             if bus_version is None:
                 self._modbus.async_close()
                 raise ValueError("bus_version returned None")
+        else:
+            self._modbus.async_close()
+            raise ValueError("Modbus setup was unsuccessful")
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
             self._device_type = CTS602_DEVICE_TYPES[hw_type]
