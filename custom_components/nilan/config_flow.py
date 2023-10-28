@@ -63,6 +63,9 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
     if hasattr(result, "message"):
         client.close()
         raise ValueError("invalid_response")
+    if len(result.registers) == 0:
+        client.close()
+        raise ValueError("invalid_response")
     value_output = int.from_bytes(
         result.registers[0].to_bytes(2, "little", signed=False),
         "little",

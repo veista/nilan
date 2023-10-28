@@ -57,7 +57,13 @@ class Device:
         success = await self._modbus.async_setup()
         if success:
             hw_type = await self.get_machine_type()
+            if hw_type is None:
+                self._modbus.async_close()
+                raise ValueError("hw_type returned None")
             bus_version = await self.get_bus_version()
+            if bus_version is None:
+                self._modbus.async_close()
+                raise ValueError("bus_version returned None")
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
             self._device_type = CTS602_DEVICE_TYPES[hw_type]
@@ -82,6 +88,9 @@ class Device:
                         if bus_version >= value["max_bus_version"]:
                             continue
                     self._attributes[entity] = value["entity_type"]
+        else:
+            self._modbus.async_close()
+            raise ValueError("HW type not supported")
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()
 

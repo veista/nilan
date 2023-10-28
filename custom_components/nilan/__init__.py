@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.entity import Entity
 
 from .device import Device
@@ -38,8 +39,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # board_type = entry.data["board_type"]
 
     device = Device(hass, name, com_type, host_ip, host_port, unit_id)
-    await device.setup()
-
+    try:
+        await device.setup()
+    except ValueError as ex:
+        raise ConfigEntryNotReady(f"Timeout while connecting {host_ip}") from ex
     hass.data[DOMAIN][entry.entry_id] = device
 
     hass.async_create_task(
