@@ -345,3 +345,130 @@ class CTS602HoldingRegisters:
     air_temp_room_response = 4110
     preheat_defrost = 4111
     preheat_temp_set = 4112
+
+
+class CTS700NewHoldingRegisters:
+    """CTS700 Registers"""
+
+    reset_target_board = 20000
+    plc_clarification_of_addressing_1 = 20002
+    plc_clarification_of_addressing_2 = 20003
+    request_data_save = 20004
+
+    set_ventilation_on_pause = 20100
+
+    air_filter_days_between_filter_change = 20102
+    air_filter_days_to_filter_change = 20103
+
+    operating_mode = 20120
+
+    fan_speed_level_1_supply_air = 20140
+    fan_speed_level_1_extract_air = 20141
+    fan_speed_level_1_supply_air = 20142
+    fan_speed_level_1_extract_air = 20143
+    fan_speed_level_1_supply_air = 20144
+    fan_speed_level_1_extract_air = 20145
+    fan_speed_level_1_supply_air = 20146
+    fan_speed_level_1_extract_air = 20147
+
+    low_humidity_level = 20160
+    fan_speed_at_low_humidity = 20161
+    fan_speed_at_high_humidity = 20162
+    timeout_high_humidity = 20163
+    average_humidity = 20164
+
+    allow_active_cooling = 20180
+    high_fan_speed_when_cooling = 20181
+    fan_speed_when_cooling = 20182
+    minimum_cooling_supply_temp = 20183
+    cooling_priority_to_hot_water = 20184
+
+    low_fan_speed_at_low_outdoor_temp = 20200
+    below_outdoor_temperature = 20201
+    fan_speed_at_low_outdoor_temperature = 20202
+
+    co2_level_fan_speed_2 = 20220
+    co2_level_fan_speed_3 = 20221
+    co2_level_fan_speed_4 = 20222
+
+    after_heating_element_type = 20240
+    min_supply_air_temperature = 20241
+    max_supply_air_temperature = 20242
+
+    wanted_room_temperature = 20260
+    summer_winter_mode_switch = 20261
+    offset_summer_winter_switch = 20262
+    master_sensor_indoor_temperature = 20263
+    temperature_regulation_deadband = 20264
+    bypass_damper_offset = 20266
+    external_room_regulation_deadband = 20267
+
+    text_room_temperature = 20280
+    text_room_temperature_state = 20281
+    t1_outdoor_air_temperature = 20282
+    t1_outdoor_air_temperature_state = 20283
+    t2_supply_air_temperature = 20284
+    t2_supply_air_temperature_state = 20285
+    t3_extract_air_temperature = 20286
+    t3_extract_air_temperature_state = 20287
+    t4_discharge_air_after_heat_exchanger = 20288
+    t4_discharge_air_after_heat_exchanger_state = 20289
+    t5_discharge_air_after_heat_pump = 20290
+    t5_discharge_air_after_heat_pump_state = 20291
+    t6_evaporator_temperature = 20292
+    t6_evaporator_temperature_state = 20293
+    t7_supply_air_temperature_after_heater = 20294
+    t7_supply_air_temperature_after_heater_state = 20295
+    t8_outdoor_air_before_pre_heater = 20296
+    t8_outdoor_air_before_pre_heater_state = 20297
+    t9_temperature_in_water_after_heater = 20298
+    t9_temperature_in_water_after_heater_state = 20299
+
+    frost_protection = 20300
+
+    t8_temperature_sensor = 20320
+
+    start_frost_protection_below = 20340
+    set_point_for_pre_heater_t4 = 20341
+
+    ehd_offset = 20360
+    ehd_hold_time = 20361
+    ehd_stabilisation_time = 20362
+
+    bah_under_temperature = 20380
+    bah_above_temperature = 20381
+    bah_regulation_deadband = 20382
+
+    he_outdoor_temperature_for_de_icing = 20400
+    he_maximum_time_de_icing = 20401
+    he_minimum_time_between_de_icing = 20402
+    he_extract_fan_speed_during_de_icing = 20403
+    he_supply_fan_speed_during_de_icing = 20404
+
+    hp_evaporator_defrost_t6 = 20420
+    hp_maximum_time_de_icing = 20421
+    hp_minimum_time_between_de_icing = 20422
+    hp_start_de_icing = 20423
+    hp_stop_de_icing = 20424
+
+    pause_hot_water_production = 20440
+    pause_duration_days = 20441
+
+    hot_water_set_point = 20460
+    frost_protection_hot_water_tank = 20461
+    el_supplement_activated_below = 20462
+    scalding_protection = 20463
+    electrical_supplement_heater = 20464
+
+    start_anti_legionella_manual = 20480
+    automatic_anti_legionella = 20481
+    day_for_anti_legionella = 20482
+    time_for_anti_legionella = 20483
+
+    minimum_time_between_start_up = 20500
+    time_between_stop_and_start_up = 20501
+
+    t11_top_temperature_in_dhw_water_tank = 20520
+    t11_top_state_in_dhw_water_tank = 20521
+    t12_bottom_temperature_in_dhw_water_tank = 20522
+    t12_bottom_state_in_dhw_water_tank = 20523
