@@ -13,6 +13,7 @@ CTS602_DEVICE_TYPES = {
     33: "COMBI 300 N",
     35: "COMBI 302",
     36: "COMBI 302 T",
+    38: "VGU180 ek",
 }
 
 CTS602_ENTITY_MAP = {
@@ -64,6 +65,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_t2_inlet_temperature": {
@@ -98,6 +100,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_t6_evaporator_temperature": {
@@ -113,6 +116,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_t7_inlet_temperature_after_heater": {
@@ -147,6 +151,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_t11_electric_water_heater_temperature": {
@@ -157,6 +162,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_t12_compressor_water_heater_temperature": {
@@ -167,6 +173,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_t13_return_temperature": {
@@ -180,6 +187,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             20,
             21,
+            38,
         ),
     },
     "get_t15_user_panel_temperature": {
@@ -276,6 +284,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_central_heating_setpoint": {
@@ -355,6 +364,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_electric_water_heater_state": {
@@ -365,6 +375,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_circulation_pump_state": {
@@ -412,6 +423,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_return_fan_speed": {
@@ -468,6 +480,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_cooling_mode_ventilation_step": {
@@ -482,6 +495,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_air_filter_alarm_interval": {
@@ -501,6 +515,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_min_supply_air_summer_setpoint": {
@@ -525,6 +540,7 @@ CTS602_ENTITY_MAP = {
             21,
             25,
             31,
+            38,
         ),
     },
     "get_max_supply_air_winter_setpoint": {
@@ -539,6 +555,7 @@ CTS602_ENTITY_MAP = {
             21,
             25,
             31,
+            38,
         ),
     },
     "get_summer_state_change_setpoint": {
@@ -562,6 +579,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_low_temperature_curve": {
@@ -573,6 +591,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_high_temperature_curve": {
@@ -584,6 +603,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_low_temperature_compressor_start_setpoint": {
@@ -603,6 +623,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_compressor_stop_time": {
@@ -621,6 +642,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_electric_water_heater_setpoint": {
@@ -631,6 +653,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_compressor_water_heater_setpoint": {
@@ -641,6 +664,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_compressor_priority": {
@@ -650,6 +674,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_scalding_protection_setpoint": {
@@ -660,6 +685,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_legionella_day": {
@@ -669,6 +695,7 @@ CTS602_ENTITY_MAP = {
             19,
             20,
             21,
+            38,
         ),
     },
     "get_external_heating_offset": {
@@ -683,6 +710,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_central_heat_select": {
@@ -909,6 +937,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_defrost_ventilation_level": {
@@ -920,6 +949,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_time_between_defrost": {
@@ -942,6 +972,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_defrost_stop_setpoint": {
@@ -956,6 +987,7 @@ CTS602_ENTITY_MAP = {
             33,
             35,
             36,
+            38,
         ),
     },
     "get_maximum_compressor_defrost_time": {
@@ -983,6 +1015,7 @@ CTS602_ENTITY_MAP = {
             20,
             21,
             25,
+            38,
         ),
     },
     "get_supply_power_at_level_1": {

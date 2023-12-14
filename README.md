@@ -16,6 +16,7 @@ CTS602 supported devices (as typed in HMI menu):
 - COMBI 300 N
 - COMBI 302
 - COMBI 302 T
+- VGU180 ek
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
