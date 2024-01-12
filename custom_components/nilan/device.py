@@ -41,7 +41,6 @@ class Device:
             "delay": 0,
             "port": self._host_port,
             "timeout": 1,
-            "retries": 10,
             "host": self._host_ip,
             "parity": "E",
             "baudrate": 19200,
