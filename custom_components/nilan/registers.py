@@ -90,6 +90,40 @@ class CTS602InputRegisters:
 
     central_heat_heat_ext_set = 1800
 
+    hps_input_t17_supply = 1900
+    hps_input_t16_return = 1901
+    hps_input_t22_shw_bot = 1902
+    hps_input_t20_ambient = 1903
+    hps_input_t15_room = 1904
+    hps_input_t14_supply = 1905
+    hps_input_hp_switch = 1906
+    hps_input_lp_switch = 1907
+    hps_input_bp_switch = 1908
+    hps_input_fc_switch = 1909
+
+    hps_output_compressor1 = 1920
+    hps_output_heater = 1921
+    hps_output_hot_tap_water = 1922
+    hps_output_cold_pump = 1923
+    hps_output_hot_side_pump = 1924
+    hps_output_comp_volt1 = 1925
+
+    hps_heat_pump_season_state = 1930
+    hps_heat_pump_state = 1931
+
+    hps_hot_water_set_point_act = 1950
+
+    hps_heating_set_point_act = 1960
+
+    hps_cpr_ctrl_min_rst_time = 1970
+    hps_cpr_ctrl_cpr1_power = 1971
+    hps_cpr_ctrl_cpr1_cap = 1972
+    hps_cps_ctrl_cpr1_freq_req = 1973
+
+    hps_legionel_state = 1980
+    hps_legionel_timeout_cnt = 1981
+    hps_legionel_max_fail_cnt = 1983
+
     display_led_1 = 2000
     display_led_2 = 2001
     display_text_1_2 = 2002
@@ -151,6 +185,34 @@ class CTS602InputRegisters:
     opt9_1_board_id = 3101
     air_flow_vent_state = 3102
 
+    hps_input_t21_shw_top = 6167
+
+    hps_input_t18_tank = 6169
+
+    hps_input_t13_return = 6171
+
+    hps_input_t35_pres_tube = 6173
+
+    hps_heat_pump_capacity_act = 6185
+    hps_heat_pump_run_time1 = 6186
+    hps_heat_pump_run_time2 = 6187
+    hps_heat_pump_hps_run_time1 = 6188
+    hps_heat_pump_hps_run_time2 = 6189
+
+    hps_cold_pump_cp_run_time1 = 6191
+    hps_cold_pump_cp_run_time2 = 6192
+
+    hps_hot_water_run_time1 = 6194
+    hps_hot_water_run_time2 = 6195
+
+    hps_heating_elec_run_time1 = 6200
+    hps_heating_elec_run_time2 = 6201
+
+    hps_defrost_def_hg_count1 = 6214
+    hps_defrost_def_hg_count2 = 6215
+
+    hps_heat_pump_ap_run_time1 = 6219
+    hps_heat_pump_ap_run_time2 = 6220
 
 class CTS602HoldingRegisters:
     """Nilan CTS602 Holding Registers"""
@@ -252,6 +314,8 @@ class CTS602HoldingRegisters:
     air_temp_temp_min_cpr = 1502
     air_temp_cpr_restart = 1503
 
+    hps_alarm_reset = 1603
+
     hot_water_temp_set_t11 = 1700
     hot_water_temp_set_t12 = 1701
     hot_water_priority = 1702
@@ -269,6 +333,32 @@ class CTS602HoldingRegisters:
     central_heat_circ_pump_mode = 1806
     central_heat_heat_type = 1807
     central_heat_reg_time = 1808
+
+    hps_cold_pump_stop_delay = 1811
+
+    hps_hot_water_source = 1820
+    hps_hot_water_t_elec_limit = 1821
+    hps_hot_water_set_point = 1822
+    hps_hot_water_neutral_zone = 1823
+
+    hps_heating_source = 1830
+    hps_heating_ctrl_mode = 1831
+    hps_heating_elec_delay = 1832
+    hps_heating_neutral_zone = 1833
+    hps_heating_min_heat_time = 1834
+
+    hps_compr_min_cpr_stop = 1840
+    hps_compr_u_start = 1841
+    hps_compr_max_voltage = 1842
+    hps_compr_min_voltage = 1843
+
+    hps_cpr_ctrl_cpr_mode = 1850
+    hps_cpr_ctrl_min_on_time = 1851
+
+    hps_legionel_treat_t_bottom = 1860
+    hps_legionel_timeout_1 = 1861
+
+    hps_datalog_fint = 1870
 
     air_qual_rh_vent_lo = 1910
     air_qual_rh_vent_hi = 1911
@@ -345,3 +435,75 @@ class CTS602HoldingRegisters:
     air_temp_room_response = 4110
     preheat_defrost = 4111
     preheat_temp_set = 4112
+
+    hps_defrost_defr_time_in = 6213
+
+    hps_misc_model = 6313
+
+    hps_heat_pump_cool_heat_para = 6505
+    hps_heat_ctrl_type = 6506
+    hps_heat_ctrl_cur_pnt1 = 6507
+    hps_heat_ctrl_cur_pnt2 = 6508
+    hps_heat_ctrl_cur_pnt3 = 6509
+    hps_heat_ctrl_cur_pnt4 = 6510
+    hps_heat_ctrl_cur_pnt5 = 6511
+    hps_heat_ctrl_cur_pnt6 = 6512
+    hps_heat_ctrl_cur_pnt7 = 6513
+    hps_heat_ctrl_curve = 6514
+    hps_heat_ctrl_troom_set = 6515
+    hps_heat_ctrl_toff_set = 6516
+    hps_heat_ctrl_amb_cmp_max = 6517
+
+    hps_param_main_switch = 6533
+    hps_param_season_mode = 6534
+    hps_param_cooling_mode = 6535
+    hps_param_start_up_time = 6536
+    hps_param_hp_stop_t = 6537
+    hps_param_hp_amb_stop_t = 6538
+    hps_param_total_stop_t = 6539
+    hps_param_hp_stop_s = 6540
+    hps_param_total_stop_s = 6541
+    hps_param_pump_ex_inter1 = 6542
+    hps_param_pump_ex_inter2 = 6543
+
+    hps_param_hp_pause = 6545
+
+    hps_hot_water_capacity = 6554
+
+    hps_heating_stop_cap1 = 6558
+    hps_heating_start_dif_cap = 6559
+
+    hps_heating_set_p_min_cool = 6561
+    hps_heating_set_point_min = 6562
+    hps_heating_set_point_max = 6563
+    hps_heating_t_evap_min = 6564
+
+    hps_compr_gain = 6572
+    hps_compr_tn = 6573
+
+    hps_legionel_wait_time1 = 6585
+    hps_legionel_wait_time2 = 6586
+
+    hps_defrost_mode = 6591
+    hps_defrost_ff_tamb_min = 6592
+    hps_defrost_ff_tamb_max = 6593
+    hps_defrost_ff_tevap_stop = 6594
+    hps_defrost_t_frosting = 6595
+    hps_defrost_t_ice_melt = 6596
+    hps_defrost_t_melt_fast = 6597
+    hps_defrost_t_rel_frost = 6598
+    hps_defrost_max_time = 6599
+    hps_defrost_min_interval = 6600
+    hps_defrost_max_time = 6601
+    hps_defrost_defrost_cap = 6602
+
+    control_smart_grid_on = 6604
+    hps_hot_water_sg_add_temp = 6605
+    hps_hot_water_sg_add_heater = 6606
+    hps_heating_sgoc_add_temp = 6607
+    hps_heating_sglp_add_temp = 6608
+    hps_heating_sg_add_heater = 6609
+
+    hps_param_cooling_allow = 6700
+    hps_param_select_hw_tank = 6701
+    hps_param_buffer_tank = 6702
