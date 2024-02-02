@@ -141,7 +141,7 @@
           "low_outdoor_temp_setpoint": {"name": "Niedrige Außentemperatur Sollwert"},
           "minimum_supply_air_temperature_in_summer": {"name": "Minimale Zulufttemperatur im Sommer"},
           "minimum_supply_air_temperature_in_winter": {"name": "Minimale Zulufttemperatur im Winter"},
-          "maximum_supply_air_temperature_in_summer": {"name": "Maximale Zulufttemperatur im Summer"},
+          "maximum_supply_air_temperature_in_summer": {"name": "Maximale Zulufttemperatur im Sommer"},
           "maximum_supply_air_temperature_in_winter": {"name": "Maximale Zulufttemperatur im Winter"},
           "room_temperature_neutral_zone": {"name": "Neutrale Raumtemperaturzone"},
           "change_to_summer_state_setpoint": {"name": "Sollwert für wechsel in Sommer Status"},
