@@ -501,6 +501,19 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:wrench-clock",
         )
     ],
+    "get_hps_water_heater_setpoint": [
+        Map(
+            "hps_water_heater_setpoint",
+            "set_hps_water_heater_setpoint",
+            None,
+            5,
+            70,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
 }
 
 

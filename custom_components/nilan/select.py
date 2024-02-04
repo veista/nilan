@@ -252,7 +252,7 @@ class NilanCTS602Select(SelectEntity, NilanEntity):
         options,
         icon,
     ) -> None:
-        """Init Select"""
+        """Init Select."""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
@@ -289,7 +289,7 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
         self,
         device,
     ) -> None:
-        """Init Alarm Select"""
+        """Init Alarm Select."""
         super().__init__(device)
         self._device = device
         self._available = True

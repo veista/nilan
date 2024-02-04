@@ -168,7 +168,8 @@
       "central_heating_min_supply_temperature": {"name": "Central Heating Min. Supply Temperature"},
       "central_heating_max_supply_temperature": {"name": "Central Heating Max. Supply Temperature"},
       "outdoor_temperature_compensation_curve": {"name": "Outdoor Temperature Compensation Curve"},
-      "supply_heater_delay": {"name": "Supply Heater Delay"}
+      "supply_heater_delay": {"name": "Supply Heater Delay"},
+      "hps_water_heater_setpoint": {"name": "AIR/GEO Water Setpoint"}
     },
     "select": {
         "air_filter_alarm_interval": {
@@ -482,10 +483,54 @@
       "supply_fan_speed": {"name": "Supply Fan Speed"},
       "display_text_line_1": {"name": "Display Text Line 1"},
       "display_text_line_2": {"name": "Display Text Line 2"},
-      "modbus_version": {"name": "ModBus Version"}
+      "modbus_version": {"name": "ModBus Version"},
+      "hps_compressor_capacity": {"name": "AIR/GEO Compressor Capacity"},
+      "hps_heat_pump_state": {
+          "name": "AIR/GEO Heat Pump State",
+          "state": {
+              "0": "[%key:common::state::off%]",
+              "1": "Ready",
+              "2": "Hot Water Start Up",
+              "3": "Hot Water",
+              "4": "Heating Start Up",
+              "5": "Heating",
+              "6": "Heat Pump Stop",
+              "7": "Electric Heating",
+              "8": "Electric Hot Water",
+              "9": "Forced Cold Pump",
+              "10": "Heat Pump Stop",
+              "11": "Defrost",
+              "12": "Air Defrost",
+              "13": "Hotgas Defrost",
+              "14": "Drip Delay",
+              "15": "Hot Water - Heat Pump Stop",
+              "16": "Heating - Heat Pump Stop",
+              "17": "Stop",
+              "18": "Heating - Heat Pump Stop",
+              "19": "Hot Water - Heat Pump Stop",
+              "20": "Pump Exercise",
+              "21": "Forced Start Up",
+              "22": "Forced Running",
+              "23": "Forced Running",
+              "24": "Forced Running - Heat Pump Stop",
+              "25": "Manual",
+              "26": "Cooling Start",
+              "27": "Cooling",
+              "28": "External Stop",
+              "29": "Forced Low Speed"
+          }
+        },
+        "hps_t16_return_temperature": {"name": "AIR/GEO T16 Return Temperature"},
+        "hps_t17_supply_temperature": {"name": "AIR/GEO T17 Supply Temperature"},
+        "hps_t18_tank_temperature": {"name": "AIR/GEO T18 Buffer Tank Temperature"},
+        "hps_t20_ambient_temperature": {"name": "AIR/GEO T20 Outdoor Temperature"},
+        "hps_t21_shw_top_temperature": {"name": "AIR/GEO T21 SHW Top Temperature"},
+        "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO T22 SHW Bottom Temperature"},
+        "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO T35 Pressure Pipe Temperature"}
     },
     "switch": {
-      "supply_air_after_heating": {"name": "Supply Air After Heating"}
+      "supply_air_after_heating": {"name": "Supply Air After Heating"},
+      "hps_main_switch": {"name": "AIR/GEO Power"}
     },
     "water_heater": {
       "top_water_heater": {
