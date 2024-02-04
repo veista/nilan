@@ -1,22 +1,18 @@
 """Config flow for Nilan integration."""
 from __future__ import annotations
 
+import logging
 from typing import Any, Optional
 
+from pymodbus.client import AsyncModbusSerialClient, AsyncModbusTcpClient
+from pymodbus.exceptions import ModbusException
 import voluptuous as vol
-
-import logging
 
 from homeassistant import config_entries
 
-from pymodbus.client import AsyncModbusTcpClient, AsyncModbusSerialClient
-from pymodbus.exceptions import ModbusException
-
-from .device import CTS602_DEVICE_TYPES
-
-from .registers import CTS602HoldingRegisters
-
 from .const import DOMAIN
+from .device import CTS602_DEVICE_TYPES
+from .registers import CTS602HoldingRegisters
 
 STEP_TCP_DATA_SCHEMA = vol.Schema(
     {
@@ -39,7 +35,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
-    """validate device model"""
+    """Validate device model."""
     if com_type == "tcp":
         client = AsyncModbusTcpClient(address, port)
     else:
@@ -71,14 +67,13 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
         "little",
         signed=False,
     )
-    if not value_output in CTS602_DEVICE_TYPES:
+    if value_output not in CTS602_DEVICE_TYPES:
         _LOGGER.debug(
             "Device Type %s not found in supported devices list",
             str(value_output),
         )
         raise ValueError("unsupported_device")
     client.close()
-    return
 
 
 class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -89,11 +84,11 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     data: Optional[dict(str, Any)]
 
     async def async_step_user(self, user_input: Optional[dict(str, Any)] = None):
-        """Invoked when a user initiates a flow via the user interface."""
+        """Invoke when a user initiates a flow via the user interface."""
         return await self.async_step_menu(user_input)
 
     async def async_step_menu(self, user_input: Optional[dict(str, Any)] = None):
-        """Shows Communications Selection"""
+        """Show Communications Selection."""
         return self.async_show_menu(
             step_id="menu",
             menu_options=["tcp", "serial"],
@@ -103,7 +98,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_tcp(self, user_input: Optional[dict(str, Any)] = None):
-        """Configure ModBus TCP entry"""
+        """Configure ModBus TCP entry."""
         errors: dict(str, str) = {}
 
         if user_input is not None:
@@ -127,7 +122,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_serial(self, user_input: Optional[dict(str, Any)] = None):
-        """Configure ModBus Serial RTU entry"""
+        """Configure ModBus Serial RTU entry."""
         errors: dict(str, str) = {}
 
         if user_input is not None:

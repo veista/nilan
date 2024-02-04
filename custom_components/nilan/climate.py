@@ -4,14 +4,13 @@ from __future__ import annotations
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
-    HVACMode,
     HVACAction,
+    HVACMode,
 )
-
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
-from .const import DOMAIN
 from .__init__ import NilanEntity
+from .const import DOMAIN
 
 HVAC_MODE_TO_STATE = {
     1: HVACMode.HEAT,
@@ -154,7 +153,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
         self.async_write_ha_state()
 
     async def async_update(self) -> None:
-        """update sensor values"""
+        """Update sensor values."""
         self._attr_target_temperature = (
             await self._device.get_user_temperature_setpoint()
         )
@@ -187,13 +186,12 @@ class NilanClimate(NilanEntity, ClimateEntity):
                 self._attr_hvac_action = HVACAction.IDLE
             else:
                 self._attr_hvac_action = HVACAction.OFF
+        elif control_state in (7, 17):
+            self._attr_hvac_action = HVACAction.HEATING
+        elif control_state in (8, 11):
+            self._attr_hvac_action = HVACAction.COOLING
         else:
-            if control_state in (7, 17):
-                self._attr_hvac_action = HVACAction.HEATING
-            elif control_state in (8, 11):
-                self._attr_hvac_action = HVACAction.COOLING
-            else:
-                self._attr_hvac_action = HVACAction.OFF
+            self._attr_hvac_action = HVACAction.OFF
 
         if not self._hvac_on:
             self._attr_hvac_mode = HVACAction.OFF

@@ -3,14 +3,10 @@ from __future__ import annotations
 
 from collections import namedtuple
 
-from .__init__ import NilanEntity
-
+from homeassistant.components.select import SelectEntity
 from homeassistant.helpers.entity import EntityCategory
 
-from homeassistant.components.select import (
-    SelectEntity,
-)
-
+from .__init__ import NilanEntity
 from .const import DOMAIN
 
 Map = namedtuple("map", "name set_attr entity_category options icon")

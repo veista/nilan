@@ -3,23 +3,20 @@ from __future__ import annotations
 
 from collections import namedtuple
 
-from .__init__ import NilanEntity
-
-from homeassistant.helpers.entity import EntityCategory
-
 from homeassistant.components.sensor import (
-    SensorEntity,
     SensorDeviceClass,
+    SensorEntity,
     SensorStateClass,
 )
-
 from homeassistant.const import (
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
     UnitOfTemperature,
     UnitOfTime,
 )
+from homeassistant.helpers.entity import EntityCategory
 
+from .__init__ import NilanEntity
 from .const import DOMAIN
 
 Map = namedtuple(
@@ -439,7 +436,7 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         entity_category,
         icon,
     ) -> None:
-        """Init Sensor"""
+        """Init Sensor."""
         super().__init__(device)
         self._attribute = attribute
         self._device = device

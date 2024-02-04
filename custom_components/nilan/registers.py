@@ -1,8 +1,8 @@
-"""All Nilan Registers"""
+"""All Nilan Registers."""
 
 
 class CTS602InputRegisters:
-    """Register map of Nilan CTS602"""
+    """Register map of Nilan CTS602."""
 
     bus_version = 0
     app_version_major = 1
@@ -214,8 +214,9 @@ class CTS602InputRegisters:
     hps_heat_pump_ap_run_time1 = 6219
     hps_heat_pump_ap_run_time2 = 6220
 
+
 class CTS602HoldingRegisters:
-    """Nilan CTS602 Holding Registers"""
+    """Nilan CTS602 Holding Registers."""
 
     bus_address = 50
 

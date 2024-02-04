@@ -1,16 +1,15 @@
 """The Nilan integration."""
 from __future__ import annotations
 
+import logging
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.entity import Entity
 
-from .device import Device
-
-import logging
-
 from .const import DOMAIN
+from .device import Device
 
 PLATFORMS = [
     "button",
@@ -83,7 +82,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 class NilanEntity(Entity):
-    """Nilan Entity"""
+    """Nilan Entity."""
 
     def __init__(self, device: Device) -> None:
         """Initialize the instance."""
@@ -91,7 +90,7 @@ class NilanEntity(Entity):
 
     @property
     def device_info(self):
-        """Device Info"""
+        """Device Info."""
         unique_id = self._device.get_device_name + self._device.get_device_type
 
         return {
