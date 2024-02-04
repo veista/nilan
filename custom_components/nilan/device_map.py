@@ -3,6 +3,7 @@
 CTS602_DEVICE_TYPES = {
     2: "Comfort light",
     4: "VPL 15c",
+    10: "CompactS",
     12: "VP18cCom",
     13: "COMFORT",
     19: "VP 18c",
@@ -58,6 +59,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -89,6 +91,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             2,
+            10,
             12,
             13,
             31,
@@ -103,6 +106,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -120,6 +124,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -138,6 +143,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -170,6 +176,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -186,6 +193,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "water_heater",
         "min_bus_version": 1,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -198,6 +206,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "water_heater",
         "min_bus_version": 1,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -273,6 +282,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -322,6 +332,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -339,6 +350,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "sensor",
         "min_bus_version": 19,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -384,6 +396,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 11,
         "supported_devices": (
             2,
+            10,
             13,
             31,
             33,
@@ -417,6 +430,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -433,6 +447,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "water_heater",
         "min_bus_version": 1,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -483,6 +498,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -506,6 +522,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -559,6 +576,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 1,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -571,6 +589,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 4,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             21,
@@ -591,6 +610,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 4,
         "supported_devices": (
             4,
+            10,
             12,
             19,
             21,
@@ -607,6 +627,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -626,6 +647,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -645,6 +667,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             13,
             19,
             20,
@@ -660,6 +683,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             13,
             19,
             20,
@@ -683,6 +707,7 @@ CTS602_ENTITY_MAP = {
         ),
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -698,6 +723,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 19,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -711,6 +737,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 19,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -728,6 +755,7 @@ CTS602_ENTITY_MAP = {
         ),
         "supported_devices": (
             4,
+            10,
             12,
             19,
             20,
@@ -749,6 +777,7 @@ CTS602_ENTITY_MAP = {
         ),
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -764,6 +793,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "water_heater",
         "min_bus_version": 4,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -776,6 +806,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "water_heater",
         "min_bus_version": 4,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -788,6 +819,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "select",
         "min_bus_version": 19,
         "supported_devices": (
+            10,
             19,
             20,
             21,
@@ -798,6 +830,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "number",
         "min_bus_version": 19,
         "supported_devices": (
+            10,
             12,
             19,
             20,
@@ -810,6 +843,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "select",
         "min_bus_version": 19,
         "supported_devices": (
+            10,
             19,
             20,
             21,
@@ -822,6 +856,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 4,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1003,6 +1038,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1022,6 +1058,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1041,6 +1078,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1076,6 +1114,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1104,6 +1143,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1140,6 +1180,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 19,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1152,6 +1193,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 11,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1175,6 +1217,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 11,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1191,6 +1234,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 11,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1225,6 +1269,7 @@ CTS602_ENTITY_MAP = {
         "min_bus_version": 19,
         "supported_devices": (
             4,
+            10,
             19,
             20,
             21,
@@ -1239,6 +1284,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1258,6 +1304,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1277,6 +1324,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
@@ -1296,6 +1344,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             2,
             4,
+            10,
             12,
             13,
             19,
