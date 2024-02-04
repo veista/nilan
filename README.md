@@ -6,6 +6,7 @@ CTS602 supported devices (as typed in HMI menu):
 
 - Comfort light
 - VPL 15c
+- CompactS
 - VP18cCom
 - COMFORT
 - VP 18c
