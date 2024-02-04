@@ -6,6 +6,7 @@ CTS602 supported devices (as typed in HMI menu):
 
 - Comfort light
 - VPL 15c
+- CompactS
 - VP18cCom
 - COMFORT
 - VP 18c
@@ -17,6 +18,7 @@ CTS602 supported devices (as typed in HMI menu):
 - COMBI 302
 - COMBI 302 T
 - VGU180 ek
+- CompactP
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 

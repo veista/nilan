@@ -2,18 +2,14 @@
 from __future__ import annotations
 
 from homeassistant.components.water_heater import (
+    STATE_OFF,
     WaterHeaterEntity,
     WaterHeaterEntityFeature,
-    STATE_OFF,
 )
-
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 
-from .const import (
-    DOMAIN,
-)
-
 from .__init__ import NilanEntity
+from .const import DOMAIN
 
 
 async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
@@ -68,7 +64,7 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         self.async_write_ha_state()
 
     async def async_update(self) -> None:
-        """update sensor values"""
+        """Update sensor values."""
         self._attr_target_temperature = (
             await self._device.get_electric_water_heater_setpoint()
         )
@@ -96,14 +92,17 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
 
     @property
     def min_temp(self):
+        """Define minimum temperature."""
         return 5
 
     @property
     def max_temp(self):
+        """Define maximum temperature."""
         return 85
 
     @property
     def icon(self) -> str | None:
+        """Select icon."""
         if self._state == STATE_OFF:
             return "mdi:water-boiler-off"
         return "mdi:water-boiler"
@@ -143,7 +142,7 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
         self.async_write_ha_state()
 
     async def async_update(self) -> None:
-        """update sensor values"""
+        """Update sensor values."""
         self._attr_target_temperature = (
             await self._device.get_compressor_water_heater_setpoint()
         )
@@ -171,14 +170,17 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
 
     @property
     def min_temp(self):
+        """Define minimum temperature."""
         return 5
 
     @property
     def max_temp(self):
+        """Define maximum temperature."""
         return 60
 
     @property
     def icon(self) -> str | None:
+        """Select icon."""
         if self._state == STATE_OFF:
             return "mdi:water-boiler-off"
         return "mdi:water-boiler"

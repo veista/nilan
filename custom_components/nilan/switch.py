@@ -3,12 +3,10 @@ from __future__ import annotations
 
 from collections import namedtuple
 
-from .__init__ import NilanEntity
-
 from homeassistant.components.switch import SwitchEntity
-
 from homeassistant.helpers.entity import EntityCategory
 
+from .__init__ import NilanEntity
 from .const import DOMAIN
 
 Map = namedtuple(
@@ -71,7 +69,7 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
         off_icon,
         on_icon,
     ) -> None:
-        """Init Switch"""
+        """Init Switch."""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
@@ -88,6 +86,7 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
 
     @property
     def icon(self) -> str | None:
+        """Select icon."""
         if self._attr_is_on:
             return self._on_icon
         return self._off_icon

@@ -3,16 +3,13 @@ from __future__ import annotations
 
 from collections import namedtuple
 
-from .__init__ import NilanEntity
-
 from homeassistant.components.binary_sensor import (
-    BinarySensorEntity,
     BinarySensorDeviceClass,
+    BinarySensorEntity,
 )
 
-from .const import (
-    DOMAIN,
-)
+from .__init__ import NilanEntity
+from .const import DOMAIN
 
 Map = namedtuple("map", "name device_class entity_category on_icon off_icon")
 
@@ -165,7 +162,7 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         on_icon,
         off_icon,
     ) -> None:
-        """Init Binary Sensor"""
+        """Init Binary Sensor."""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
@@ -180,6 +177,7 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
 
     @property
     def icon(self) -> str | None:
+        """Define icon."""
         if self._attr_is_on:
             return self._on_icon
         return self._off_icon

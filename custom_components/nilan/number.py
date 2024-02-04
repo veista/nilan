@@ -3,20 +3,16 @@ from __future__ import annotations
 
 from collections import namedtuple
 
-from .__init__ import NilanEntity
-
-from homeassistant.helpers.entity import EntityCategory
-
 from homeassistant.components.number import NumberEntity, NumberMode
-
 from homeassistant.const import (
-    UnitOfTemperature,
-    UnitOfTime,
     CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
+    UnitOfTemperature,
+    UnitOfTime,
 )
+from homeassistant.helpers.entity import EntityCategory
 
-
+from .__init__ import NilanEntity
 from .const import DOMAIN
 
 Map = namedtuple(
@@ -553,7 +549,7 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         unit,
         icon,
     ) -> None:
-        """Init Number"""
+        """Init Number."""
         super().__init__(device)
         self._attribute = attribute
         self._device = device
