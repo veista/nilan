@@ -9,6 +9,7 @@ CTS602 supported devices (as typed in HMI menu):
 - CompactS
 - VP18cCom
 - COMFORT
+- CompactP Air
 - VP 18c
 - VP 18ek
 - VP 18cek
