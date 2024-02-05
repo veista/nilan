@@ -208,11 +208,10 @@ class Device:
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
         )
-        bus_version = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
-        )
-        if bus_version is not None:
-            if int(bus_version.registers[0]) > 19:
+        bus_version = await self.get_bus_version()
+        hw_type = await self.get_machine_type()
+        if bus_version is not None and hw_type is not None:
+            if bus_version > 19 or hw_type == 16:
                 if result is not None:
                     for value in result.registers:
                         char1 = chr(value >> 8)
