@@ -28,6 +28,8 @@ class CTS602InputRegisters:
     input_damper_closed = 114
     input_damper_opened = 115
     input_f_cor_thermo_al = 116
+    input_sg_a = 117
+    input_sg_b = 118
 
     input_t0_controller = 200
     input_t1_intake = 201

@@ -520,13 +520,13 @@
               "29": "Forced Low Speed"
           }
         },
-        "hps_t16_return_temperature": {"name": "AIR/GEO T16 Return Temperature"},
-        "hps_t17_supply_temperature": {"name": "AIR/GEO T17 Supply Temperature"},
-        "hps_t18_tank_temperature": {"name": "AIR/GEO T18 Buffer Tank Temperature"},
-        "hps_t20_ambient_temperature": {"name": "AIR/GEO T20 Outdoor Temperature"},
-        "hps_t21_shw_top_temperature": {"name": "AIR/GEO T21 SHW Top Temperature"},
-        "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO T22 SHW Bottom Temperature"},
-        "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO T35 Pressure Pipe Temperature"}
+        "hps_t16_return_temperature": {"name": "AIR/GEO Return Temperature (T16)"},
+        "hps_t17_supply_temperature": {"name": "AIR/GEO Supply Temperature (T17)"},
+        "hps_t18_tank_temperature": {"name": "AIR/GEO Buffer Tank Temperature (T18)"},
+        "hps_t20_ambient_temperature": {"name": "AIR/GEO Outdoor Temperature (T20)"},
+        "hps_t21_shw_top_temperature": {"name": "AIR/GEO SHW Top Temperature (T21)"},
+        "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO SHW Bottom Temperature (T22)"},
+        "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO Pressure Pipe Temperature (T35)"}
     },
     "switch": {
       "supply_air_after_heating": {"name": "Supply Air After Heating"},
