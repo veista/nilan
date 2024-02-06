@@ -9,7 +9,6 @@ CTS602 supported devices (as typed in HMI menu):
 - CompactS
 - VP18cCom
 - COMFORT
-- CompactP Combi (AIR/GEO)
 - VP 18c
 - VP 18ek
 - VP 18cek
@@ -19,7 +18,7 @@ CTS602 supported devices (as typed in HMI menu):
 - COMBI 302
 - COMBI 302 T
 - VGU180 ek
-- CompactP
+- CompactP (AIR/GEO)
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
