@@ -50,6 +50,7 @@ class Device:
         }
         self._modbus = modbus.ModbusHub(self.hass, self._client_config)
         self._attributes = {}
+        self._air_geo_type = 0
 
     async def setup(self):
         """Modbus and attribute map setup for Nilan Device."""
@@ -64,19 +65,25 @@ class Device:
             if bus_version is None:
                 self._modbus.async_close()
                 raise ValueError("bus_version returned None")
+            if hw_type == 44:
+                self._air_geo_type = await self.check_air_geo()
         else:
             self._modbus.async_close()
             raise ValueError("Modbus setup was unsuccessful")
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
-            self._device_type = CTS602_DEVICE_TYPES[hw_type]
-            if (bus_version >= 10 and hw_type != 16) or (
-                bus_version >= 1 and hw_type == 16
-            ):
+            if self._air_geo_type == 1:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " AIR"
+            elif self._air_geo_type == 2:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
+            else:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type]
+
+            if (bus_version >= 10) or (self._air_geo_type != 0):
                 co2_present = await self.get_co2_present()
             else:
                 co2_present = False
-            if hw_type != 16:
+            if self._air_geo_type == 0:
                 for entity, value in CTS602_ENTITY_MAP.items():
                     if "min_bus_version" not in value:
                         continue
@@ -98,9 +105,9 @@ class Device:
                         self._attributes[entity] = value["entity_type"]
             else:
                 for entity, value in CTS602_ENTITY_MAP.items():
-                    if "min_combi_bus_version" not in value:
+                    if "min_hps_bus_version" not in value:
                         continue
-                    if bus_version >= value["min_combi_bus_version"] and (
+                    if bus_version >= value["min_hps_bus_version"] and (
                         hw_type in value["supported_devices"]
                         or "all" in value["supported_devices"]
                     ):
@@ -145,6 +152,25 @@ class Device:
     def get_attributes(self):
         """Return device attributes."""
         return self._attributes
+
+    async def check_air_geo(self) -> int:
+        """Check if machine type 44 has AIR/GEO support."""
+        version = ""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
+        )
+        if result is not None:
+            for value in result.registers:
+                char1 = chr(value >> 8)
+                char2 = chr(value & 0x00FF)
+                version += char1 + char2 + "."
+            version = version.replace(" ", "")
+            version = version[:-1]
+            if version.startswith("1.1."):
+                return 1
+            if version.startswith("1.2."):
+                return 2
+        return 0
 
     async def get_machine_type(self) -> int:
         """Get hardware type."""
@@ -211,7 +237,7 @@ class Device:
         bus_version = await self.get_bus_version()
         hw_type = await self.get_machine_type()
         if bus_version is not None and hw_type is not None:
-            if bus_version > 19 or hw_type == 16:
+            if (bus_version > 19) or (self._air_geo_type != 0):
                 if result is not None:
                     for value in result.registers:
                         char1 = chr(value >> 8)
