@@ -54,14 +54,18 @@ class Device:
 
     async def setup(self):
         """Modbus and attribute map setup for Nilan Device."""
+        _LOGGER.debug("Setup has started")
         hw_type = None
         success = await self._modbus.async_setup()
         if success:
+            _LOGGER.debug("Modbus has been setup")
             hw_type = await self.get_machine_type()
+            _LOGGER.debug("Device Type = %s", str(hw_type))
             if hw_type is None:
                 self._modbus.async_close()
                 raise ValueError("hw_type returned None")
             bus_version = await self.get_bus_version()
+            _LOGGER.debug("Bus version = %s", str(bus_version))
             if bus_version is None:
                 self._modbus.async_close()
                 raise ValueError("bus_version returned None")
@@ -78,7 +82,6 @@ class Device:
                 self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
             else:
                 self._device_type = CTS602_DEVICE_TYPES[hw_type]
-
             if (bus_version >= 10) or (self._air_geo_type != 0):
                 co2_present = await self.get_co2_present()
             else:
@@ -166,10 +169,14 @@ class Device:
                 version += char1 + char2 + "."
             version = version.replace(" ", "")
             version = version[:-1]
+            _LOGGER.debug("CompactP SW = %s", version)
             if version.startswith("1.1."):
+                _LOGGER.debug("CompactP type = AIR")
                 return 1
             if version.startswith("1.2."):
+                _LOGGER.debug("CompactP type = GEO")
                 return 2
+        _LOGGER.debug("CompactP type = Regular")
         return 0
 
     async def get_machine_type(self) -> int:
