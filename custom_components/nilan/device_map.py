@@ -426,6 +426,11 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (44,),
     },
+    "get_hps_output_compvolt1": {
+        "entity_type": "sensor",
+        "min_hps_bus_version": 1,
+        "supported_devices": (44,),
+    },
     "get_hps_heat_pump_state": {
         "entity_type": "sensor",
         "min_hps_bus_version": 1,
@@ -1110,7 +1115,7 @@ CTS602_ENTITY_MAP = {
     "get_hps_water_heater_setpoint": {
         "entity_type": "number",
         "min_hps_bus_version": 1,
-        "supported_devices": (44,),
+        "supported_devices": (None,),
     },
     "get_low_humidity_step": {
         "entity_type": "select",
@@ -1578,6 +1583,11 @@ CTS602_ENTITY_MAP = {
     },
     "get_hps_main_switch": {
         "entity_type": "switch",
+        "min_hps_bus_version": 2,
+        "supported_devices": (44,),
+    },
+    "get_hps_heating_setpoint_min": {
+        "entity_type": "number",
         "min_hps_bus_version": 2,
         "supported_devices": (44,),
     },

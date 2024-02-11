@@ -42,7 +42,7 @@ ATTRIBUTE_TO_NUMBERS = {
             180,
             1,
             NumberMode.BOX,
-            UnitOfTime.SECONDS,
+            UnitOfTime.MINUTES,
             "mdi:wrench-clock",
         )
     ],
@@ -507,6 +507,19 @@ ATTRIBUTE_TO_NUMBERS = {
             "set_hps_water_heater_setpoint",
             None,
             5,
+            70,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
+    "get_hps_heating_setpoint_min": [
+        Map(
+            "hps_heating_setpoint_min",
+            "set_hps_heating_setpoint_min",
+            None,
+            0,
             70,
             1,
             NumberMode.BOX,

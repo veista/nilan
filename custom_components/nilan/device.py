@@ -695,7 +695,7 @@ class Device:
                 "little",
                 signed=False,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_compressor_capacity")
         return None
 
@@ -1061,7 +1061,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t16_return_temperature")
         return None
 
@@ -1076,7 +1076,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t17_supply_temperature")
         return None
 
@@ -1091,7 +1091,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t18_tank_temperature")
         return None
 
@@ -1106,7 +1106,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t20_ambient_temperature")
         return None
 
@@ -1121,7 +1121,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t21_shw_top_temperature")
         return None
 
@@ -1136,7 +1136,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t22_shw_bottom_temperature")
         return None
 
@@ -1151,8 +1151,23 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_t35_pressure_pipe_temperature")
+        return None
+
+    async def get_hps_output_compvolt1(self) -> float:
+        """Get HPS compressor voltage."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_output_comp_volt1, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_output_compvolt1")
         return None
 
     async def get_co2_sensor_value(self) -> float:
@@ -1414,8 +1429,26 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value) / 10
         _LOGGER.error("Could not read get_hps_water_heater_setpoint")
+        return None
+
+    async def get_hps_heating_setpoint_min(self) -> float:
+        """Get HPS heating setpoint min."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.hps_heating_set_point_min,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_heating_setpoint_min")
         return None
 
     async def get_ch_min_supply_temperature(self) -> float:
@@ -3435,14 +3468,28 @@ class Device:
 
     async def set_hps_water_heater_setpoint(self, value: float):
         """Set hps water heater temperature setpoint."""
-        if value >= 5 and value <= 60 or value == 0:
-            value = int(value * 100)
+        if value >= 5 and value <= 70 or value == 0:
+            value = int(value * 10)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
             )
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hps_hot_water_set_point,
+                output,
+                "write_registers",
+            )
+
+    async def set_hps_heating_setpoint_min(self, value: float):
+        """Set hps water heater temperature setpoint."""
+        if value >= 0 and value <= 70 or value == 0:
+            value = int(value * 10)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_heating_set_point_min,
                 output,
                 "write_registers",
             )

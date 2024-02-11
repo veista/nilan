@@ -170,7 +170,8 @@
           "central_heating_max_supply_temperature": {"name": "Central Heating Max. Supply Temperature"},
           "outdoor_temperature_compensation_curve": {"name": "Outdoor Temperature Compensation Curve"},
           "supply_heater_delay": {"name": "Supply Heater Delay"},
-          "hps_water_heater_setpoint": {"name": "AIR/GEO Water Setpoint"}
+          "hps_water_heater_setpoint": {"name": "AIR/GEO Water Setpoint"},
+          "hps_heating_setpoint_min": {"name": "AIR/GEO Flow Temperature Setpoint"}
         },
         "select": {
             "air_filter_alarm_interval": {
@@ -515,7 +516,8 @@
             "hps_t20_ambient_temperature": {"name": "AIR/GEO Outdoor Temperature (T20)"},
             "hps_t21_shw_top_temperature": {"name": "AIR/GEO SHW Top Temperature (T21)"},
             "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO SHW Bottom Temperature (T22)"},
-            "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO Pressure Pipe Temperature (T35)"}
+            "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO Pressure Pipe Temperature (T35)"},
+            "hps_output_compvolt1": {"name": "AIR/GEO Compressor Voltage"}
         },
         "switch": {
           "supply_air_after_heating": {"name": "Supply Air After Heating"},

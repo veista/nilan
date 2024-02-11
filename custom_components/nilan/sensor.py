@@ -484,6 +484,16 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_hps_output_compvolt1": [
+        Map(
+            "hps_output_compvolt1",
+            None,
+            SensorDeviceClass.VOLTAGE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
 }
 
 
