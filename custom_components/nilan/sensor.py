@@ -494,6 +494,36 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_hps_alarm_count": [
+        Map(
+            "hps_alarms_active",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:alert-circle-outline",
+        )
+    ],
+    "get_hps_hot_water_setpoint_actual": [
+        Map(
+            "hps_hot_water_setpoint_actual",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_heating_setpoint_actual": [
+        Map(
+            "hps_heating_setpoint_actual",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
 }
 
 

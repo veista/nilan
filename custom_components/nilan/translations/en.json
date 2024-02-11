@@ -308,6 +308,14 @@
                     "2": "Disable Off Key"
                 }
             },
+            "hps_season_mode": {
+              "name": "AIR/GEO Season Mode",
+              "state": {
+                "0": "Summer",
+                "1": "Winter",
+                "2": "Auto"
+              }
+          },
             "reset_alarm": {
                 "name": "Reset Alarm",
                 "state": {
@@ -517,7 +525,10 @@
             "hps_t21_shw_top_temperature": {"name": "AIR/GEO SHW Top Temperature (T21)"},
             "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO SHW Bottom Temperature (T22)"},
             "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO Pressure Pipe Temperature (T35)"},
-            "hps_output_compvolt1": {"name": "AIR/GEO Compressor Voltage"}
+            "hps_output_compvolt1": {"name": "AIR/GEO Compressor Voltage"},
+            "hps_alarms_active": {"name": "AIR/GEO Alarms Active"},
+            "hps_water_heater_setpoint_actual": {"name": "AIR/GEO Water Heater Setpoint Actual"},
+            "hps_heating_setpoint_actual": {"name": "AIR/GEO Heating Setpoint Actual"}
         },
         "switch": {
           "supply_air_after_heating": {"name": "Supply Air After Heating"},

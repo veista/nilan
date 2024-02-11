@@ -383,6 +383,11 @@ CTS602_ENTITY_MAP = {
             44,
         ),
     },
+    "get_hps_alarm_count": {
+        "entity_type": "sensor",
+        "min_hps_bus_version": 1,
+        "supported_devices": (44,),
+    },
     "get_anode_state": {
         "entity_type": "sensor",
         "min_bus_version": 19,
@@ -1583,6 +1588,11 @@ CTS602_ENTITY_MAP = {
     },
     "get_hps_main_switch": {
         "entity_type": "switch",
+        "min_hps_bus_version": 2,
+        "supported_devices": (44,),
+    },
+    "get_hps_season_mode": {
+        "entity_type": "select",
         "min_hps_bus_version": 2,
         "supported_devices": (44,),
     },

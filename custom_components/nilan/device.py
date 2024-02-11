@@ -1155,6 +1155,36 @@ class Device:
         _LOGGER.error("Could not read get_hps_t35_pressure_pipe_temperature")
         return None
 
+    async def get_hps_hot_water_setpoint_actual(self) -> float:
+        """Get HPS Hot Water setpoint actual."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_hot_water_set_point_act, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_hot_water_setpoint_actual")
+        return None
+
+    async def get_hps_heating_setpoint_actual(self) -> float:
+        """Get HPS Heating setpoint actual."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_heating_set_point_act, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_heating_setpoint_actual")
+        return None
+
     async def get_hps_output_compvolt1(self) -> float:
         """Get HPS compressor voltage."""
         result = await self._modbus.async_pb_call(
@@ -1901,6 +1931,21 @@ class Device:
         _LOGGER.error("Could not read get_alarm_count")
         return None
 
+    async def get_hps_alarm_count(self) -> int:
+        """Get HPS Alarm Count."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_count, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_count")
+        return None
+
     async def get_legionella_day(self) -> int:
         """Get legionella day."""
         result = await self._modbus.async_pb_call(
@@ -1914,6 +1959,21 @@ class Device:
             )
             return value
         _LOGGER.error("Could not read get_legionella_day")
+        return None
+
+    async def get_hps_season_mode(self) -> int:
+        """Get HPS season mode."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.hps_param_season_mode, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_season_mode")
         return None
 
     async def get_air_filter_alarm_interval(self) -> int:
@@ -2787,6 +2847,18 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_legio_type,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_hps_season_mode(self, mode: int) -> bool:
+        """Set HPS Season Mode."""
+        if mode in (0, 1, 2):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_param_season_mode,
                 mode,
                 "write_registers",
             )

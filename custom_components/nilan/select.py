@@ -210,6 +210,15 @@ ATTRIBUTE_TO_SELECT = {
             "mdi:menu",
         )
     ],
+    "get_hps_season_mode": [
+        Map(
+            "hps_season_mode",
+            "set_hps_season_mode",
+            EntityCategory.CONFIG,
+            ["0", "1", "2"],
+            None,
+        )
+    ],
 }
 
 
