@@ -50,47 +50,76 @@ class Device:
         }
         self._modbus = modbus.ModbusHub(self.hass, self._client_config)
         self._attributes = {}
+        self._air_geo_type = 0
 
     async def setup(self):
         """Modbus and attribute map setup for Nilan Device."""
+        _LOGGER.debug("Setup has started")
         hw_type = None
         success = await self._modbus.async_setup()
         if success:
+            _LOGGER.debug("Modbus has been setup")
             hw_type = await self.get_machine_type()
+            _LOGGER.debug("Device Type = %s", str(hw_type))
             if hw_type is None:
                 self._modbus.async_close()
                 raise ValueError("hw_type returned None")
             bus_version = await self.get_bus_version()
+            _LOGGER.debug("Bus version = %s", str(bus_version))
             if bus_version is None:
                 self._modbus.async_close()
                 raise ValueError("bus_version returned None")
+            if hw_type == 44:
+                self._air_geo_type = await self.check_air_geo()
         else:
             self._modbus.async_close()
             raise ValueError("Modbus setup was unsuccessful")
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
-            self._device_type = CTS602_DEVICE_TYPES[hw_type]
-            if bus_version >= 10:  # PH
+            if self._air_geo_type == 1:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " AIR"
+            elif self._air_geo_type == 2:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
+            else:
+                self._device_type = CTS602_DEVICE_TYPES[hw_type]
+            if (bus_version >= 10) or (self._air_geo_type != 0):
                 co2_present = await self.get_co2_present()
             else:
-                co2_present = True
-            for entity, value in CTS602_ENTITY_MAP.items():
-                if bus_version >= value["min_bus_version"] and (
-                    hw_type in value["supported_devices"]
-                    or "all" in value["supported_devices"]
-                ):
-                    if "excluded_bus_versions" in value:
-                        if bus_version in value["excluded_bus_versions"]:
-                            continue
-                    if "extra_type" in value:
-                        if co2_present and value["extra_type"] == "co2":
-                            self._attributes[entity] = value["entity_type"]
-                        else:
-                            continue
-                    if "max_bus_version" in value:
-                        if bus_version >= value["max_bus_version"]:
-                            continue
-                    self._attributes[entity] = value["entity_type"]
+                co2_present = False
+            if self._air_geo_type == 0:
+                for entity, value in CTS602_ENTITY_MAP.items():
+                    if "min_bus_version" not in value:
+                        continue
+                    if bus_version >= value["min_bus_version"] and (
+                        hw_type in value["supported_devices"]
+                        or "all" in value["supported_devices"]
+                    ):
+                        if "excluded_bus_versions" in value:
+                            if bus_version in value["excluded_bus_versions"]:
+                                continue
+                        if "extra_type" in value:
+                            if co2_present and value["extra_type"] == "co2":
+                                self._attributes[entity] = value["entity_type"]
+                            else:
+                                continue
+                        if "max_bus_version" in value:
+                            if bus_version >= value["max_bus_version"]:
+                                continue
+                        self._attributes[entity] = value["entity_type"]
+            else:
+                for entity, value in CTS602_ENTITY_MAP.items():
+                    if "min_hps_bus_version" not in value:
+                        continue
+                    if bus_version >= value["min_hps_bus_version"] and (
+                        hw_type in value["supported_devices"]
+                        or "all" in value["supported_devices"]
+                    ):
+                        if "extra_type" in value:
+                            if co2_present and value["extra_type"] == "co2":
+                                self._attributes[entity] = value["entity_type"]
+                            else:
+                                continue
+                        self._attributes[entity] = value["entity_type"]
         else:
             self._modbus.async_close()
             raise ValueError("HW type not supported")
@@ -126,6 +155,29 @@ class Device:
     def get_attributes(self):
         """Return device attributes."""
         return self._attributes
+
+    async def check_air_geo(self) -> int:
+        """Check if machine type 44 has AIR/GEO support."""
+        version = ""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
+        )
+        if result is not None:
+            for value in result.registers:
+                char1 = chr(value >> 8)
+                char2 = chr(value & 0x00FF)
+                version += char1 + char2 + "."
+            version = version.replace(" ", "")
+            version = version[:-1]
+            _LOGGER.debug("CompactP SW = %s", version)
+            if version.startswith("1.1."):
+                _LOGGER.debug("CompactP type = AIR")
+                return 1
+            if version.startswith("1.2."):
+                _LOGGER.debug("CompactP type = GEO")
+                return 2
+        _LOGGER.debug("CompactP type = Regular")
+        return 0
 
     async def get_machine_type(self) -> int:
         """Get hardware type."""
@@ -189,11 +241,10 @@ class Device:
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
         )
-        bus_version = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.bus_version, 1, "input"
-        )
-        if bus_version is not None:
-            if int(bus_version.registers[0]) > 19:
+        bus_version = await self.get_bus_version()
+        hw_type = await self.get_machine_type()
+        if bus_version is not None and hw_type is not None:
+            if (bus_version > 19) or (self._air_geo_type != 0):
                 if result is not None:
                     for value in result.registers:
                         char1 = chr(value >> 8)
@@ -633,6 +684,21 @@ class Device:
         _LOGGER.error("Could not read get_exchanger_efficiency")
         return None
 
+    async def get_hps_compressor_capacity(self) -> float:
+        """Get HPS Compressor Capacity."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_heat_pump_capacity_act, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_compressor_capacity")
+        return None
+
     async def get_control_temperature(self) -> float:
         """Get Control Temperature."""
         result = await self._modbus.async_pb_call(
@@ -984,6 +1050,156 @@ class Device:
         _LOGGER.error("Could not read get_t17_preheater_temperature")
         return None
 
+    async def get_hps_t16_return_temperature(self) -> float:
+        """Get HPS T16 Return Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t16_return, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t16_return_temperature")
+        return None
+
+    async def get_hps_t17_supply_temperature(self) -> float:
+        """Get HPS T17 Supply Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t17_supply, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t17_supply_temperature")
+        return None
+
+    async def get_hps_t18_tank_temperature(self) -> float:
+        """Get HPS T18 Tank Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t18_tank, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t18_tank_temperature")
+        return None
+
+    async def get_hps_t20_ambient_temperature(self) -> float:
+        """Get HPS T18 Tank Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t20_ambient, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t20_ambient_temperature")
+        return None
+
+    async def get_hps_t21_shw_top_temperature(self) -> float:
+        """Get HPS T21 SHW Top Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t21_shw_top, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t21_shw_top_temperature")
+        return None
+
+    async def get_hps_t22_shw_bottom_temperature(self) -> float:
+        """Get HPS T22 SHW Bottom Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t22_shw_bottom, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t22_shw_bottom_temperature")
+        return None
+
+    async def get_hps_t35_pressure_pipe_temperature(self) -> float:
+        """Get HPS T22 SHW Bottom Temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_input_t35_pres_tube, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t35_pressure_pipe_temperature")
+        return None
+
+    async def get_hps_hot_water_setpoint_actual(self) -> float:
+        """Get HPS Hot Water setpoint actual."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_hot_water_set_point_act, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_hot_water_setpoint_actual")
+        return None
+
+    async def get_hps_heating_setpoint_actual(self) -> float:
+        """Get HPS Heating setpoint actual."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_heating_set_point_act, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_heating_setpoint_actual")
+        return None
+
+    async def get_hps_output_compvolt1(self) -> float:
+        """Get HPS compressor voltage."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_output_comp_volt1, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_output_compvolt1")
+        return None
+
     async def get_co2_sensor_value(self) -> float:
         """Get co2 sensor value."""
         result = await self._modbus.async_pb_call(
@@ -1227,6 +1443,42 @@ class Device:
             )
             return float(value) / 100
         _LOGGER.error("Could not read get_compressor_water_heater_setpoint")
+        return None
+
+    async def get_hps_water_heater_setpoint(self) -> float:
+        """Get HPS water heater setpoint temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.hps_hot_water_set_point,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_water_heater_setpoint")
+        return None
+
+    async def get_hps_heating_setpoint_min(self) -> float:
+        """Get HPS heating setpoint min."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.hps_heating_set_point_min,
+            1,
+            "holding",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_heating_setpoint_min")
         return None
 
     async def get_ch_min_supply_temperature(self) -> float:
@@ -1679,6 +1931,21 @@ class Device:
         _LOGGER.error("Could not read get_alarm_count")
         return None
 
+    async def get_hps_alarm_count(self) -> int:
+        """Get HPS Alarm Count."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_count, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_count")
+        return None
+
     async def get_legionella_day(self) -> int:
         """Get legionella day."""
         result = await self._modbus.async_pb_call(
@@ -1692,6 +1959,21 @@ class Device:
             )
             return value
         _LOGGER.error("Could not read get_legionella_day")
+        return None
+
+    async def get_hps_season_mode(self) -> int:
+        """Get HPS season mode."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.hps_param_season_mode, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_season_mode")
         return None
 
     async def get_air_filter_alarm_interval(self) -> int:
@@ -2037,6 +2319,21 @@ class Device:
         _LOGGER.error("Could not read get_control_state")
         return None
 
+    async def get_hps_heat_pump_state(self) -> int:
+        """Get HPS Heat Pump State."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_heat_pump_state, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_heat_pump_state")
+        return None
+
     async def get_humidity(self) -> float:
         """Get humidity."""
         result = await self._modbus.async_pb_call(
@@ -2085,6 +2382,23 @@ class Device:
                 return False
             return True
         _LOGGER.error("Could not read get_run_state")
+        return None
+
+    async def get_hps_main_switch(self) -> bool:
+        """Get hps main switch."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.hps_param_main_switch, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            if value == 0:
+                return False
+            return True
+        _LOGGER.error("Could not read get_hps_main_switch")
         return None
 
     async def get_alarm_1_code(self) -> int:
@@ -2533,6 +2847,18 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_legio_type,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_hps_season_mode(self, mode: int) -> bool:
+        """Set HPS Season Mode."""
+        if mode in (0, 1, 2):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_param_season_mode,
                 mode,
                 "write_registers",
             )
@@ -3212,6 +3538,34 @@ class Device:
                 "write_registers",
             )
 
+    async def set_hps_water_heater_setpoint(self, value: float):
+        """Set hps water heater temperature setpoint."""
+        if value >= 5 and value <= 70 or value == 0:
+            value = int(value * 10)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_hot_water_set_point,
+                output,
+                "write_registers",
+            )
+
+    async def set_hps_heating_setpoint_min(self, value: float):
+        """Set hps water heater temperature setpoint."""
+        if value >= 0 and value <= 70 or value == 0:
+            value = int(value * 10)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_heating_set_point_min,
+                output,
+                "write_registers",
+            )
+
     async def set_run_state(self, state: bool):
         """Set Run state."""
         if state:
@@ -3221,6 +3575,19 @@ class Device:
         await self._modbus.async_pb_call(
             self._unit_id,
             CTS602HoldingRegisters.control_run_set,
+            value,
+            "write_registers",
+        )
+
+    async def set_hps_main_switch(self, state: bool):
+        """Set hps main switch."""
+        if state:
+            value = 1
+        else:
+            value = 0
+        await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.hps_param_main_switch,
             value,
             "write_registers",
         )

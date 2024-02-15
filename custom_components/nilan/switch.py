@@ -25,6 +25,17 @@ ATTRIBUTE_TO_SWITCHES = {
             "mdi:radiator",
         )
     ],
+    "get_hps_main_switch": [
+        Map(
+            "hps_main_switch",
+            "set_hps_main_switch",
+            None,
+            0,
+            1,
+            None,
+            None,
+        )
+    ],
 }
 
 

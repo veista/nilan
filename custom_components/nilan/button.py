@@ -1,14 +1,11 @@
 """Platform for button integration."""
 from __future__ import annotations
 
-from .__init__ import NilanEntity
-
 from homeassistant.components.button import ButtonEntity
-
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.util.dt import now
 
-from homeassistant.helpers.entity import EntityCategory
-
+from .__init__ import NilanEntity
 from .const import DOMAIN
 
 
@@ -29,7 +26,7 @@ class NilanCTS602SyncTimeButton(ButtonEntity, NilanEntity):
         self,
         device,
     ) -> None:
-        """Init Sync Time Button"""
+        """Init Sync Time Button."""
         super().__init__(device)
         self._device = device
         self._attr_entity_category = EntityCategory.CONFIG

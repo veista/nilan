@@ -28,6 +28,8 @@ class CTS602InputRegisters:
     input_damper_closed = 114
     input_damper_opened = 115
     input_f_cor_thermo_al = 116
+    input_sg_a = 117
+    input_sg_b = 118
 
     input_t0_controller = 200
     input_t1_intake = 201
@@ -84,6 +86,13 @@ class CTS602InputRegisters:
     air_temp_cap_act = 1206
 
     compressor_type = 1500
+
+    hps_alarm_count = 1600
+    hps_alarm_count_active = 1601
+    hps_alarm_level = 1602
+    hps_alarm_code1 = 1604
+    hps_alarm_code2 = 1605
+    hps_alarm_code3 = 1606
 
     hot_water_type = 1700
     hot_water_anode_state = 1701
@@ -495,7 +504,7 @@ class CTS602HoldingRegisters:
     hps_defrost_t_rel_frost = 6598
     hps_defrost_max_time = 6599
     hps_defrost_min_interval = 6600
-    hps_defrost_max_time = 6601
+    hps_defrost_stop_time = 6601
     hps_defrost_defrost_cap = 6602
 
     control_smart_grid_on = 6604

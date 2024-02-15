@@ -394,6 +394,136 @@ ATTRIBUTE_TO_SENSORS = {
             None,
         )
     ],
+    "get_hps_compressor_capacity": [
+        Map(
+            "hps_compressor_capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:air-filter",
+        )
+    ],
+    "get_hps_heat_pump_state": [
+        Map(
+            "hps_heat_pump_state",
+            None,
+            None,
+            None,
+            None,
+            "mdi:state-machine",
+        )
+    ],
+    "get_hps_t16_return_temperature": [
+        Map(
+            "hps_t16_return_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t17_supply_temperature": [
+        Map(
+            "hps_t17_supply_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t18_tank_temperature": [
+        Map(
+            "hps_t18_tank_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t20_ambient_temperature": [
+        Map(
+            "hps_t20_ambient_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t21_shw_top_temperature": [
+        Map(
+            "hps_t21_shw_top_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t22_shw_bottom_temperature": [
+        Map(
+            "hps_t22_shw_bottom_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_t35_pressure_pipe_temperature": [
+        Map(
+            "hps_t35_pressure_pipe_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_output_compvolt1": [
+        Map(
+            "hps_output_compvolt1",
+            None,
+            SensorDeviceClass.VOLTAGE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_alarm_count": [
+        Map(
+            "hps_alarms_active",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:alert-circle-outline",
+        )
+    ],
+    "get_hps_hot_water_setpoint_actual": [
+        Map(
+            "hps_hot_water_setpoint_actual",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
+    "get_hps_heating_setpoint_actual": [
+        Map(
+            "hps_heating_setpoint_actual",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+        )
+    ],
 }
 
 
