@@ -3367,7 +3367,7 @@ class Device:
 
     async def set_min_supply_air_summer_setpoint(self, value: float):
         """Set minimum supply air temperature summer."""
-        if value >= 5 and value <= 16:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3381,7 +3381,7 @@ class Device:
 
     async def set_min_supply_air_winter_setpoint(self, value: float):
         """Set minimum supply air temperature winter."""
-        if value >= 14 and value <= 22:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3395,7 +3395,7 @@ class Device:
 
     async def set_max_supply_air_summer_setpoint(self, value: float):
         """Set maximum supply air temperature summer."""
-        if value >= 16 and value <= 25:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3409,7 +3409,7 @@ class Device:
 
     async def set_max_supply_air_winter_setpoint(self, value: float):
         """Set maximum supply air temperature winter."""
-        if value >= 22 and value <= 50:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
