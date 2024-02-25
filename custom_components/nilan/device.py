@@ -2446,6 +2446,51 @@ class Device:
         _LOGGER.error("Could not read get_alarm_3_code")
         return None
 
+    async def get_hps_alarm_1_code(self) -> int:
+        """Get HPS alarm 1 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code1, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_1_code")
+        return None
+
+    async def get_hps_alarm_2_code(self) -> int:
+        """Get HPS alarm 2 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code2, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_2_code")
+        return None
+
+    async def get_hps_alarm_3_code(self) -> int:
+        """Get HPS alarm 3 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code3, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_3_code")
+        return None
+
     async def get_smoke_alarm_state(self) -> bool:
         """Get smoke alarm State."""
         result = await self._modbus.async_pb_call(
@@ -2999,10 +3044,22 @@ class Device:
 
     async def set_alarm_reset_code(self, mode: int) -> bool:
         """Set alarm reset code."""
-        if mode >= 0 and mode <= 254 or mode == 255:
+        if mode >= 0 and mode <= 255:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.alarm_reset,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_hps_alarm_reset_code(self, mode: int) -> bool:
+        """Set HPS alarm reset code."""
+        if mode >= 0 and mode <= 65535:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_alarm_reset,
                 mode,
                 "write_registers",
             )
