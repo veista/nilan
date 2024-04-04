@@ -6,6 +6,8 @@ from typing import Any, Optional
 
 from pymodbus.client import AsyncModbusSerialClient, AsyncModbusTcpClient
 from pymodbus.exceptions import ModbusException
+from homeassistant.components.modbus import ModbusHub
+PARALLEL_UPDATES = 1
 import voluptuous as vol
 
 from homeassistant import config_entries
