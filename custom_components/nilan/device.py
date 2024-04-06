@@ -1,6 +1,8 @@
 """Implements Nilan devices."""
+
 from __future__ import annotations
 
+import asyncio
 import datetime
 import logging
 
@@ -57,23 +59,35 @@ class Device:
         _LOGGER.debug("Setup has started")
         hw_type = None
         success = await self._modbus.async_setup()
+
         if success:
+            task = [
+                task
+                for task in asyncio.all_tasks()
+                if task.get_name() == "modbus-connect"
+            ]
+            await asyncio.wait(task, timeout=5)
             _LOGGER.debug("Modbus has been setup")
-            hw_type = await self.get_machine_type()
-            _LOGGER.debug("Device Type = %s", str(hw_type))
-            if hw_type is None:
-                self._modbus.async_close()
-                raise ValueError("hw_type returned None")
-            bus_version = await self.get_bus_version()
-            _LOGGER.debug("Bus version = %s", str(bus_version))
-            if bus_version is None:
-                self._modbus.async_close()
-                raise ValueError("bus_version returned None")
-            if hw_type == 44:
-                self._air_geo_type = await self.check_air_geo()
         else:
-            self._modbus.async_close()
+            await self._modbus.async_close()
+            _LOGGER.error("Modbus setup was unsuccessful")
             raise ValueError("Modbus setup was unsuccessful")
+
+        hw_type = await self.get_machine_type()
+        _LOGGER.debug("Device Type = %s", str(hw_type))
+        if hw_type is None:
+            await self._modbus.async_close()
+            _LOGGER.error("Register hw_type returned None")
+            raise ValueError("hw_type returned None")
+        bus_version = await self.get_bus_version()
+        _LOGGER.debug("Bus version = %s", str(bus_version))
+        if bus_version is None:
+            await self._modbus.async_close()
+            _LOGGER.error("Register bus_version returned None")
+            raise ValueError("bus_version returned None")
+        if hw_type == 44:
+            self._air_geo_type = await self.check_air_geo()
+
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
             if self._air_geo_type == 1:
@@ -121,7 +135,8 @@ class Device:
                                 continue
                         self._attributes[entity] = value["entity_type"]
         else:
-            self._modbus.async_close()
+            await self._modbus.async_close()
+            _LOGGER.error("HW type not supported")
             raise ValueError("HW type not supported")
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()
@@ -2446,6 +2461,51 @@ class Device:
         _LOGGER.error("Could not read get_alarm_3_code")
         return None
 
+    async def get_hps_alarm_1_code(self) -> int:
+        """Get HPS alarm 1 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code1, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_1_code")
+        return None
+
+    async def get_hps_alarm_2_code(self) -> int:
+        """Get HPS alarm 2 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code2, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_2_code")
+        return None
+
+    async def get_hps_alarm_3_code(self) -> int:
+        """Get HPS alarm 3 Code."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602InputRegisters.hps_alarm_code3, 1, "input"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value
+        _LOGGER.error("Could not read get_hps_alarm_3_code")
+        return None
+
     async def get_smoke_alarm_state(self) -> bool:
         """Get smoke alarm State."""
         result = await self._modbus.async_pb_call(
@@ -2999,10 +3059,22 @@ class Device:
 
     async def set_alarm_reset_code(self, mode: int) -> bool:
         """Set alarm reset code."""
-        if mode >= 0 and mode <= 254 or mode == 255:
+        if mode >= 0 and mode <= 255:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.alarm_reset,
+                mode,
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_hps_alarm_reset_code(self, mode: int) -> bool:
+        """Set HPS alarm reset code."""
+        if mode >= 0 and mode <= 65535:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.hps_alarm_reset,
                 mode,
                 "write_registers",
             )
@@ -3367,7 +3439,7 @@ class Device:
 
     async def set_min_supply_air_summer_setpoint(self, value: float):
         """Set minimum supply air temperature summer."""
-        if value >= 5 and value <= 16:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3381,7 +3453,7 @@ class Device:
 
     async def set_min_supply_air_winter_setpoint(self, value: float):
         """Set minimum supply air temperature winter."""
-        if value >= 14 and value <= 22:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3395,7 +3467,7 @@ class Device:
 
     async def set_max_supply_air_summer_setpoint(self, value: float):
         """Set maximum supply air temperature summer."""
-        if value >= 16 and value <= 25:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3409,7 +3481,7 @@ class Device:
 
     async def set_max_supply_air_winter_setpoint(self, value: float):
         """Set maximum supply air temperature winter."""
-        if value >= 22 and value <= 50:
+        if value >= 5 and value <= 50:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False

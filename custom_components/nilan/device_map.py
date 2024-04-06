@@ -388,6 +388,11 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (44,),
     },
+    "hps_alarm_reset": {
+        "entity_type": "select",
+        "min_hps_bus_version": 1,
+        "supported_devices": (44,),
+    },
     "get_anode_state": {
         "entity_type": "sensor",
         "min_bus_version": 19,
@@ -791,7 +796,6 @@ CTS602_ENTITY_MAP = {
             4,
             10,
             13,
-            19,
             20,
             21,
             25,
@@ -808,7 +812,6 @@ CTS602_ENTITY_MAP = {
             4,
             10,
             13,
-            19,
             20,
             21,
             25,

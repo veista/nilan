@@ -221,6 +221,33 @@ ATTRIBUTE_TO_SELECT = {
     ],
 }
 
+MapAlarm = namedtuple(
+    "map", "attribute_1 attribute_2 attribute_3 name set_attr all_alarms_code"
+)
+
+ATTRIBUTE_TO_ALARM_SELECT = {
+    "alarm_reset": [
+        MapAlarm(
+            "get_alarm_1_code",
+            "get_alarm_1_code",
+            "get_alarm_1_code",
+            "reset_alarm",
+            "set_alarm_reset_code",
+            "255",
+        )
+    ],
+    "hps_alarm_reset": [
+        MapAlarm(
+            "get_hps_alarm_1_code",
+            "get_hps_alarm_2_code",
+            "get_hps_alarm_3_code",
+            "reset_hps_alarm",
+            "set_hps_alarm_reset_code",
+            "65535",
+        )
+    ],
+}
+
 
 async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Set up the select platform."""
@@ -243,8 +270,22 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
                     for m in maps
                 ]
             )
-    if "alarm_reset" in device.get_assigned("select"):
-        selects.extend([NilanCTS602AlarmSelect(device)])
+        elif attribute in ATTRIBUTE_TO_ALARM_SELECT:
+            maps = ATTRIBUTE_TO_ALARM_SELECT[attribute]
+            selects.extend(
+                [
+                    NilanCTS602AlarmSelect(
+                        device,
+                        m.attribute_1,
+                        m.attribute_2,
+                        m.attribute_3,
+                        m.name,
+                        m.set_attr,
+                        m.all_alarms_code,
+                    )
+                    for m in maps
+                ]
+            )
     async_add_entities(selects, update_before_add=True)
 
 
@@ -297,16 +338,27 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
     def __init__(
         self,
         device,
+        attribute_1,
+        attribute_2,
+        attribute_3,
+        name,
+        set_attr,
+        all_alarms_code,
     ) -> None:
         """Init Alarm Select."""
         super().__init__(device)
         self._device = device
         self._available = True
-        self._name = "reset_alarm"
+        self._name = name
         self._attr_entity_category = EntityCategory.CONFIG
         self._attr_has_entity_name = True
         self._attr_translation_key = self._name
         self._attr_unique_id = self._name
+        self._attribute_1 = attribute_1
+        self._attribute_2 = attribute_2
+        self._attribute_3 = attribute_3
+        self._set_attr = set_attr
+        self._all_alarms_code = all_alarms_code
 
     @property
     def icon(self) -> str | None:
@@ -317,16 +369,16 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
-        await self._device.set_alarm_reset_code(int(option))
+        await getattr(self._device, self._set_attr)(int(option))
 
     async def async_update(self) -> None:
         """Fetch new state data for the select."""
         self._attr_current_option = None
         self._attr_options = None
         options = []
-        option1 = await self._device.get_alarm_1_code()
-        option2 = await self._device.get_alarm_2_code()
-        option3 = await self._device.get_alarm_3_code()
+        option1 = await getattr(self._device, self._attribute_1)()
+        option2 = await getattr(self._device, self._attribute_2)()
+        option3 = await getattr(self._device, self._attribute_3)()
         if option1 != 0:
             options.append(str(option1))
         if option2 != 0:
@@ -334,5 +386,5 @@ class NilanCTS602AlarmSelect(SelectEntity, NilanEntity):
         if option3 != 0:
             options.append(str(option3))
         if len(options) > 1:
-            options.append(str(255))
+            options.append(str(self._all_alarms_code))
         self._attr_options = options
