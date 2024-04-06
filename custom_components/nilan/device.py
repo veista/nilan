@@ -1,6 +1,8 @@
 """Implements Nilan devices."""
+
 from __future__ import annotations
 
+import asyncio
 import datetime
 import logging
 
@@ -57,23 +59,35 @@ class Device:
         _LOGGER.debug("Setup has started")
         hw_type = None
         success = await self._modbus.async_setup()
+
         if success:
+            task = [
+                task
+                for task in asyncio.all_tasks()
+                if task.get_name() == "modbus-connect"
+            ]
+            await asyncio.wait(task, timeout=5)
             _LOGGER.debug("Modbus has been setup")
-            hw_type = await self.get_machine_type()
-            _LOGGER.debug("Device Type = %s", str(hw_type))
-            if hw_type is None:
-                self._modbus.async_close()
-                raise ValueError("hw_type returned None")
-            bus_version = await self.get_bus_version()
-            _LOGGER.debug("Bus version = %s", str(bus_version))
-            if bus_version is None:
-                self._modbus.async_close()
-                raise ValueError("bus_version returned None")
-            if hw_type == 44:
-                self._air_geo_type = await self.check_air_geo()
         else:
-            self._modbus.async_close()
+            await self._modbus.async_close()
+            _LOGGER.error("Modbus setup was unsuccessful")
             raise ValueError("Modbus setup was unsuccessful")
+
+        hw_type = await self.get_machine_type()
+        _LOGGER.debug("Device Type = %s", str(hw_type))
+        if hw_type is None:
+            await self._modbus.async_close()
+            _LOGGER.error("Register hw_type returned None")
+            raise ValueError("hw_type returned None")
+        bus_version = await self.get_bus_version()
+        _LOGGER.debug("Bus version = %s", str(bus_version))
+        if bus_version is None:
+            await self._modbus.async_close()
+            _LOGGER.error("Register bus_version returned None")
+            raise ValueError("bus_version returned None")
+        if hw_type == 44:
+            self._air_geo_type = await self.check_air_geo()
+
         if hw_type in CTS602_DEVICE_TYPES:
             self._device_sw_ver = await self.get_controller_software_version()
             if self._air_geo_type == 1:
@@ -121,7 +135,8 @@ class Device:
                                 continue
                         self._attributes[entity] = value["entity_type"]
         else:
-            self._modbus.async_close()
+            await self._modbus.async_close()
+            _LOGGER.error("HW type not supported")
             raise ValueError("HW type not supported")
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()

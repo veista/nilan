@@ -1,4 +1,5 @@
 """The Nilan integration."""
+
 from __future__ import annotations
 
 import logging
@@ -12,14 +13,14 @@ from .const import DOMAIN
 from .device import Device
 
 PLATFORMS = [
+    "binary_sensor",
     "button",
     "climate",
-    "water_heater",
-    "sensor",
-    "select",
-    "binary_sensor",
     "number",
+    "select",
+    "sensor",
     "switch",
+    "water_heater",
 ]
 
 _LOGGER = logging.getLogger(__name__)
