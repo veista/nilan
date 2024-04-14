@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import datetime
 import logging
 
@@ -61,12 +60,6 @@ class Device:
         success = await self._modbus.async_setup()
 
         if success:
-            task = [
-                task
-                for task in asyncio.all_tasks()
-                if task.get_name() == "modbus-connect"
-            ]
-            await asyncio.wait(task, timeout=5)
             _LOGGER.debug("Modbus has been setup")
         else:
             await self._modbus.async_close()
@@ -75,11 +68,18 @@ class Device:
 
         hw_type = await self.get_machine_type()
         _LOGGER.debug("Device Type = %s", str(hw_type))
+
         if hw_type is None:
             await self._modbus.async_close()
             _LOGGER.error("Register hw_type returned None")
             raise ValueError("hw_type returned None")
+        if hw_type not in CTS602_DEVICE_TYPES:
+            await self._modbus.async_close()
+            _LOGGER.error("HW type not supported")
+            raise ValueError("HW type not supported")
+
         bus_version = await self.get_bus_version()
+
         _LOGGER.debug("Bus version = %s", str(bus_version))
         if bus_version is None:
             await self._modbus.async_close()
@@ -88,56 +88,52 @@ class Device:
         if hw_type == 44:
             self._air_geo_type = await self.check_air_geo()
 
-        if hw_type in CTS602_DEVICE_TYPES:
-            self._device_sw_ver = await self.get_controller_software_version()
-            if self._air_geo_type == 1:
-                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " AIR"
-            elif self._air_geo_type == 2:
-                self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
-            else:
-                self._device_type = CTS602_DEVICE_TYPES[hw_type]
-            if (bus_version >= 10) or (self._air_geo_type != 0):
-                co2_present = await self.get_co2_present()
-            else:
-                co2_present = False
-            if self._air_geo_type == 0:
-                for entity, value in CTS602_ENTITY_MAP.items():
-                    if "min_bus_version" not in value:
-                        continue
-                    if bus_version >= value["min_bus_version"] and (
-                        hw_type in value["supported_devices"]
-                        or "all" in value["supported_devices"]
-                    ):
-                        if "excluded_bus_versions" in value:
-                            if bus_version in value["excluded_bus_versions"]:
-                                continue
-                        if "extra_type" in value:
-                            if co2_present and value["extra_type"] == "co2":
-                                self._attributes[entity] = value["entity_type"]
-                            else:
-                                continue
-                        if "max_bus_version" in value:
-                            if bus_version >= value["max_bus_version"]:
-                                continue
-                        self._attributes[entity] = value["entity_type"]
-            else:
-                for entity, value in CTS602_ENTITY_MAP.items():
-                    if "min_hps_bus_version" not in value:
-                        continue
-                    if bus_version >= value["min_hps_bus_version"] and (
-                        hw_type in value["supported_devices"]
-                        or "all" in value["supported_devices"]
-                    ):
-                        if "extra_type" in value:
-                            if co2_present and value["extra_type"] == "co2":
-                                self._attributes[entity] = value["entity_type"]
-                            else:
-                                continue
-                        self._attributes[entity] = value["entity_type"]
+        self._device_sw_ver = await self.get_controller_software_version()
+        if self._air_geo_type == 1:
+            self._device_type = CTS602_DEVICE_TYPES[hw_type] + " AIR"
+        elif self._air_geo_type == 2:
+            self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
         else:
-            await self._modbus.async_close()
-            _LOGGER.error("HW type not supported")
-            raise ValueError("HW type not supported")
+            self._device_type = CTS602_DEVICE_TYPES[hw_type]
+        if (bus_version >= 10) or (self._air_geo_type != 0):
+            co2_present = await self.get_co2_present()
+        else:
+            co2_present = False
+        if self._air_geo_type == 0:
+            for entity, value in CTS602_ENTITY_MAP.items():
+                if "min_bus_version" not in value:
+                    continue
+                if bus_version >= value["min_bus_version"] and (
+                    hw_type in value["supported_devices"]
+                    or "all" in value["supported_devices"]
+                ):
+                    if "excluded_bus_versions" in value:
+                        if bus_version in value["excluded_bus_versions"]:
+                            continue
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
+                            self._attributes[entity] = value["entity_type"]
+                        else:
+                            continue
+                    if "max_bus_version" in value:
+                        if bus_version >= value["max_bus_version"]:
+                            continue
+                    self._attributes[entity] = value["entity_type"]
+        else:
+            for entity, value in CTS602_ENTITY_MAP.items():
+                if "min_hps_bus_version" not in value:
+                    continue
+                if bus_version >= value["min_hps_bus_version"] and (
+                    hw_type in value["supported_devices"]
+                    or "all" in value["supported_devices"]
+                ):
+                    if "extra_type" in value:
+                        if co2_present and value["extra_type"] == "co2":
+                            self._attributes[entity] = value["entity_type"]
+                        else:
+                            continue
+                    self._attributes[entity] = value["entity_type"]
+
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()
 
