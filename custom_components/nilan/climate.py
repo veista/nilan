@@ -1,4 +1,5 @@
 """Platform for climate integration."""
+
 from __future__ import annotations
 
 from homeassistant.components.climate import (
@@ -39,7 +40,11 @@ HVAC_TO_PRESET = {
 
 async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
     """Add climate entities for a config entry."""
-    supported_features = ClimateEntityFeature.FAN_MODE
+    supported_features = (
+        ClimateEntityFeature.FAN_MODE
+        | ClimateEntityFeature.TURN_OFF
+        | ClimateEntityFeature.TURN_ON
+    )
 
     hvac_basic_attributes = [
         "get_run_state",
@@ -108,6 +113,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
         self._attr_min_temp = 5
         self._attr_max_temp = 30
         self._attr_target_temperature_step = 1
+        self._enable_turn_on_off_backwards_compatibility = False
         self._attr_hvac_modes = [
             HVACMode.COOL,
             HVACMode.HEAT,
