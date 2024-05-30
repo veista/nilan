@@ -390,7 +390,7 @@
           "fresh_air_intake_temperature_t8": {"name": "Raitisilman Lämpötila (T8)"},
           "return_air_temperature_t10": {"name": "Paluuilman Lämpötila (T10)"},
           "return_water_temperature_t13": {"name": "Paluuveden Lämpötila (T13)"},
-          "supply_water_temperature_t14": {"name": "Tuloveden Lämpötila (T14)"},
+          "supply_water_temperature_t14": {"name": "Menoveden Lämpötila (T14)"},
           "user_panel_temperature_t15": {"name": "Käyttöpaneelin Lämpötila (T15)"},
           "anode_temperature_t16": {"name": "Anodin Lämpötila (T16)"},
           "central_heating_setpoint": {"name": "Keskuslämmityksen Tavoitelämpötila"},
@@ -430,7 +430,7 @@
                   "3": "Vesi"
               }
           },
-          "time_in_control_state": {"name": "Aika Ohaustilassa"},
+          "time_in_control_state": {"name": "Aika Ohjaustilassa"},
           "alarms_active": {"name": "Aktiivisia Hälytyksiä"},
           "days_since_air_filter_change": {"name": "Päiviä Suodatinvaihdosta"},
           "days_to_air_filter_change": {"name": "Päiviä Suodatinvaihtoon"},
