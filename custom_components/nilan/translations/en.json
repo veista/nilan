@@ -214,7 +214,13 @@
             "cooling_mode_ventilation_level": {
                 "name": "Cooling Mode Ventilation Level",
                 "state": {
-                    "0": "No Change",
+                    "0": "No Change"
+                }
+            },
+            "cooling_setpoint_offset": {
+                "name": "Cooling Setpoint Offset",
+                "state": {
+                    "0": "Cooling Disabled",
                     "1": "+0 °C",
                     "2": "+1 °C",
                     "3": "+2 °C",
@@ -223,12 +229,6 @@
                     "6": "+5 °C",
                     "7": "+7 °C",
                     "8": "+10 °C"
-                }
-            },
-            "cooling_setpoint_offset": {
-                "name": "Cooling Setpoint Offset",
-                "state": {
-                    "0": "Cooling Disabled"
                 }
             },
             "low_humidity_ventilation_level": {"name": "Low Humidity Ventilation Level"},
