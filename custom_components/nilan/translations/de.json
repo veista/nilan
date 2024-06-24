@@ -218,7 +218,15 @@
             "cooling_setpoint_offset": {
                 "name": "Offset des Kühlsollwerts",
                 "state": {
-                    "0": "Kühlung deaktiviert"
+                    "0": "Kühlung deaktiviert",
+                    "1": "+0°C",
+                    "2": "+1°C",
+                    "3": "+2°C",
+                    "4": "+3°C",
+                    "5": "+4°C",
+                    "6": "+5°C",
+                    "7": "+7°C",
+                    "8": "+10°C"
                 }
             },
             "low_humidity_ventilation_level": {"name": "Belüftungsstufe mit niedriger Luftfeuchtigkeit"},
