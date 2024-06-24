@@ -296,7 +296,12 @@
             "pre_heating_temperature": {
                 "name": "Temperatura preriscaldamento",
                 "state": {
-                    "0": "Spento"
+                    "0": "Spento",
+                    "1": "1 °C",
+                    "2": "2 °C",
+                    "3": "3 °C",
+                    "4": "4 °C",
+                    "5": "5 °C"
                 }
             },
             "circulation_pump_mode": {
