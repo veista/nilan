@@ -295,7 +295,12 @@
             "pre_heating_temperature": {
                 "name": "Esilämmityksen Lämpötila",
                 "state": {
-                    "0": "Pois"
+                    "0": "Pois",
+                    "1": "1 °C",
+                    "2": "2 °C",
+                    "3": "3 °C",
+                    "4": "4 °C",
+                    "5": "5 °C"
                 }
             },
             "circulation_pump_mode": {
