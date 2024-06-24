@@ -218,14 +218,14 @@
                 "name": "Viilennyksen Lämpötilapoikkeama",
                 "state": {
                     "0": "Viilennys Estetty",
-                    "1": "+0°C",
-                    "2": "+1°C",
-                    "3": "+2°C",
-                    "4": "+3°C",
-                    "5": "+4°C",
-                    "6": "+5°C",
-                    "7": "+7°C",
-                    "8": "+10°C"
+                    "1": "+0 °C",
+                    "2": "+1 °C",
+                    "3": "+2 °C",
+                    "4": "+3 °C",
+                    "5": "+4 °C",
+                    "6": "+5 °C",
+                    "7": "+7 °C",
+                    "8": "+10 °C"
                 }
             },
             "low_humidity_ventilation_level": {"name": "Low Humidity Ventilation Level"},
