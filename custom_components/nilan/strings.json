@@ -220,13 +220,14 @@
             "name": "Cooling Setpoint Offset",
             "state": {
                 "0": "Cooling Disabled",
-                "2": "+1 ºC",
-                "3": "+2 ºC",
-                "4": "+3 ºC",
-                "5": "+4 ºC",
-                "6": "+5 ºC",
-                "7": "+7 ºC",
-                "8": "+10 ºC"
+                "1": "+0 °C",
+                "2": "+1 °C",
+                "3": "+2 °C",
+                "4": "+3 °C",
+                "5": "+4 °C",
+                "6": "+5 °C",
+                "7": "+7 °C",
+                "8": "+10 °C"
             }
         },
         "low_humidity_ventilation_level": {"name": "Low Humidity Ventilation Level"},
