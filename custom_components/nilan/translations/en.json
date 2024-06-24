@@ -298,7 +298,12 @@
             "pre_heating_temperature": {
                 "name": "Pre-Heating Temperature",
                 "state": {
-                    "0": "Off"
+                    "0": "Off",
+                    "1": "1 °C",
+                    "2": "2 °C",
+                    "3": "3 °C",
+                    "4": "4 °C",
+                    "5": "5 °C"
                 }
             },
             "circulation_pump_mode": {
