@@ -1,7 +1,10 @@
 """Platform for water heater integration."""
+
 from __future__ import annotations
 
 from homeassistant.components.water_heater import (
+    STATE_ELECTRIC,
+    STATE_HEAT_PUMP,
     STATE_OFF,
     WaterHeaterEntity,
     WaterHeaterEntityFeature,
@@ -33,7 +36,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
 
 
 class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
-    """Define a Nilan Water Heater."""
+    """Define Nilan Top Water Heater."""
 
     def __init__(self, device) -> None:
         """Init the class."""
@@ -41,7 +44,7 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         self._state = None
         self._previous_temp = 55
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
-        self._attr_operation_list = ["Off", "On"]
+        self._attr_operation_list = [STATE_OFF, STATE_ELECTRIC]
         self._attr_supported_features = (
             WaterHeaterEntityFeature.TARGET_TEMPERATURE
             | WaterHeaterEntityFeature.OPERATION_MODE
@@ -57,7 +60,7 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
 
     async def async_set_operation_mode(self, operation_mode):
         """Set operation mode."""
-        if operation_mode == "Off":
+        if operation_mode == STATE_OFF:
             await self._device.set_electric_water_heater_setpoint(0)
         else:
             await self._device.set_electric_water_heater_setpoint(self._previous_temp)
@@ -81,14 +84,9 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
 
         if self._attr_target_temperature != 0:
             self._previous_temp = self._attr_target_temperature
-            self._attr_current_operation = "On"
+            self._attr_current_operation = STATE_ELECTRIC
         else:
-            self._attr_current_operation = "Off"
-
-    @property
-    def state(self) -> str | None:  # pylint: disable=overridden-final-method
-        """Return the current state."""
-        return self._state
+            self._attr_current_operation = STATE_OFF
 
     @property
     def min_temp(self):
@@ -103,21 +101,26 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
     @property
     def icon(self) -> str | None:
         """Select icon."""
-        if self._state == STATE_OFF:
+        if self._attr_current_operation == STATE_OFF:
             return "mdi:water-boiler-off"
         return "mdi:water-boiler"
 
+    @property
+    def extra_state_attributes(self):
+        """Return state."""
+        return {"state": self._state}
+
 
 class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
-    """Define a Nilan Water Heater."""
+    """Define Nilan Bottom Water Heater."""
 
     def __init__(self, device) -> None:
         """Init the class."""
         super().__init__(device)
-        self._previous_temp = 55
         self._state = None
+        self._previous_temp = 55
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
-        self._attr_operation_list = ["Off", "On"]
+        self._attr_operation_list = [STATE_OFF, STATE_HEAT_PUMP]
         self._attr_supported_features = (
             WaterHeaterEntityFeature.TARGET_TEMPERATURE
             | WaterHeaterEntityFeature.OPERATION_MODE
@@ -135,7 +138,7 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
 
     async def async_set_operation_mode(self, operation_mode):
         """Set operation mode."""
-        if operation_mode == "Off":
+        if operation_mode == STATE_OFF:
             await self._device.set_compressor_water_heater_setpoint(0)
         else:
             await self._device.set_compressor_water_heater_setpoint(self._previous_temp)
@@ -159,14 +162,9 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
 
         if self._attr_target_temperature != 0:
             self._previous_temp = self._attr_target_temperature
-            self._attr_current_operation = "On"
+            self._attr_current_operation = STATE_HEAT_PUMP
         else:
-            self._attr_current_operation = "Off"
-
-    @property
-    def state(self) -> str | None:  # pylint: disable=overridden-final-method
-        """Return the current state."""
-        return self._state
+            self._attr_current_operation = STATE_OFF
 
     @property
     def min_temp(self):
@@ -181,6 +179,11 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
     @property
     def icon(self) -> str | None:
         """Select icon."""
-        if self._state == STATE_OFF:
+        if self._attr_current_operation == STATE_OFF:
             return "mdi:water-boiler-off"
         return "mdi:water-boiler"
+
+    @property
+    def extra_state_attributes(self):
+        """Return state."""
+        return {"state": self._state}

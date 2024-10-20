@@ -477,20 +477,10 @@
         },
         "water_heater": {
           "top_water_heater": {
-            "name": "Ylempi Lämminvesivaraaja",
-            "state": {
-              "off": "Sammutettu",
-              "idle": "Joutilas",
-              "heating": "Lämmittää"
-            }
+            "name": "Ylempi Lämminvesivaraaja"
           },
           "bottom_water_heater": {
-            "name": "Alempi Lämmivesivaraaja",
-            "state": {
-                "off": "Sammutettu",
-                "idle": "Joutilas",
-                "heating": "Lämmittää"
-            }
+            "name": "Alempi Lämmivesivaraaja"
           }
         }
       }

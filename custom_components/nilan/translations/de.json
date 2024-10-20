@@ -478,20 +478,10 @@
         },
         "water_heater": {
           "top_water_heater": {
-            "name": "Oberer Warmwasserbereiter",
-            "state": {
-              "off": "Aus",
-              "idle": "Leerlauf",
-              "heating": "Heizen"
-            }
+            "name": "Oberer Warmwasserbereiter"
           },
           "bottom_water_heater": {
-            "name": "Unterer Warmwasserbereiter",
-            "state": {
-                "off": "Aus",
-                "idle": "Leerlauf",
-                "heating": "Heizen"
-            }
+            "name": "Unterer Warmwasserbereiter"
           }
         }
       }
