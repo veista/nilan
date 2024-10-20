@@ -491,20 +491,10 @@
         },
         "water_heater": {
           "top_water_heater": {
-            "name": "Riscaldatore ad immersione scaldabagno (alto)",
-            "state": {
-              "off": "Spento",
-              "idle": "Inattivo",
-              "heating": "Riscaldamento"
-            }
+            "name": "Riscaldatore ad immersione scaldabagno (alto)"
           },
           "bottom_water_heater": {
-            "name": "Pompa di calore scaldabagno (basso)",
-            "state": {
-                "off": "Spento",
-                "idle": "Inattivo",
-                "heating": "Riscaldamento"
-            }
+            "name": "Pompa di calore scaldabagno (basso)"
           }
         }
       }

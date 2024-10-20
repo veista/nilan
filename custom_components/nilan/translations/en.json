@@ -605,20 +605,10 @@
         },
         "water_heater": {
           "top_water_heater": {
-            "name": "Top Water Heater",
-            "state": {
-              "off": "Off",
-              "idle": "Idle",
-              "heating": "Heating"
-            }
+            "name": "Top Water Heater"
           },
           "bottom_water_heater": {
-            "name": "Bottom Water Heater",
-            "state": {
-                "off": "Off",
-                "idle": "Idle",
-                "heating": "Heating"
-            }
+            "name": "Bottom Water Heater"
           }
         }
       }
