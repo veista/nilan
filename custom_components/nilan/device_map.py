@@ -234,6 +234,7 @@ CTS602_ENTITY_MAP = {
         "supported_devices": (
             10,
             11,
+            12,
             19,
             20,
             21,
