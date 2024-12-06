@@ -89,6 +89,7 @@ class Device:
             self._air_geo_type = await self.check_air_geo()
 
         self._device_sw_ver = await self.get_controller_software_version()
+        _LOGGER.debug("Device Software = %s", self._device_sw_ver)
         if self._air_geo_type == 1:
             self._device_type = CTS602_DEVICE_TYPES[hw_type] + " AIR"
         elif self._air_geo_type == 2:
@@ -171,20 +172,19 @@ class Device:
         """Check if machine type 44 has AIR/GEO support."""
         version = ""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.app_version_major, 3, "input"
+            self._unit_id, CTS602InputRegisters.app_version_minor, 1, "input"
         )
         if result is not None:
             for value in result.registers:
                 char1 = chr(value >> 8)
                 char2 = chr(value & 0x00FF)
-                version += char1 + char2 + "."
+                version += char1 + char2
             version = version.replace(" ", "")
-            version = version[:-1]
-            _LOGGER.debug("CompactP SW = %s", version)
-            if version.startswith("1.1."):
+            _LOGGER.debug("SW Minor = %s", version)
+            if version == "1":
                 _LOGGER.debug("CompactP type = AIR")
                 return 1
-            if version.startswith("1.2."):
+            if version == "2":
                 _LOGGER.debug("CompactP type = GEO")
                 return 2
         _LOGGER.debug("CompactP type = Regular")
