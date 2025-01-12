@@ -1,4 +1,5 @@
 """Config flow for Nilan integration."""
+
 from __future__ import annotations
 
 import logging
@@ -37,7 +38,10 @@ _LOGGER = logging.getLogger(__name__)
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
     """Validate device model."""
     if com_type == "tcp":
-        client = AsyncModbusTcpClient(address, port)
+        client = AsyncModbusTcpClient(
+            address,
+            port=port,
+        )
     else:
         client = AsyncModbusSerialClient(
             method="rtu",
@@ -51,7 +55,7 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
     try:
         await client.connect()
         result = await client.read_holding_registers(
-            CTS602HoldingRegisters.control_type, 1, slave=int(unit_id)
+            CTS602HoldingRegisters.control_type, count=1, slave=int(unit_id)
         )
     except ModbusException as value_error:
         client.close()
