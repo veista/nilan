@@ -64,8 +64,8 @@
                   "off": "Av"
               },
               "state_attributes": {
-                  "current_humidity": {"
-                      name": "Nåværende fuktighet"
+                  "current_humidity": {
+                    "name": "Nåværende fuktighet"
                   },
                   "current_temperature": {
                       "name": "Nåværende temperatur"
