@@ -1222,7 +1222,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 100
+            return float(value)
         _LOGGER.error("Could not read get_co2_sensor_value")
         return None
 
