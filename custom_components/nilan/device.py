@@ -2723,7 +2723,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.display_key_code,
-                0,
+                [0],
                 "write_registers",
             )
             return True
