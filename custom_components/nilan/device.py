@@ -2705,7 +2705,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.control_mode_set,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2717,13 +2717,13 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.display_key_code,
-                mode,
+                [mode],
                 "write_registers",
             )
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.display_key_code,
-                0,
+                [0],
                 "write_registers",
             )
             return True
@@ -2735,7 +2735,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_priority,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2747,7 +2747,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_air_exch_mode,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2759,7 +2759,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_cool_vent,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2771,7 +2771,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_cool_set,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2783,7 +2783,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.control_vent_set,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2795,7 +2795,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_inlet_min,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2807,7 +2807,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_min,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2819,7 +2819,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_max,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2831,7 +2831,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_rh_vent_lo,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2843,7 +2843,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_heat_select_set,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2855,7 +2855,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_rh_vent_hi,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2867,7 +2867,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_co2_vent_hi,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2879,7 +2879,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_type,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2891,7 +2891,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_filt_alm_type,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2903,7 +2903,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_legio_type,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2915,7 +2915,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hps_param_season_mode,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2927,7 +2927,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_winter_vent,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2939,7 +2939,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_fans,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2951,7 +2951,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_heat_type,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2963,7 +2963,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.preheat_defrost,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2975,7 +2975,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.preheat_temp_set,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2987,7 +2987,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.user_user_menu_open,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -2999,7 +2999,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_heat_select,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3011,7 +3011,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_heat_select,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3023,7 +3023,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_room_low,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3035,7 +3035,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.user_language,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3047,7 +3047,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_circ_pump_mode,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3059,7 +3059,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.alarm_reset,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3071,7 +3071,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hps_alarm_reset,
-                mode,
+                [mode],
                 "write_registers",
             )
             return True
@@ -3083,7 +3083,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_inlet_spd_1,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3095,7 +3095,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_inlet_spd_2,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3107,7 +3107,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_inlet_spd_3,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3119,7 +3119,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_inlet_spd_4,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3131,7 +3131,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_spd_1,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3143,7 +3143,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_spd_2,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3155,7 +3155,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_spd_3,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3167,7 +3167,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_exhaust_spd_4,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3179,7 +3179,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_start_delay,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3191,7 +3191,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_t6_min_run_sec,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3203,7 +3203,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_dur_max_exh,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3215,7 +3215,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_dur_max_cpr,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3227,7 +3227,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_dur_max_cpr,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3239,7 +3239,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_heat_delay,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3251,7 +3251,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_curve_select,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3263,7 +3263,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_cpr_restart,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3275,7 +3275,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_co2_lim_lo,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3287,7 +3287,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_co2_lim_hi,
-                value,
+                [value],
                 "write_registers",
             )
             return True
@@ -3303,7 +3303,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.control_temp_set,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3317,7 +3317,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.compressor_cond_temp_min,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3331,7 +3331,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.compressor_cond_temp_max,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3345,7 +3345,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_heat_extern,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3359,7 +3359,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_supply_min,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3373,7 +3373,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_supply_max,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3387,7 +3387,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_supply_offset,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3401,7 +3401,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_temp_start,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3415,7 +3415,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.defrost_temp_stop,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3429,7 +3429,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_min_cpr,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3443,7 +3443,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_min_sum,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3457,7 +3457,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_min_win,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3471,7 +3471,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_max_sum,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3485,7 +3485,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_max_win,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3499,7 +3499,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_summer,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3512,7 +3512,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_flow_winter_temp,
-                value,
+                [value],
                 "write_registers",
             )
 
@@ -3526,7 +3526,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_temp_temp_room_low,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3540,7 +3540,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_temp_cpr_max,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3554,7 +3554,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_rh_lim_lo,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3564,7 +3564,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_time_out,
-                value,
+                [value],
                 "write_registers",
             )
 
@@ -3574,7 +3574,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_time_out,
-                value,
+                [value],
                 "write_registers",
             )
 
@@ -3588,7 +3588,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_temp_set_t11,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3602,7 +3602,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hot_water_temp_set_t12,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3616,7 +3616,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hps_hot_water_set_point,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3630,7 +3630,7 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.hps_heating_set_point_min,
-                output,
+                [output],
                 "write_registers",
             )
 
@@ -3643,7 +3643,7 @@ class Device:
         await self._modbus.async_pb_call(
             self._unit_id,
             CTS602HoldingRegisters.control_run_set,
-            value,
+            [value],
             "write_registers",
         )
 
@@ -3656,6 +3656,6 @@ class Device:
         await self._modbus.async_pb_call(
             self._unit_id,
             CTS602HoldingRegisters.hps_param_main_switch,
-            value,
+            [value],
             "write_registers",
         )
