@@ -1,4 +1,5 @@
 """Platform for binary sensor integration."""
+
 from __future__ import annotations
 
 from collections import namedtuple
@@ -11,7 +12,7 @@ from homeassistant.components.binary_sensor import (
 from .__init__ import NilanEntity
 from .const import DOMAIN
 
-Map = namedtuple("map", "name device_class entity_category on_icon off_icon")
+Map = namedtuple("map", "name device_class entity_category on_icon off_icon enabled")
 
 ATTRIBUTE_TO_BINARY_SENSORS = {
     "get_compressor_state": [
@@ -21,6 +22,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_smoke_alarm_state": [
@@ -30,6 +32,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_defrost_state": [
@@ -39,6 +42,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:snowflake-melt",
             None,
+            True,
         )
     ],
     "get_bypass_flap_state": [
@@ -48,6 +52,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_user_function_1_state": [
@@ -57,6 +62,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:account",
             "mdi:account-off",
+            True,
         )
     ],
     "get_user_function_2_state": [
@@ -66,6 +72,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:account",
             "mdi:account-off",
+            False,
         )
     ],
     "get_display_led_1_state": [
@@ -75,6 +82,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:led-on",
             "mdi:led-off",
+            True,
         )
     ],
     "get_display_led_2_state": [
@@ -84,6 +92,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:led-on",
             "mdi:led-off",
+            True,
         )
     ],
     "get_circulation_pump_state": [
@@ -93,6 +102,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:pump",
             "mdi:pump-off",
+            True,
         )
     ],
     "get_heater_relay_1_state": [
@@ -102,6 +112,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:electric-switch-closed",
             "mdi:electric-switch",
+            True,
         )
     ],
     "get_heater_relay_2_state": [
@@ -111,6 +122,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:electric-switch-closed",
             "mdi:electric-switch",
+            True,
         )
     ],
     "get_heater_relay_3_state": [
@@ -120,6 +132,7 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             None,
             "mdi:electric-switch-closed",
             "mdi:electric-switch",
+            True,
         )
     ],
 }
@@ -142,6 +155,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
                         m.entity_category,
                         m.on_icon,
                         m.off_icon,
+                        m.enabled,
                     )
                     for m in maps
                 ]
@@ -161,6 +175,7 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         entity_category,
         on_icon,
         off_icon,
+        enabled,
     ) -> None:
         """Init Binary Sensor."""
         super().__init__(device)
@@ -171,6 +186,7 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         self._name = name
         self._on_icon = on_icon
         self._off_icon = off_icon
+        self._attr_entity_registry_enabled_default = enabled
         self._attr_has_entity_name = True
         self._attr_translation_key = self._name
         self._attr_unique_id = self._name

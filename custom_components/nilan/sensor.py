@@ -1,4 +1,5 @@
 """Platform for sensor integration."""
+
 from __future__ import annotations
 
 from collections import namedtuple
@@ -20,7 +21,7 @@ from .__init__ import NilanEntity
 from .const import DOMAIN
 
 Map = namedtuple(
-    "map", "name default_unit device_class state_class entity_category icon"
+    "map", "name default_unit device_class state_class entity_category icon enabled"
 )
 
 ATTRIBUTE_TO_SENSORS = {
@@ -32,6 +33,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
             None,
+            True,
         )
     ],
     "get_t1_intake_temperature": [
@@ -42,6 +44,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t2_inlet_temperature": [
@@ -52,6 +55,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t3_exhaust_temperature": [
@@ -62,6 +66,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t4_outlet": [
@@ -72,6 +77,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t5_condenser_temperature": [
@@ -82,6 +88,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
             None,
+            True,
         )
     ],
     "get_t6_evaporator_temperature": [
@@ -92,6 +99,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t7_inlet_temperature_after_heater": [
@@ -102,6 +110,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t8_outdoor_temperature": [
@@ -112,6 +121,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t10_external_temperature": [
@@ -122,6 +132,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t13_return_temperature": [
@@ -132,6 +143,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t14_supply_temperature": [
@@ -142,6 +154,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_t15_user_panel_temperature": [
@@ -152,6 +165,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
             None,
+            True,
         )
     ],
     "get_t16_sacrificial_anode_temperature": [
@@ -162,6 +176,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_central_heating_setpoint": [
@@ -172,6 +187,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_humidity": [
@@ -182,6 +198,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_average_humidity": [
@@ -192,6 +209,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_after_heating_element_capacity": [
@@ -202,6 +220,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:radiator",
+            True,
         )
     ],
     "get_co2_sensor_value": [
@@ -212,6 +231,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_control_state": [
@@ -222,6 +242,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:state-machine",
+            True,
         )
     ],
     "get_after_heating_type": [
@@ -232,6 +253,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             EntityCategory.DIAGNOSTIC,
             None,
+            True,
         )
     ],
     "get_time_in_control_state": [
@@ -242,6 +264,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:calendar-clock",
+            True,
         )
     ],
     "get_alarm_count": [
@@ -252,6 +275,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:alert-circle-outline",
+            True,
         )
     ],
     "get_days_since_air_filter_change": [
@@ -262,6 +286,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:calendar-start",
+            True,
         )
     ],
     "get_days_to_air_filter_change": [
@@ -272,6 +297,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:calendar-end",
+            True,
         )
     ],
     "get_summer_state": [
@@ -282,6 +308,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:sun-snowflake",
+            True,
         )
     ],
     "get_exchanger_efficiency": [
@@ -292,6 +319,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:air-filter",
+            True,
         )
     ],
     "get_time": [
@@ -302,6 +330,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:calendar-clock",
+            True,
         )
     ],
     "get_ventilation_state": [
@@ -312,6 +341,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:state-machine",
+            True,
         )
     ],
     "get_anode_state": [
@@ -322,6 +352,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_supply_fan_level": [
@@ -332,6 +363,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
+            True,
         )
     ],
     "get_return_fan_level": [
@@ -342,6 +374,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
+            True,
         )
     ],
     "get_return_fan_speed": [
@@ -352,6 +385,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
+            True,
         )
     ],
     "get_supply_fan_speed": [
@@ -362,6 +396,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
+            True,
         )
     ],
     "get_display_text_1": [
@@ -372,6 +407,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_display_text_2": [
@@ -382,6 +418,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             None,
+            True,
         )
     ],
     "get_bus_version": [
@@ -392,6 +429,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             EntityCategory.DIAGNOSTIC,
             None,
+            True,
         )
     ],
     "get_hps_compressor_capacity": [
@@ -402,6 +440,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:air-filter",
+            True,
         )
     ],
     "get_hps_heat_pump_state": [
@@ -412,6 +451,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:state-machine",
+            True,
         )
     ],
     "get_hps_t16_return_temperature": [
@@ -422,6 +462,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t17_supply_temperature": [
@@ -432,6 +473,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t18_tank_temperature": [
@@ -442,6 +484,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t20_ambient_temperature": [
@@ -452,6 +495,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t21_shw_top_temperature": [
@@ -462,6 +506,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t22_shw_bottom_temperature": [
@@ -472,6 +517,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_t35_pressure_pipe_temperature": [
@@ -482,6 +528,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_output_compvolt1": [
@@ -492,6 +539,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_alarm_count": [
@@ -502,6 +550,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:alert-circle-outline",
+            True,
         )
     ],
     "get_hps_hot_water_setpoint_actual": [
@@ -512,6 +561,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
     "get_hps_heating_setpoint_actual": [
@@ -522,6 +572,7 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             None,
+            True,
         )
     ],
 }
@@ -545,6 +596,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
                         m.state_class,
                         m.entity_category,
                         m.icon,
+                        m.enabled,
                     )
                     for m in maps
                 ]
@@ -565,6 +617,7 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         state_class,
         entity_category,
         icon,
+        enabled,
     ) -> None:
         """Init Sensor."""
         super().__init__(device)
@@ -576,6 +629,7 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         self._attr_entity_category = entity_category
         self._attr_icon = icon
         self._name = name
+        self._attr_entity_registry_enabled_default = enabled
         self._attr_has_entity_name = True
         self._attr_translation_key = self._name
         self._attr_unique_id = self._name

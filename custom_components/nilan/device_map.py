@@ -54,7 +54,7 @@ CTS602_ENTITY_MAP = {
         "entity_type": "binary_sensor",
         "min_bus_version": 2,
         "min_hps_bus_version": 1,
-        "supported_devices": (None,),
+        "supported_devices": ("all",),
     },
     "get_t0_controller_temperature": {
         "entity_type": "sensor",
