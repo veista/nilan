@@ -44,7 +44,6 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
         )
     else:
         client = AsyncModbusSerialClient(
-            method="rtu",
             port=port,
             stopbits=1,
             bytesize=8,
