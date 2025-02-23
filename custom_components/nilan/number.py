@@ -1,4 +1,5 @@
 """Platform for number integration."""
+
 from __future__ import annotations
 
 from collections import namedtuple
@@ -467,7 +468,7 @@ ATTRIBUTE_TO_NUMBERS = {
             "central_heating_max_supply_temperature",
             "set_ch_max_supply_temperature",
             EntityCategory.CONFIG,
-            20,
+            5,
             70,
             1,
             NumberMode.BOX,
