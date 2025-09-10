@@ -60,6 +60,7 @@ class Device:
         success = await self._modbus.async_setup()
 
         if success:
+            await self._modbus.event_connected.wait()
             _LOGGER.debug("Modbus has been setup")
         else:
             await self._modbus.async_close()
