@@ -34,7 +34,6 @@ STEP_SERIAL_DATA_SCHEMA = vol.Schema(
 
 _LOGGER = logging.getLogger(__name__)
 
-
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
     """Validate device model."""
     if com_type == "tcp":
@@ -54,7 +53,7 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
     try:
         await client.connect()
         result = await client.read_holding_registers(
-            CTS602HoldingRegisters.control_type, count=1, slave=int(unit_id)
+            CTS602HoldingRegisters.control_type, count=1, device_id=int(unit_id)
         )
     except ModbusException as value_error:
         client.close()
