@@ -44,10 +44,8 @@ class CTS602InputRegisters:
     input_t10_extern = 210
     input_t11_top = 211
     input_t12_bottom = 212
-    input_t13_return = 213
-    input_t14_supply = 214
     input_t15_room = 215
-    input_t16 = 216
+    input_t16_supply = 214
     input_t17_pre_heat = 217
     input_t18_pres_pibe = 218
     input_p_suc = 219
@@ -99,17 +97,18 @@ class CTS602InputRegisters:
 
     central_heat_heat_ext_set = 1800
 
-    hps_input_t17_supply = 1900
-    hps_input_t16_return = 1901
+    hps_input_t13_supply = 6171
+    hps_input_t14_return = 1905
     hps_input_t22_shw_bot = 1902
     hps_input_t20_ambient = 1903
     hps_input_t15_room = 1904
-    hps_input_t14_supply = 1905
     hps_input_hp_switch = 1906
     hps_input_lp_switch = 1907
     hps_input_bp_switch = 1908
     hps_input_fc_switch = 1909
 
+    hps_output_t16_return = 213
+    hps_output_t17_supply = 214
     hps_output_compressor1 = 1920
     hps_output_heater = 1921
     hps_output_hot_tap_water = 1922
@@ -197,8 +196,6 @@ class CTS602InputRegisters:
     hps_input_t21_shw_top = 6167
 
     hps_input_t18_tank = 6169
-
-    hps_input_t13_return = 6171
 
     hps_input_t35_pres_tube = 6173
 

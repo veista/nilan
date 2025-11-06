@@ -251,23 +251,6 @@ CTS602_ENTITY_MAP = {
             44,
         ),
     },
-    "get_t13_return_temperature": {
-        "entity_type": "sensor",
-        "min_bus_version": 1,
-        "min_hps_bus_version": 1,
-        "supported_devices": (38,),
-    },
-    "get_t14_supply_temperature": {
-        "entity_type": "sensor",
-        "min_bus_version": 1,
-        "min_hps_bus_version": 1,
-        "supported_devices": (
-            20,
-            21,
-            38,
-            44,
-        ),
-    },
     "get_t15_user_panel_temperature": {
         "entity_type": "sensor",
         "min_bus_version": 1,
@@ -439,12 +422,22 @@ CTS602_ENTITY_MAP = {
             44,
         ),
     },
-    "get_hps_t17_supply_temperature": {
+    "get_hps_t13_supply_temperature": {
+        "entity_type": "sensor",
+        "min_hps_bus_version": 1,
+        "supported_devices": (44,),
+    },
+    "get_hps_t14_return_temperature": {
         "entity_type": "sensor",
         "min_hps_bus_version": 1,
         "supported_devices": (44,),
     },
     "get_hps_t16_return_temperature": {
+        "entity_type": "sensor",
+        "min_hps_bus_version": 1,
+        "supported_devices": (44,),
+    },
+    "get_hps_t17_supply_temperature": {
         "entity_type": "sensor",
         "min_hps_bus_version": 1,
         "supported_devices": (44,),

@@ -981,42 +981,6 @@ class Device:
         _LOGGER.error("Could not read get_t12_compressor_water_heater_temperature")
         return None
 
-    async def get_t13_return_temperature(self) -> float:
-        """Get T13 Return temperature."""
-        result = await self._modbus.async_pb_call(
-            self._unit_id,
-            CTS602InputRegisters.input_t13_return,
-            1,
-            "input",
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=True,
-            )
-            return float(value) / 100
-        _LOGGER.error("Could not read get_t13_return_temperature")
-        return None
-
-    async def get_t14_supply_temperature(self) -> float:
-        """Get T13 Return temperature."""
-        result = await self._modbus.async_pb_call(
-            self._unit_id,
-            CTS602InputRegisters.input_t14_supply,
-            1,
-            "input",
-        )
-        if result is not None:
-            value = int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=True,
-            )
-            return float(value) / 100
-        _LOGGER.error("Could not read get_t14_supply_temperature")
-        return None
-
     async def get_t15_user_panel_temperature(self) -> float:
         """Get T15 user panel Temperature."""
         result = await self._modbus.async_pb_call(
@@ -1062,10 +1026,13 @@ class Device:
         _LOGGER.error("Could not read get_t17_preheater_temperature")
         return None
 
-    async def get_hps_t16_return_temperature(self) -> float:
-        """Get HPS T16 Return Temperature."""
+    async def get_hps_t13_supply_temperature(self) -> float:
+        """Get T13 Supply temperature."""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.hps_input_t16_return, 1, "input"
+            self._unit_id,
+            CTS602InputRegisters.hps_input_t13_supply,
+            1,
+            "input",
         )
         if result is not None:
             value = int.from_bytes(
@@ -1074,13 +1041,52 @@ class Device:
                 signed=True,
             )
             return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t13_supply_temperature")
+        return None
+
+    async def get_hps_t14_return_temperature(self) -> float:
+        """Get T14 Return temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602InputRegisters.hps_input_t14_return,
+            1,
+            "input",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 10
+        _LOGGER.error("Could not read get_hps_t14_supply_temperature")
+        return None
+
+    async def get_hps_t16_return_temperature(self) -> float:
+        """Get T16 Return temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602InputRegisters.hps_output_t16_return,
+            1,
+            "input",
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
         _LOGGER.error("Could not read get_hps_t16_return_temperature")
         return None
 
     async def get_hps_t17_supply_temperature(self) -> float:
-        """Get HPS T17 Supply Temperature."""
+        """Get T17 Supply temperature."""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.hps_input_t17_supply, 1, "input"
+            self._unit_id,
+            CTS602InputRegisters.hps_output_t17_supply,
+            1,
+            "input",
         )
         if result is not None:
             value = int.from_bytes(
@@ -1088,7 +1094,7 @@ class Device:
                 "little",
                 signed=True,
             )
-            return float(value) / 10
+            return float(value) / 100
         _LOGGER.error("Could not read get_hps_t17_supply_temperature")
         return None
 
@@ -1140,7 +1146,7 @@ class Device:
     async def get_hps_t22_shw_bottom_temperature(self) -> float:
         """Get HPS T22 SHW Bottom Temperature."""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.hps_input_t22_shw_bottom, 1, "input"
+            self._unit_id, CTS602InputRegisters.hps_input_t22_shw_bot, 1, "input"
         )
         if result is not None:
             value = int.from_bytes(

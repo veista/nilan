@@ -134,29 +134,7 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             True,
         )
-    ],
-    "get_t13_return_temperature": [
-        Map(
-            "return_water_temperature_t13",
-            UnitOfTemperature.CELSIUS,
-            SensorDeviceClass.TEMPERATURE,
-            SensorStateClass.MEASUREMENT,
-            None,
-            None,
-            True,
-        )
-    ],
-    "get_t14_supply_temperature": [
-        Map(
-            "supply_water_temperature_t14",
-            UnitOfTemperature.CELSIUS,
-            SensorDeviceClass.TEMPERATURE,
-            SensorStateClass.MEASUREMENT,
-            None,
-            None,
-            True,
-        )
-    ],
+    ],   
     "get_t15_user_panel_temperature": [
         Map(
             "user_panel_temperature_t15",
@@ -454,9 +432,31 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_hps_t13_supply_temperature": [
+        Map(
+            "supply_water_temperature_t13",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_hps_t14_return_temperature": [
+        Map(
+            "return_water_temperature_t14",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
     "get_hps_t16_return_temperature": [
         Map(
-            "hps_t16_return_temperature",
+            "return_water_temperature_t16",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
@@ -467,7 +467,7 @@ ATTRIBUTE_TO_SENSORS = {
     ],
     "get_hps_t17_supply_temperature": [
         Map(
-            "hps_t17_supply_temperature",
+            "supply_water_temperature_t17",
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
