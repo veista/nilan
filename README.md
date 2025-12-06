@@ -29,13 +29,15 @@ If you have CTS700 or another device you will have to help me with that.
 You must have one interface type installed on your Nilan device for this Integration to work 
 
 #### Supported Interface Types
-- ModBus RTU to Modbus TCP Bridge 
+- ModBus RTU to Modbus TCP Bridge
+- ModBus RTU over TCP
 - USB to RS485 adaptor
 
 #### Tested Known-to-work Bridge Devices
 * USR-TCP232-410S
 * Waveshare RS485 TO ETH (B)
 * https://github.com/veista/modbus_bridge
+* Moxa NPort 5430 (TCP Server mode + ModBus RTU over TCP)
 
 ### Software
 #### Manually

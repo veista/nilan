@@ -37,7 +37,7 @@ STEP_RTU_OVER_TCP_DATA_SCHEMA = vol.Schema(
     {
         vol.Required("name", default="Nilan"): str,
         vol.Required("host_ip"): str,
-        vol.Required("host_port", default="502"): str,
+        vol.Required("host_port", default="4001"): str,
         vol.Required("unit_id", default=30): int,
     }
 )
