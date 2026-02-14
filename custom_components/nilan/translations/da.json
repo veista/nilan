@@ -1,0 +1,614 @@
+{
+  "config": {
+      "abort": {
+          "already_configured": "Enheden er allerede konfigureret"
+      },
+      "error": {
+          "cannot_connect": "Kunne ikke oprette forbindelse",
+          "invalid_response": "Ugyldigt svar fra enheden",
+          "unsupported_device": "Ikke-understøttet enhed",
+          "unknown": "Uventet fejl"
+      },
+      "step": {
+          "menu": {
+              "title": "Vælg grænsefladetype",
+              "menu_options": {
+                  "tcp": "TCP",
+                  "serial": "Seriel"
+              }
+          },
+          "tcp": {
+              "title": "TCP-konfiguration",
+              "data": {
+                  "name": "Enhedsnavn",
+                  "host_ip": "IP-adresse",
+                  "host_port": "Port",
+                  "unit_id": "Enheds-ID"
+              }
+          },
+          "serial": {
+              "title": "Seriel konfiguration",
+              "data": {
+                  "name": "Enhedsnavn",
+                  "host_port": "Sti",
+                  "unit_id": "Enheds-ID"
+              }
+          }
+      }
+  },
+  "entity": {
+      "binary_sensor": {
+          "compressor": {"name": "Kompressor"},
+          "smoke_alarm": {"name": "Røgalarm"},
+          "defrost": {"name": "Afrimning"},
+          "bypass_flap": {"name": "Bypass-spjæld"},
+          "user_selection_1": {"name": "Brugervalg 1"},
+          "user_selection_2": {"name": "Brugervalg 2"},
+          "display_led_1": {"name": "Display LED 1"},
+          "display_led_2": {"name": "Display LED 2"},
+          "circulation_pump": {"name": "Cirkulationspumpe"},
+          "heater_relay_1": {"name": "Varmerelæ 1"},
+          "heater_relay_2": {"name": "Varmerelæ 2"},
+          "heater_relay_3": {"name": "Varmerelæ 3"}
+      },
+      "button": {
+          "sync_time": {"name": "Synkroniser tid og dato"}
+      },
+      "climate": {
+          "hvac": {
+              "name": "HVAC",
+              "state": {
+                  "auto": "Auto",
+                  "cool": "Køling",
+                  "heat": "Opvarmning",
+                  "off": "Fra"
+              },
+              "state_attributes": {
+                  "current_humidity": {
+                    "name": "Nuværende fugtighed"
+                  },
+                  "current_temperature": {
+                      "name": "Nuværende temperatur"
+                  },
+                  "fan_mode": {
+                      "name": "Blæsertilstand"
+                  },
+                  "fan_modes": {
+                      "name": "Blæsertilstande"
+                  },
+                  "humidity": {
+                      "name": "Nuværende fugtighed"
+                  },
+                  "hvac_action": {
+                      "name": "Nuværende handling",
+                      "state": {
+                          "off": "Fra",
+                          "cooling": "Køler",
+                          "heating": "Varmer",
+                          "drying": "Tørrer",
+                          "idle": "Inaktiv",
+                          "fan": "Blæser"
+                      }
+                  },
+                  "hvac_modes": {
+                      "name": "HVAC-tilstande"
+                  },
+                  "max_humidity": {
+                      "name": "Maks fugtighed"
+                  },
+                  "max_temp": {
+                      "name": "Maks mål temperatur"
+                  },
+                  "min_humidity": {
+                      "name": "Min mål fugtighed"
+                  },
+                  "min_temp": {
+                      "name": "Min mål temperatur"
+                  },
+                  "preset_mode": {
+                      "name": "Forudindstilling",
+                      "state": {
+                          "water": "Vand",
+                          "comfort": "Komfort",
+                          "energy": "Energi"
+                      }
+                  },
+                  "preset_modes": {
+                      "name": "Forudindstillinger"
+                  },
+                  "target_temp_high": {
+                      "name": "Øvre måltemperatur"
+                  },
+                  "target_temp_low": {
+                      "name": "Nedre måltemperatur"
+                  },
+                  "target_temp_step": {
+                      "name": "Måltemperatur trin"
+                  },
+                  "temperature": {
+                      "name": "Måltemperatur"
+                  }
+              }
+          }
+      },
+      "number": {
+          "scalding_protection_setpoint": {"name": "Setpunkt for skoldningsbeskyttelse"},
+          "maximum_time_in_high_humidity_ventilation": {"name": "Maks tid i høj fugtighedsventilation"},
+          "low_temperature_curve": {"name": "Lav temperaturkurve"},
+          "high_temperature_curve": {"name": "Høj temperaturkurve"},
+          "low_temperature_compressor_start_setpoint": {"name": "Startsetpunkt for lav temperatur kompressor"},
+          "low_outdoor_temp_setpoint": {"name": "Setpunkt for lav udetemperatur"},
+          "minimum_supply_air_temperature_in_summer": {"name": "Min tillufttemperatur om sommeren"},
+          "minimum_supply_air_temperature_in_winter": {"name": "Min tillufttemperatur om vinteren"},
+          "maximum_supply_air_temperature_in_summer": {"name": "Maks tillufttemperatur om sommeren"},
+          "maximum_supply_air_temperature_in_winter": {"name": "Maks tillufttemperatur om vinteren"},
+          "room_temperature_neutral_zone": {"name": "Neutral zone for rumtemperatur"},
+          "change_to_summer_state_setpoint": {"name": "Setpunkt for overgang til sommertilstand"},
+          "supply_fan_power_at_level_1": {"name": "Tilluftblæser effekt på niveau 1"},
+          "supply_fan_power_at_level_2": {"name": "Tilluftblæser effekt på niveau 2"},
+          "supply_fan_power_at_level_3": {"name": "Tilluftblæser effekt på niveau 3"},
+          "supply_fan_power_at_level_4": {"name": "Tilluftblæser effekt på niveau 4"},
+          "return_fan_power_at_level_1": {"name": "Fraluftblæser effekt på niveau 1"},
+          "return_fan_power_at_level_2": {"name": "Fraluftblæser effekt på niveau 2"},
+          "return_fan_power_at_level_3": {"name": "Fraluftblæser effekt på niveau 3"},
+          "return_fan_power_at_level_4": {"name": "Fraluftblæser effekt på niveau 4"},
+          "fan_start_up_delay": {"name": "Forsinkelse ved blæserstart"},
+          "defrost_start_setpoint": {"name": "Startsetpunkt for afrimning"},
+          "defrost_stop_setpoint": {"name": "Stopsetpunkt for afrimning"},
+          "minimum_defrost_time": {"name": "Minimum afrimningstid"},
+          "maximum_evaporator_defrost_time": {"name": "Maks fordamper afrimningstid"},
+          "maximum_outlet_defrost_time": {"name": "Maks udløb afrimningstid"},
+          "time_between_defrost_cycles": {"name": "Tid mellem afrimning"},
+          "supply_air_pid_integration_time": {"name": "PID-integrationstid for tilluft"},
+          "compressor_stop_time": {"name": "Kompressor stoptid"},
+          "co2_low_limit": {"name": "CO2 lav grænse"},
+          "co2_high_limit": {"name": "CO2 høj grænse"},
+          "low_room_temperature_setpoint": {"name": "Setpunkt for lav rumtemperatur"},
+          "supply_heater_curve_offset": {"name": "Forskydning af tilluftsvarmer kurve"},
+          "central_heating_min_supply_temperature": {"name": "Min tillufttemperatur for centralvarme"},
+          "central_heating_max_supply_temperature": {"name": "Maks tillufttemperatur for centralvarme"},
+          "outdoor_temperature_compensation_curve": {"name": "Kompensationskurve for udetemperatur"},
+          "supply_heater_delay": {"name": "Forsinkelse for tilluftsvarmer"},
+          "hps_water_heater_setpoint": {"name": "AIR/GEO vand setpunkt"},
+          "hps_heating_setpoint_min": {"name": "AIR/GEO minimum strømningssetpunkt"}
+      },
+      "select": {
+          "air_filter_alarm_interval": {
+              "name": "Alarminterval for luftfilter",
+              "state": {
+                  "1": "30 dage",
+                  "2": "90 dage",
+                  "3": "180 dage",
+                  "4": "360 dage"
+              }
+          },
+          "legionella_day": {
+              "name": "Legionelladag",
+              "state": {
+                  "0": "Fra",
+                  "1": "Mandag",
+                  "2": "Tirsdag",
+                  "3": "Onsdag",
+                  "4": "Torsdag",
+                  "5": "Fredag",
+                  "6": "Lørdag",
+                  "7": "Søndag"
+              }
+          },
+          "indoor_air_quality_control": {
+              "name": "Kontrol af indendørs luftkvalitet",
+              "state": {
+                  "0": "Fra",
+                  "1": "Fugtighed",
+                  "2": "Fugtighed + CO2"
+              }
+          },
+          "compressor_heating_priority": {
+              "name": "Prioritet for kompressoropvarmning",
+              "state": {
+                  "0": "Vand",
+                  "1": "Luft"
+              }
+          },
+          "cooling_mode_ventilation_level": {
+              "name": "Ventilationsniveau i køletilstand",
+              "state": {
+                  "0": "Ingen ændring"
+              }
+          },
+          "cooling_setpoint_offset": {
+              "name": "Setpunktforskydning for køling",
+              "state": {
+                  "0": "Køling deaktiveret",
+                  "1": "+0 °C",
+                  "2": "+1 °C",
+                  "3": "+2 °C",
+                  "4": "+3 °C",
+                  "5": "+4 °C",
+                  "6": "+5 °C",
+                  "7": "+7 °C",
+                  "8": "+10 °C"
+              }
+          },
+          "low_humidity_ventilation_level": {"name": "Ventilationsniveau ved lav fugtighed"},
+          "high_humidity_ventilation_level": {"name": "Ventilationsniveau ved høj fugtighed"},
+          "hmi_language": {
+              "name": "HMI-sprog",
+              "state": {
+                  "0": "Engelsk",
+                  "1": "Tysk",
+                  "2": "Fransk",
+                  "3": "Svensk",
+                  "4": "Dansk",
+                  "5": "Norsk",
+                  "6": "Finsk",
+                  "7": "Tjekkisk",
+                  "8": "Polsk",
+                  "9": "Italiensk"
+              }
+          },
+          "low_outdoor_temp_ventilation_level": {"name": "Ventilationsniveau ved lav udetemperatur"},
+          "minimum_ventilation_supply_level": {"name": "Minimum ventilationsniveau for tilluft"},
+          "minimum_ventilation_return_level": {"name": "Minimum ventilationsniveau for fraluft"},
+          "maximum_ventilation_return_level": {"name": "Maks ventilationsniveau for fraluft"},
+          "co2_high_ventilation_level": {"name": "CO2 højt ventilationsniveau"},
+          "defrost_ventilation_level": {
+              "name": "Ventilationsniveau under afrimning",
+              "state": {
+                  "0": "Ingen",
+                  "1": "Konstant flow",
+                  "2": "Lavt flow"
+              }
+          },
+          "central_heating_type": {
+              "name": "Type centralvarme",
+              "state": {
+                  "0": "Fra",
+                  "1": "Elektrisk",
+                  "2": "Varmepumpe",
+                  "3": "Begge"
+              }
+          },
+          "central_heating_mode": {
+              "name": "Centralvarmetilstand",
+              "state": {
+                  "0": "Fra",
+                  "1": "Opvarmning",
+                  "2": "Krav"
+              }
+          },
+          "heat_source_select": {
+              "name": "Valg af varmekilde",
+              "state": {
+                  "0": "Fra",
+                  "1": "Varmepumpe",
+                  "2": "Varmepumpe + Eftervarme",
+                  "3": "Eftervarme",
+                  "4": "Eftervarme + Varmepumpe"
+              }
+          },
+          "pre_heating_effect": {
+              "name": "Forvarmningseffekt",
+              "state": {
+                  "0": "Standard",
+                  "1": "Ekstra"
+              }
+          },
+          "pre_heating_temperature": {
+              "name": "Forvarmningstemperatur",
+              "state": {
+                  "0": "Fra",
+                  "1": "1 °C",
+                  "2": "2 °C",
+                  "3": "3 °C",
+                  "4": "4 °C",
+                  "5": "5 °C"
+              }
+          },
+          "circulation_pump_mode": {
+              "name": "Cirkulationspumpetilstand",
+              "state": {
+                  "0": "Energi",
+                  "1": "Kontinuerlig"
+              }
+          },
+          "user_menu_lock": {
+              "name": "Brugermenu lås",
+              "state": {
+                  "0": "Låst",
+                  "1": "Åben",
+                  "2": "Deaktiver Fra-knap"
+              }
+          },
+          "hps_season_mode": {
+              "name": "AIR/GEO sæsontilstand",
+              "state": {
+                  "0": "Sommer",
+                  "1": "Vinter",
+                  "2": "Auto"
+              }
+          },
+          "reset_alarm": {
+              "name": "Nulstil alarm",
+              "state": {
+                  "1": "E01 Hardwarefejl",
+                  "2": "E02 Alarm timeout",
+                  "3": "E03 Brandalarm aktiveret",
+                  "4": "E04 Trykkontakt",
+                  "5": "E05 Inspektionsdør åben",
+                  "6": "E06 Fejl i afrimning",
+                  "7": "E07 Frosttermostat",
+                  "8": "E08 Frosttermostat",
+                  "9": "E09 Kedel overophedning",
+                  "10": "E10 Overtemperatur elektrisk eftervarme",
+                  "11": "E11 Lavt flow over elektrisk varmeelement",
+                  "12": "E12 Ventilationsmotor termisk afbryder",
+                  "13": "E13 Elektrisk varmtvandsbeholder overophedning",
+                  "14": "E14 Sensor defekt",
+                  "15": "E15 Rumtemperatur for lav",
+                  "16": "E16 Softwarefejl",
+                  "17": "E17 Watchdog-advarsel",
+                  "18": "E18 Indhold i database ændret",
+                  "19": "E19 Skift luftfilter",
+                  "20": "E20 Fejl i legionellabehandling",
+                  "21": "E21 Tjek dato og tid",
+                  "22": "E22 Fejl i lufttemperatur",
+                  "23": "E23 Fejl i varmtvandstemperatur",
+                  "24": "E24 Fejl i centralvarmetemperatur",
+                  "25": "E25 Kommunikationsmodemfejl",
+                  "26": "E26 Kommunikationsnetværksfejl",
+                  "27": "E27 Fejl i temperatursensor",
+                  "28": "E28 Fejl i temperatursensor",
+                  "29": "E29 Fejl i temperatursensor",
+                  "30": "E30 Fejl i temperatursensor",
+                  "31": "E31 Fejl i temperatursensor",
+                  "32": "E32 Fejl i temperatursensor",
+                  "33": "E33 Fejl i temperatursensor",
+                  "34": "E34 Fejl i temperatursensor",
+                  "35": "E35 Fejl i temperatursensor",
+                  "36": "E36 Fejl i temperatursensor",
+                  "37": "E37 Fejl i temperatursensor",
+                  "38": "E38 Fejl i temperatursensor",
+                  "39": "E39 Fejl i temperatursensor",
+                  "40": "E40 Fejl i temperatursensor",
+                  "41": "E41 Fejl i temperatursensor",
+                  "42": "E42 Fejl i temperatursensor",
+                  "43": "E43 Fejl i temperatursensor",
+                  "44": "E44 Fejl i temperatursensor",
+                  "45": "E45 Fejl i temperatursensor",
+                  "46": "E46 Fejl i temperatursensor",
+                  "47": "E47 Fejl i temperatursensor",
+                  "48": "E48 Fejl i temperatursensor",
+                  "49": "E49 Fejl i temperatursensor",
+                  "50": "E50 Fejl i temperatursensor",
+                  "51": "E51 Fejl i temperatursensor",
+                  "52": "E52 Fejl i temperatursensor",
+                  "53": "E53 Fejl i temperatursensor",
+                  "54": "E54 Fejl i temperatursensor",
+                  "55": "E55 Fejl i temperatursensor",
+                  "56": "E56 Fejl i temperatursensor",
+                  "57": "E57 Fejl i temperatursensor",
+                  "58": "E58 Fejl i temperatursensor",
+                  "70": "E70 Anodefejl",
+                  "71": "E71 Fejl i afrimning af varmeveksler",
+                  "72": "E72 Unormalt lav fordampertemperatur",
+                  "90": "E90 Slave IO",
+                  "91": "E91 Alternativ modul mangler",
+                  "92": "E92 Sikkerhedskopieringsfejl",
+                  "95": "E95 Softwareopdatering afvist",
+                  "96": "E96 Selvtest spjældfejl",
+                  "255": "Alle alarmer"
+              }
+          },
+          "reset_hps_alarm": {
+              "name": "Nulstil AIR/GEO alarm",
+              "state": {
+                  "100": "E100 THeatSup åben",
+                  "101": "E101 THeatSup kortslutning",
+                  "102": "E102 THeatRet åben",
+                  "103": "E103 THeatRet kortslutning",
+                  "104": "E104 TWaterTa åben",
+                  "105": "E105 TWaterTa kortslutning",
+                  "106": "E106 Tamb åben",
+                  "107": "E107 Tamb kortslutning",
+                  "108": "E108 Troom åben",
+                  "109": "E109 Troom kortslutning",
+                  "110": "E110 THeatTank åben",
+                  "111": "E111 THeatTank kortslutning",
+                  "112": "E112 TColdSup åben",
+                  "113": "E113 TColdSup kortslutning",
+                  "114": "E114 TColdRet åben",
+                  "115": "E115 TColdRet kortslutning",
+                  "116": "E116 Tevap åben",
+                  "117": "E117 Tevap kortslutning",
+                  "122": "E122 Tmixing åben",
+                  "123": "E123 Tmixing kortslutning",
+                  "124": "E124 SHW T-sensor åben",
+                  "125": "E125 SHW T-sensor kortslutning",
+                  "126": "E126 SHW anode",
+                  "127": "E127 TPres åben",
+                  "128": "E128 TPres kortslutning",
+                  "200": "E200 LOM309 mangler",
+                  "600": "E600 Højt tryk",
+                  "601": "E601 Lavt tryk",
+                  "602": "E602 Lækage",
+                  "603": "E603 Højt tryk",
+                  "604": "E604 Frostbeskyttelse",
+                  "605": "E605 Varmepumpe overophedning",
+                  "607": "E607 Legionella mislykkedes",
+                  "608": "E608 FC alarm",
+                  "609": "E609 FC alarm",
+                  "610": "E610 Tevap lav",
+                  "611": "E611 Tevap lav",
+                  "612": "E612 Tmix for høj",
+                  "613": "E613 Tmix høj rapport",
+                  "614": "E614 Køling lav",
+                  "615": "E615 El-varmer",
+                  "904": "E904 Datalog",
+                  "905": "E905 Database",
+                  "907": "E907 RTC fejl",
+                  "908": "E908 RTC ugyldig",
+                  "909": "E909 LUP SW version",
+                  "910": "E910 Slave kommunikationsfejl",
+                  "995": "E995 SW afvist",
+                  "998": "E998 TestVer",
+                  "999": "E999 Manuel",
+                  "65535": "Alle alarmer"
+              }
+          }
+      },
+      "sensor": {
+          "controller_board_temperature_t0": {"name": "Controllerkort temperatur (T0)"},
+          "fresh_air_intake_temperature_t1": {"name": "Friskluftindtag temperatur (T1)"},
+          "supply_air_temperature_t2": {"name": "Tillufttemperatur (T2)"},
+          "return_air_temperature_t3": {"name": "Fralufttemperatur (T3)"},
+          "waste_air_temperature_t4": {"name": "Afkastluft temperatur (T4)"},
+          "condenser_temperature_t5": {"name": "Kondensatortemperatur (T5)"},
+          "waste_air_temperature_t6": {"name": "Afkastluft temperatur (T6)"},
+          "supply_air_temperature_t7": {"name": "Tillufttemperatur (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Friskluftindtag temperatur (T8)"},
+          "return_air_temperature_t10": {"name": "Fralufttemperatur (T10)"},
+          "return_water_temperature_t13": {"name": "Returvandstemperatur (T13)"},
+          "supply_water_temperature_t14": {"name": "Forsyningsvandstemperatur (T14)"},
+          "user_panel_temperature_t15": {"name": "Brugerpanel temperatur (T15)"},
+          "anode_temperature_t16": {"name": "Anodetemperatur (T16)"},
+          "central_heating_setpoint": {"name": "Centralvarme setpunkt"},
+          "humidity": {"name": "Fugtighed"},
+          "24h_average_humidity": {"name": "24t gennemsnitlig fugtighed"},
+          "after_heating_element_capacity": {"name": "Eftervarmeelement kapacitet"},
+          "co2_sensor": {"name": "CO2-sensor"},
+          "control_state": {
+              "name": "Kontroltilstand",
+              "state": {
+                  "0": "Fra",
+                  "1": "Skift",
+                  "2": "Stop",
+                  "3": "Start",
+                  "4": "Standby",
+                  "5": "Ventilationsstop",
+                  "6": "Ventilation",
+                  "7": "Opvarmning",
+                  "8": "Køling",
+                  "9": "Varmt vand",
+                  "10": "Legionella",
+                  "11": "Køling + Varmt vand",
+                  "12": "Centralvarme",
+                  "13": "Afrimning",
+                  "14": "Frostsikring",
+                  "15": "Service",
+                  "16": "Alarm",
+                  "17": "Opvarmning + Varmt vand"
+              }
+          },
+          "after_heating_type": {
+              "name": "Eftervarmetype",
+              "state": {
+                  "0": "Ingen varmer",
+                  "1": "Elektrisk",
+                  "2": "Elektrisk på binær relæ",
+                  "3": "Vand"
+              }
+          },
+          "time_in_control_state": {"name": "Tid i kontroltilstand"},
+          "alarms_active": {"name": "Aktive alarmer"},
+          "days_since_air_filter_change": {"name": "Dage siden luftfilterskift"},
+          "days_to_air_filter_change": {"name": "Dage til luftfilterskift"},
+          "climate_season": {
+              "name": "Klimasæson",
+              "state": {
+                  "0": "Vinter",
+                  "1": "Sommer"
+              }
+          },
+          "exchanger_efficiency": {"name": "Veksler effektivitet"},
+          "time": {"name": "Tid"},
+          "ventilation_state": {
+              "name": "Ventilationstilstand",
+              "state": {
+                  "0": "Fra",
+                  "1": "Normal",
+                  "2": "Lav fugtighed",
+                  "3": "Høj fugtighed",
+                  "4": "Høj CO2",
+                  "5": "Lav rumtemperatur",
+                  "6": "Lav udetemperatur"
+              }
+          },
+          "anode_state": {
+              "name": "Anodetilstand",
+              "state": {
+                  "0": "Fra",
+                  "1": "OK",
+                  "2": "Service",
+                  "3": "Fejl"
+              }
+          },
+          "supply_fan_level": {"name": "Tilluftblæser niveau"},
+          "return_fan_level": {"name": "Fraluftblæser niveau"},
+          "return_fan_speed": {"name": "Fraluftblæser hastighed"},
+          "supply_fan_speed": {"name": "Tilluftblæser hastighed"},
+          "display_text_line_1": {"name": "Display tekst linje 1"},
+          "display_text_line_2": {"name": "Display tekst linje 2"},
+          "modbus_version": {"name": "ModBus-version"},
+          "hps_compressor_capacity": {"name": "AIR/GEO kompressorkapacitet"},
+          "hps_heat_pump_state": {
+              "name": "AIR/GEO varmepumpetilstand",
+              "state": {
+                  "0": "Fra",
+                  "1": "Klar",
+                  "2": "Varmt vand opstart",
+                  "3": "Varmt vand",
+                  "4": "Opvarmning opstart",
+                  "5": "Opvarmning",
+                  "6": "Varmepumpe stop",
+                  "7": "Elektrisk opvarmning",
+                  "8": "Elektrisk varmt vand",
+                  "9": "Tvungen kold pumpe",
+                  "10": "Varmepumpe stop",
+                  "11": "Afrimning",
+                  "12": "Luft afrimning",
+                  "13": "Hedgas afrimning",
+                  "14": "Drypforsinkelse",
+                  "15": "Varmt vand - Varmepumpe stop",
+                  "16": "Opvarmning - Varmepumpe stop",
+                  "17": "Stop",
+                  "18": "Opvarmning - Varmepumpe stop",
+                  "19": "Varmt vand - Varmepumpe stop",
+                  "20": "Pumpeøvelse",
+                  "21": "Tvungen opstart",
+                  "22": "Tvungen kørsel",
+                  "23": "Tvungen kørsel",
+                  "24": "Tvungen kørsel - Varmepumpe stop",
+                  "25": "Manuel",
+                  "26": "Køling start",
+                  "27": "Køling",
+                  "28": "Ekstern stop",
+                  "29": "Tvungen lav hastighed"
+              }
+          },
+          "hps_t16_return_temperature": {"name": "AIR/GEO returtemperatur (T16)"},
+          "hps_t17_supply_temperature": {"name": "AIR/GEO forsyningstemperatur (T17)"},
+          "hps_t18_tank_temperature": {"name": "AIR/GEO tanktemperatur (T18)"},
+          "hps_t20_ambient_temperature": {"name": "AIR/GEO udetemperatur (T20)"},
+          "hps_t21_shw_top_temperature": {"name": "AIR/GEO SHW top temperatur (T21)"},
+          "hps_t22_shw_bottom_temperature": {"name": "AIR/GEO SHW bund temperatur (T22)"},
+          "hps_t35_pressure_pipe_temperature": {"name": "AIR/GEO trykrørstemperatur (T35)"},
+          "hps_output_compvolt1": {"name": "AIR/GEO kompressorspænding"},
+          "hps_alarms_active": {"name": "AIR/GEO aktive alarmer"},
+          "hps_water_heater_setpoint_actual": {"name": "AIR/GEO faktisk vandvarmersetpunkt"},
+          "hps_heating_setpoint_actual": {"name": "AIR/GEO faktisk opvarmningssetpunkt"}
+      },
+      "switch": {
+          "supply_air_after_heating": {"name": "Tilluft efter opvarmning"},
+          "hps_main_switch": {"name": "AIR/GEO strøm"}
+      },
+      "water_heater": {
+          "top_water_heater": {
+              "name": "Øvre varmtvandsbeholder"
+          },
+          "bottom_water_heater": {
+              "name": "Nedre varmtvandsbeholder"
+          }
+      }
+  }
+}
