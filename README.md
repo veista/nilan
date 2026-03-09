@@ -5,6 +5,7 @@ Nilan integration for Home Assistant
 CTS602 supported devices (as typed in HMI menu):
 
 - Comfort light
+- Comfort Polar
 - VPL 15c
 - CompactS
 - VP18cCom
@@ -13,11 +14,13 @@ CTS602 supported devices (as typed in HMI menu):
 - VP 18ek
 - VP 18cek
 - VPL 25c
+- VPM/28EC
 - COMFORTn
 - COMBI 300 N
 - COMBI 302
 - COMBI 302 T
 - VGU180 ek
+- VENTEC
 - CompactP (AIR/GEO)
 
 Majority of functions are supported. If some critical is missing please leave an issue.
