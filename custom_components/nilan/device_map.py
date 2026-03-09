@@ -1194,7 +1194,7 @@ CTS602_ENTITY_MAP = {
         ),
     },
     "get_circulation_pump_mode": {
-        "entity_type": "number",
+        "entity_type": "select",
         "min_bus_version": 19,
         "min_hps_bus_version": 1,
         "supported_devices": (
