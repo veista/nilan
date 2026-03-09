@@ -2,6 +2,7 @@
 
 CTS602_DEVICE_TYPES = {
     2: "Comfort light",
+    3: "Comfort Polar", 
     4: "VPL 15c",
     10: "CompactS",
     11: "VP 18comp",
@@ -96,6 +97,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             13,
             31,
         ),
@@ -106,6 +108,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             10,
             12,
             13,
@@ -164,6 +167,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -187,6 +191,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             13,
             28,
             31,
@@ -328,6 +333,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -387,6 +393,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -499,6 +506,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             10,
             13,
             28,
@@ -664,6 +672,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -789,6 +798,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -835,6 +845,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             13,
@@ -852,6 +863,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             13,
@@ -1263,6 +1275,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1286,6 +1299,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1309,6 +1323,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1332,6 +1347,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             12,
             13,
@@ -1350,6 +1366,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1383,6 +1400,7 @@ CTS602_ENTITY_MAP = {
         ),
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1542,6 +1560,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1564,6 +1583,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1586,6 +1606,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
@@ -1608,6 +1629,7 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 1,
         "supported_devices": (
             2,
+            3,
             4,
             10,
             11,
