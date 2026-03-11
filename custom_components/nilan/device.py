@@ -53,6 +53,10 @@ class Device:
         self._attributes = {}
         self._air_geo_type = 0
 
+    async def async_close(self):
+        """Close modbus connection."""
+        await self._modbus.async_close()
+
     async def setup(self):
         """Modbus and attribute map setup for Nilan Device."""
         _LOGGER.debug("Setup has started")
