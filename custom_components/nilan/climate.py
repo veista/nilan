@@ -160,23 +160,30 @@ class NilanClimate(NilanEntity, ClimateEntity):
 
     async def async_update(self) -> None:
         """Update sensor values."""
-        self._attr_target_temperature = (
-            await self._device.get_user_temperature_setpoint()
-        )
-        self._attr_current_humidity = await self._device.get_humidity()
-        self._attr_current_temperature = await self._device.get_control_temperature()
         self._hvac_on = await self._device.get_run_state()
-        self._attr_target_humidity = await self._device.get_user_humidity_setpoint()
-
         self._attr_fan_mode = str(await self._device.get_ventilation_step())
-        control_state = await self._device.get_control_state()
-        if control_state is None:
-            return
+
+        if self._attr_supported_features & ClimateEntityFeature.TARGET_TEMPERATURE:
+            self._attr_target_temperature = (
+                await self._device.get_user_temperature_setpoint()
+            )
+            self._attr_current_temperature = (
+                await self._device.get_control_temperature()
+            )
+
+        if self._attr_supported_features & ClimateEntityFeature.TARGET_HUMIDITY:
+            self._attr_current_humidity = await self._device.get_humidity()
+            self._attr_target_humidity = await self._device.get_user_humidity_setpoint()
 
         if self._attr_supported_features & ClimateEntityFeature.PRESET_MODE:
             self._attr_preset_mode = HVAC_TO_PRESET.get(
                 await self._device.get_air_exchange_mode()
             )
+
+        control_state = await self._device.get_control_state()
+        if control_state is None:
+            return
+
         if self._extra_status_attributes:
             ventilation_state = await self._device.get_ventilation_state()
             fan_supply_level = await self._device.get_supply_fan_level()

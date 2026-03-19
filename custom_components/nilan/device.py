@@ -1423,6 +1423,7 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
+        _LOGGER.error("Could not read get_user_humidity_setpoint")
         return None
 
     async def get_electric_water_heater_setpoint(self) -> float:
