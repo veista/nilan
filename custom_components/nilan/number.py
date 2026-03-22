@@ -528,6 +528,84 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer",
         )
     ],
+    "get_user_function_1_time": [
+        Map(
+            "user_selection_1_duration",
+            "set_user_function_1_time",
+            EntityCategory.CONFIG,
+            0,
+            480,
+            15,
+            NumberMode.BOX,
+            UnitOfTime.MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
+    "get_user_function_2_time": [
+        Map(
+            "user_selection_2_duration",
+            "set_user_function_2_time",
+            EntityCategory.CONFIG,
+            0,
+            480,
+            15,
+            NumberMode.BOX,
+            UnitOfTime.MINUTES,
+            "mdi:wrench-clock",
+        )
+    ],
+    "get_user_function_1_temperature": [
+        Map(
+            "user_selection_1_room_temperature",
+            "set_user_function_1_temperature",
+            EntityCategory.CONFIG,
+            5,
+            30,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
+    "get_user_function_2_temperature": [
+        Map(
+            "user_selection_2_room_temperature",
+            "set_user_function_2_temperature",
+            EntityCategory.CONFIG,
+            5,
+            30,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
+    "get_user_function_1_offset": [
+        Map(
+            "user_selection_1_offset_temperature",
+            "set_user_function_1_offset",
+            EntityCategory.CONFIG,
+            -10,
+            10,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer-lines",
+        )
+    ],
+    "get_user_function_2_offset": [
+        Map(
+            "user_selection_2_offset_temperature",
+            "set_user_function_2_offset",
+            EntityCategory.CONFIG,
+            -10,
+            10,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer-lines",
+        )
+    ],
 }
 
 

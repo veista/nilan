@@ -168,7 +168,13 @@
           "central_heating_min_supply_temperature": {"name": "Keskuslämmityksen Alaraja"},
           "central_heating_max_supply_temperature": {"name": "Keskuslämmityksen Yläraja"},
           "outdoor_temperature_compensation_curve": {"name": "Ulkolämpötilan Kompensointikäyrä"},
-          "supply_heater_delay": {"name": "Tuloilman Lämmittimen Viive"}
+          "supply_heater_delay": {"name": "Tuloilman Lämmittimen Viive"},
+          "user_selection_1_duration": {"name": "Aika Käyttäjän Valintaohjelmassa 1"},
+          "user_selection_2_duration": {"name": "Aika Käyttäjän Valintaohjelmassa 2"},
+          "user_selection_1_room_temperature": {"name": "Käyttäjän Valintaohjelma 1 Huonelämpötila"},
+          "user_selection_2_room_temperature": {"name": "Käyttäjän Valintaohjelma 2 Huonelämpötila"},
+          "user_selection_1_offset_temperature": {"name": "Käyttäjän Valintaohjelma 1 Lämpötilapoikkeama"},
+          "user_selection_2_offset_temperature": {"name": "Käyttäjän Valintaohjelma 2 Lämpötilapoikkeama"}
         },
         "select": {
             "air_filter_alarm_interval": {
@@ -389,7 +395,42 @@
                     "96": "E96 Vika Ilmanohjaimen Testissä",
                     "255": "Kaikki Hälytykset"
                 }
+            },
+        "user_function_1_mode": {
+            "name": "Käyttäjän Valintaohjelma 1",
+            "state": {
+                "0": "Ei Mitään",
+                "1": "Jatkettu",
+                "2": "Tulo",
+                "3": "Poisto",
+                "4": "Ulkoinen Siirto",
+                "5": "Ilmanvaihto"
             }
+        },
+        "user_function_2_mode": {
+            "name": "Käyttäjän Valintaohjelma 2",
+            "state": {
+                "0": "Ei Mitään",
+                "1": "Jatkettu",
+                "2": "Tulo",
+                "3": "Poisto",
+                "4": "Ulkoinen Siirto",
+                "5": "Ilmanvaihto",
+                "6": "Liesikupu"
+            }
+        },
+        "user_selection_1_fan_speed_level": {
+            "name": "Käyttäjän Valintaohjelma 1 Puhallinteho",
+            "state": {
+                "0": "Pois"
+            }
+        },
+        "user_selection_2_fan_speed_level": {
+            "name": "Käyttäjän Valintaohjelma 2 Puhallinteho",
+            "state": {
+                "0": "Pois"
+            }
+        }
         },
         "sensor": {
           "controller_board_temperature_t0": {"name": "Ohjainkortin Lämpötila (T0)"},
