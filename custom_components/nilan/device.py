@@ -1423,7 +1423,6 @@ class Device:
                 signed=True,
             )
             return float(value) / 100
-        _LOGGER.error("Could not read get_user_humidity_setpoint")
         return None
 
     async def get_electric_water_heater_setpoint(self) -> float:
@@ -2528,7 +2527,7 @@ class Device:
     async def get_user_function_1_state(self) -> bool:
         """Get user function State."""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.input_user_func, 1, "input"
+            self._unit_id, CTS602HoldingRegisters.output_user_func, 1, "holding"
         )
         if result is not None:
             value = int.from_bytes(
@@ -2545,7 +2544,7 @@ class Device:
     async def get_user_function_2_state(self) -> bool:
         """Get user function 2 State."""
         result = await self._modbus.async_pb_call(
-            self._unit_id, CTS602InputRegisters.input_user_func_2, 1, "input"
+            self._unit_id, CTS602HoldingRegisters.output_user_func_2, 1, "holding"
         )
         if result is not None:
             value = int.from_bytes(
