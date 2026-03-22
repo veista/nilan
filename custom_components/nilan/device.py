@@ -1697,6 +1697,108 @@ class Device:
         _LOGGER.error("Could not read get_max_high_humidity_vent_time")
         return None
 
+    async def get_user_function_1_time(self) -> int:
+        """Get time in user function 1 in m."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_time_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_1_time")
+        return None
+
+    async def get_user_function_2_time(self) -> int:
+        """Get time in user function 2 in m."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_2_time_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_2_time")
+        return None
+
+    async def get_user_function_1_temperature(self) -> int:
+        """Get user function 1 temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_temp_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_1_temperature")
+        return None
+
+    async def get_user_function_2_temperature(self) -> int:
+        """Get user function 2 temperature."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_2_temp_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_2_temperature")
+        return None
+
+    async def get_user_function_1_offset(self) -> int:
+        """Get user function 1 offset."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_offs_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        _LOGGER.error("Could not read get_user_function_1_offset")
+        return None
+
+    async def get_user_function_2_offset(self) -> int:
+        """Get user function 2 offset."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.program_user_2_offs_set,
+            1,
+            "holding",
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+        _LOGGER.error("Could not read get_user_function_2_offset")
+        return None
+
     async def get_supply_heating_pid_time(self) -> int:
         """Get pid integration time."""
         result = await self._modbus.async_pb_call(
@@ -2618,6 +2720,62 @@ class Device:
         _LOGGER.error("Could not read get_bypass_flap_state")
         return None
 
+    async def get_user_function_1_mode(self) -> int:
+        """Get user function 1 mode."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.program_user_func_set, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_1_mode")
+        return None
+
+    async def get_user_function_2_mode(self) -> int:
+        """Get user function 2 mode."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.program_user_2_func_set, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_2_mode")
+        return None
+
+    async def get_user_function_1_ventilation_step(self) -> int:
+        """Get user function 1 ventilation step."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.program_user_vent_set, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_1_ventilation_step")
+        return None
+
+    async def get_user_function_2_ventilation_step(self) -> int:
+        """Get user function 2 ventilation step."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.program_user_2_vent_set, 1, "holding"
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+        _LOGGER.error("Could not read get_user_function_2_ventilation_step")
+        return None
+
     async def get_time(self) -> datetime:
         """Get machine time."""
         result = await self._modbus.async_pb_call(
@@ -2665,10 +2823,58 @@ class Device:
 
     async def set_operation_mode(self, mode: int) -> bool:
         """Set operation mode."""
-        if mode in (1, 2, 3):
+        if mode in (0, 1, 2, 3):
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.control_mode_set,
+                [mode],
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_user_function_1_mode(self, mode: int) -> bool:
+        """Set user function 1 mode."""
+        if mode in (0, 1, 2, 3, 4, 5, 6):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_func_set,
+                [mode],
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_user_function_2_mode(self, mode: int) -> bool:
+        """Set user function 2mode."""
+        if mode in (0, 1, 2, 3, 4, 5, 6):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_2_func_set,
+                [mode],
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_user_function_1_ventilation_step(self, mode: int) -> bool:
+        """Set user function 1 ventilation step."""
+        if mode in (0, 1, 2, 3, 4):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_vent_set,
+                [mode],
+                "write_registers",
+            )
+            return True
+        return False
+
+    async def set_user_function_2_ventilation_step(self, mode: int) -> bool:
+        """Set user function 2 ventilation step."""
+        if mode in (0, 1, 2, 3, 4):
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_2_vent_set,
                 [mode],
                 "write_registers",
             )
@@ -3529,6 +3735,72 @@ class Device:
                 self._unit_id,
                 CTS602HoldingRegisters.air_qual_time_out,
                 [value],
+                "write_registers",
+            )
+
+    async def set_user_function_1_time(self, value: float):
+        """Set time in user function 1 in m."""
+        if (value >= 15 and value <= 480) or value == 0:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_time_set,
+                [value],
+                "write_registers",
+            )
+
+    async def set_user_function_2_time(self, value: float):
+        """Set time in user function 2 in m."""
+        if (value >= 15 and value <= 480) or value == 0:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_2_time_set,
+                [value],
+                "write_registers",
+            )
+
+    async def set_user_function_1_temperature(self, value: float):
+        """Set user function 1 temperature."""
+        if value >= 5 and value <= 30:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_temp_set,
+                [value],
+                "write_registers",
+            )
+
+    async def set_user_function_2_temperature(self, value: float):
+        """Set user function 2 temperature."""
+        if value >= 5 and value <= 30:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_temp_set,
+                [value],
+                "write_registers",
+            )
+
+    async def set_user_function_1_offset(self, value: float):
+        """Set user function 1 offset."""
+        if value >= -10 and value <= 10:
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_offs_set,
+                [output],
+                "write_registers",
+            )
+
+    async def set_user_function_2_offset(self, value: float):
+        """Set user function 2 offset."""
+        if value >= -10 and value <= 10:
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.program_user_2_offs_set,
+                [output],
                 "write_registers",
             )
 

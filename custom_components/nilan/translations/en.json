@@ -171,7 +171,13 @@
           "outdoor_temperature_compensation_curve": {"name": "Outdoor Temperature Compensation Curve"},
           "supply_heater_delay": {"name": "Supply Heater Delay"},
           "hps_water_heater_setpoint": {"name": "AIR/GEO Water Setpoint"},
-          "hps_heating_setpoint_min": {"name": "AIR/GEO Flow Temperature Setpoint"}
+          "hps_heating_setpoint_min": {"name": "AIR/GEO Flow Temperature Setpoint"},
+          "user_selection_1_duration": {"name": "User Selection 1 Duration"},
+          "user_selection_2_duration": {"name": "User Selection 2 Duration"},
+          "user_selection_1_room_temperature": {"name": "User Selection 1 Room Temperature"},
+          "user_selection_2_room_temperature": {"name": "User Selection 2 Room Temperature"},
+          "user_selection_1_offset_temperature": {"name": "User Selection 1 Offset Temperature"},
+          "user_selection_2_offset_temperature": {"name": "User Selection 2 Offset Temperature"}
         },
         "select": {
             "air_filter_alarm_interval": {
@@ -456,7 +462,42 @@
                   "999": "E999 Manual mode",
                   "65535": "All Alarms"
               }
-          }
+          },
+        "user_function_1_mode": {
+            "name": "User Selection 1 Program",
+            "state": {
+                "0": "None",
+                "1": "Expanded",
+                "2": "Supply Air",
+                "3": "Extract Air",
+                "4": "External Offset",
+                "5": "Ventilate"
+            }
+        },
+        "user_function_2_mode": {
+            "name": "User Selection 2 Program",
+            "state": {
+                "0": "None",
+                "1": "Expanded",
+                "2": "Supply Air",
+                "3": "Extract Air",
+                "4": "External Offset",
+                "5": "Ventilate",
+                "6": "Cooker Hood"
+            }
+        },
+        "user_selection_1_fan_speed_level": {
+            "name": "User Selection 1 Fan Speed Level",
+            "state": {
+                "0": "Off"
+            }
+        },
+        "user_selection_2_fan_speed_level": {
+            "name": "User Selection 2 Fan Speed Level",
+            "state": {
+                "0": "Off"
+            }
+        }
         },
         "sensor": {
           "controller_board_temperature_t0": {"name": "Controller Board Temperature (T0)"},

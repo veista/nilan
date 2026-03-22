@@ -2,7 +2,7 @@
 
 CTS602_DEVICE_TYPES = {
     2: "Comfort light",
-    3: "Comfort Polar", 
+    3: "Comfort Polar",
     4: "VPL 15c",
     10: "CompactS",
     11: "VP 18comp",
@@ -273,7 +273,10 @@ CTS602_ENTITY_MAP = {
         "entity_type": "sensor",
         "min_bus_version": 1,
         "min_hps_bus_version": 1,
-        "supported_devices": (38, 42,),
+        "supported_devices": (
+            38,
+            42,
+        ),
     },
     "get_t14_supply_temperature": {
         "entity_type": "sensor",
@@ -1776,5 +1779,65 @@ CTS602_ENTITY_MAP = {
         "entity_type": "number",
         "min_hps_bus_version": 2,
         "supported_devices": (44,),
+    },
+    "get_user_function_1_mode": {
+        "entity_type": "select",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_2_mode": {
+        "entity_type": "select",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_1_time": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_2_time": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_1_ventilation_step": {
+        "entity_type": "select",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_2_ventilation_step": {
+        "entity_type": "select",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_1_temperature": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_2_temperature": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_1_offset": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
+    },
+    "get_user_function_2_offset": {
+        "entity_type": "number",
+        "min_bus_version": 0,
+        "min_hps_bus_version": 1,
+        "supported_devices": ("all",),
     },
 }
