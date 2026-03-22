@@ -15,11 +15,21 @@
                 "title": "Select Interface Type",
                 "menu_options": {
                     "tcp": "TCP",
-                    "serial": "Serial"
+                    "serial": "Serial",
+                    "rtuovertcp": "Modbus RTU over TCP"
                 }
             },
             "tcp": {
                 "title": "TCP Configuration",
+                "data": {
+                    "name": "Device Name",
+                    "host_ip": "IP Address",
+                    "host_port": "Port",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "rtuovertcp": {
+                "title": "Modbus RTU over TCP Configuration",
                 "data": {
                     "name": "Device Name",
                     "host_ip": "IP Address",
