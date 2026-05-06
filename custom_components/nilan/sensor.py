@@ -179,6 +179,28 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_t17_preheater_temperature": [
+        Map(
+            "preheat_temperature_t17",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_preheat_fan_speed": [
+        Map(
+            "preheat_fan_speed",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            True,
+        )
+    ],
     "get_central_heating_setpoint": [
         Map(
             "central_heating_setpoint",

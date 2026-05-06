@@ -1765,6 +1765,24 @@ CTS602_ENTITY_MAP = {
             36,
         ),
     },
+    "get_t17_preheater_temperature": {
+        "entity_type": "sensor",
+        "min_bus_version": 1,
+        "min_hps_bus_version": 1,
+        "supported_devices": (28,),
+    },
+    "get_preheat_fan_speed": {
+        "entity_type": "sensor",
+        "min_bus_version": 4,
+        "min_hps_bus_version": 1,
+        "supported_devices": (28,),
+    },
+    "get_preheat_cap": {
+        "entity_type": "number",
+        "min_bus_version": 4,
+        "min_hps_bus_version": 1,
+        "supported_devices": (28,),
+    },
     "get_hps_main_switch": {
         "entity_type": "switch",
         "min_hps_bus_version": 2,
