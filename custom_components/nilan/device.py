@@ -1064,6 +1064,46 @@ class Device:
         _LOGGER.error("Could not read get_t17_preheater_temperature")
         return None
 
+    async def get_preheat_fan_speed(self) -> float:
+        """Get Actual preheat fan speed (earth tube / puits canadien)."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.output_pre_heat_cap, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value / 100
+        _LOGGER.error("Could not read get_preheat_fan_speed")
+        return None
+
+    async def set_preheat_cap(self, value: int):
+        """Set preheat fan capacity % (earth tube / puits canadien)."""
+        if 0 <= value <= 100:
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.output_pre_heat_cap,
+                [value * 100],
+                "write_registers",
+            )
+
+    async def get_preheat_cap(self) -> float:
+        """Get preheat fan capacity setpoint (earth tube control)."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.output_pre_heat_cap, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return value / 100
+        _LOGGER.error("Could not read get_preheat_cap")
+        return None
+
     async def get_hps_t16_return_temperature(self) -> float:
         """Get HPS T16 Return Temperature."""
         result = await self._modbus.async_pb_call(
