@@ -528,6 +528,19 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer",
         )
     ],
+    "get_preheat_cap": [
+        Map(
+            "preheat_cap",
+            "set_preheat_cap",
+            None,
+            0,
+            100,
+            5,
+            NumberMode.SLIDER,
+            PERCENTAGE,
+            "mdi:fan",
+        )
+    ],
     "get_user_function_1_time": [
         Map(
             "user_selection_1_duration",
