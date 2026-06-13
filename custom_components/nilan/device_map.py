@@ -1841,3 +1841,53 @@ CTS602_ENTITY_MAP = {
         "supported_devices": ("all",),
     },
 }
+
+# ---------------------------------------------------------------------------
+# CTS400 / ES1077 (Comfort 250 Top)
+#
+# The CTS400 is a separate board family with its own register space (see
+# registers.CTS400*Registers). It cannot be auto-detected the way the CTS602 is
+# (it has no control_type register at holding 1000), so the config flow selects
+# it explicitly and the entity set below is assigned verbatim - there is no
+# bus-version gating. Every address backing these entities is verified live.
+# ---------------------------------------------------------------------------
+
+CTS400_DEVICE_TYPES = {
+    # The CTS400 has no machine-type register to read back, so this is a single
+    # logical type selected via the config-flow board picker.
+    0: "Comfort 250 Top (ES1077/CTS400)",
+}
+
+CTS400_ENTITY_MAP = {
+    # --- sensors ---
+    "get_cts400_outdoor_temperature": {"entity_type": "sensor"},
+    "get_cts400_supply_temperature": {"entity_type": "sensor"},
+    "get_cts400_extract_temperature": {"entity_type": "sensor"},
+    "get_cts400_exhaust_temperature": {"entity_type": "sensor"},
+    "get_cts400_humidity": {"entity_type": "sensor"},
+    "get_cts400_extract_air_capacity": {"entity_type": "sensor"},
+    "get_cts400_supply_air_capacity": {"entity_type": "sensor"},
+    "get_cts400_after_heating_capacity": {"entity_type": "sensor"},
+    "get_cts400_fan_level": {"entity_type": "sensor"},
+    "get_cts400_filter_days_remaining": {"entity_type": "sensor"},
+    "get_cts400_alarm_code_1": {"entity_type": "sensor"},
+    "get_cts400_alarm_code_2": {"entity_type": "sensor"},
+    "get_cts400_alarm_code_3": {"entity_type": "sensor"},
+    "get_cts400_co2": {"entity_type": "sensor", "extra_type": "co2"},
+    "get_cts400_voc": {"entity_type": "sensor", "extra_type": "voc"},
+    # --- binary sensors ---
+    "get_cts400_bypass_state": {"entity_type": "binary_sensor"},
+    "get_cts400_filter_change_state": {"entity_type": "binary_sensor"},
+    "get_cts400_alarm_state": {"entity_type": "binary_sensor"},
+    "get_cts400_winter_mode_state": {"entity_type": "binary_sensor"},
+    "get_cts400_after_heating_state": {"entity_type": "binary_sensor"},
+    "get_cts400_deicing_state": {"entity_type": "binary_sensor"},
+    # --- switch ---
+    "get_cts400_run_state": {"entity_type": "switch"},
+    # --- numbers ---
+    "get_cts400_fan_level_setpoint": {"entity_type": "number"},
+    "get_cts400_wanted_room_temperature": {"entity_type": "number"},
+    # --- buttons ---
+    "set_cts400_reset_filter_timer": {"entity_type": "button"},
+    "set_cts400_reset_alarm": {"entity_type": "button"},
+}

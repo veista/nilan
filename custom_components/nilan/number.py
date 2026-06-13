@@ -606,6 +606,33 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-lines",
         )
     ],
+    # --- CTS400 / ES1077 ---
+    "get_cts400_fan_level_setpoint": [
+        Map(
+            "cts400_fan_level_setpoint",
+            "set_cts400_fan_level_setpoint",
+            None,
+            1,
+            4,
+            1,
+            NumberMode.BOX,
+            None,
+            "mdi:fan",
+        )
+    ],
+    "get_cts400_wanted_room_temperature": [
+        Map(
+            "cts400_wanted_room_temperature",
+            "set_cts400_wanted_room_temperature",
+            None,
+            10,
+            30,
+            0.5,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
 }
 
 

@@ -36,6 +36,17 @@ ATTRIBUTE_TO_SWITCHES = {
             None,
         )
     ],
+    "get_cts400_run_state": [
+        Map(
+            "cts400_ventilation",
+            "set_cts400_run_state",
+            None,
+            0,
+            1,
+            "mdi:fan-off",
+            "mdi:fan",
+        )
+    ],
 }
 
 

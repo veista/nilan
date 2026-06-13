@@ -8,8 +8,17 @@ import logging
 from homeassistant.components.modbus import modbus
 from homeassistant.core import HomeAssistant
 
-from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
-from .registers import CTS602HoldingRegisters, CTS602InputRegisters
+from .device_map import (
+    CTS400_ENTITY_MAP,
+    CTS602_DEVICE_TYPES,
+    CTS602_ENTITY_MAP,
+)
+from .registers import (
+    CTS400HoldingRegisters,
+    CTS400InputRegisters,
+    CTS602HoldingRegisters,
+    CTS602InputRegisters,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -25,6 +34,7 @@ class Device:
         host_ip: str | None,
         host_port,
         unit_id,
+        board_type: str = "CTS602",
     ) -> None:
         """Create new entity of Device Class."""
         self.hass = hass
@@ -36,6 +46,7 @@ class Device:
         self._host_port = host_port
         self._unit_id = int(unit_id)
         self._com_type = com_type
+        self._board_type = board_type
         self._client_config = {
             "name": self._device_name,
             "type": self._com_type,
@@ -70,6 +81,10 @@ class Device:
             await self._modbus.async_close()
             _LOGGER.error("Modbus setup was unsuccessful")
             raise ValueError("Modbus setup was unsuccessful")
+
+        if self._board_type == "CTS400":
+            await self._setup_cts400()
+            return
 
         hw_type = await self.get_machine_type()
         _LOGGER.debug("Device Type = %s", str(hw_type))
@@ -3894,4 +3909,280 @@ class Device:
             CTS602HoldingRegisters.hps_param_main_switch,
             [value],
             "write_registers",
+        )
+
+    # -----------------------------------------------------------------------
+    # CTS400 / ES1077 (Comfort 250 Top) - separate board family
+    #
+    # Only used when board_type == "CTS400". The CTS400 register space is
+    # unrelated to the CTS602 methods above. Two board-specific differences:
+    #   * temperatures, humidity and air percentages use one decimal
+    #     (scale 0.1, divide by 10) - the CTS602 uses two decimals (0.01);
+    #   * the controller only supports FC06 (write single register), so writes
+    #     use "write_register", not the CTS602's "write_registers" (FC16).
+    # Every address below is verified live on the operator's unit.
+    # -----------------------------------------------------------------------
+
+    async def _read_cts400_register(self, address, reg_type, signed=False):
+        """Read one CTS400 input/holding register and return it as an int."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, address, 1, reg_type
+        )
+        if result is not None:
+            return int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=signed,
+            )
+        _LOGGER.error("Could not read CTS400 register %s (%s)", address, reg_type)
+        return None
+
+    async def _write_cts400_holding(self, address, value) -> bool:
+        """Write one CTS400 holding register using FC06 (Preset Single)."""
+        await self._modbus.async_pb_call(
+            self._unit_id, address, int(value), "write_register"
+        )
+        return True
+
+    async def _setup_cts400(self):
+        """Build the entity map for a CTS400 / ES1077 board.
+
+        The CTS400 cannot be auto-detected (it has no control_type register),
+        so the board is selected in the config flow. A read of the run/stop
+        register (holding 70) is used purely as a reachability probe. CO2/VOC
+        entities are gated on the fitted extra sensor (holding 48).
+        """
+        probe = await self.get_cts400_run_state()
+        if probe is None:
+            await self._modbus.async_close()
+            _LOGGER.error("CTS400 did not respond to holding register 70")
+            raise ValueError("CTS400 probe returned None")
+        self._device_type = CTS400_DEVICE_TYPES[0]
+        # No verified software-version register on this firmware; leave blank
+        # rather than invent a value.
+        self._device_sw_ver = ""
+        extra_sensor = await self.get_cts400_extra_sensor_type()
+        for entity, value in CTS400_ENTITY_MAP.items():
+            extra_type = value.get("extra_type")
+            if extra_type == "co2" and extra_sensor != 2:
+                continue
+            if extra_type == "voc" and extra_sensor != 1:
+                continue
+            self._attributes[entity] = value["entity_type"]
+
+    async def get_cts400_extra_sensor_type(self) -> int:
+        """Get the fitted extra sensor (0 = none, 1 = VOC, 2 = CO2)."""
+        value = await self._read_cts400_register(
+            CTS400HoldingRegisters.extra_sensor, "holding"
+        )
+        return 0 if value is None else value
+
+    # --- CTS400 sensors ---
+
+    async def get_cts400_outdoor_temperature(self) -> float:
+        """Get CTS400 T1 outdoor (fresh-air intake) temperature."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.t1_outdoor, "input", signed=True
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_supply_temperature(self) -> float:
+        """Get CTS400 T2 supply (to rooms) temperature."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.t2_supply, "input", signed=True
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_extract_temperature(self) -> float:
+        """Get CTS400 T3 extract (from rooms) temperature."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.t3_extract, "input", signed=True
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_exhaust_temperature(self) -> float:
+        """Get CTS400 T4 exhaust (out) temperature."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.t4_exhaust, "input", signed=True
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_humidity(self) -> float:
+        """Get CTS400 relative humidity."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.humidity, "input"
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_extract_air_capacity(self) -> float:
+        """Get CTS400 extract air fan capacity (%)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.extract_air_pct, "input"
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_supply_air_capacity(self) -> float:
+        """Get CTS400 supply air fan capacity (%)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.supply_air_pct, "input"
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_after_heating_capacity(self) -> float:
+        """Get CTS400 after-heating element capacity (%)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.after_heat_pct, "input"
+        )
+        return None if value is None else float(value) / 10
+
+    async def get_cts400_fan_level(self) -> int:
+        """Get CTS400 current fan level (1-4; 0 when stopped)."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.fan_level, "input"
+        )
+
+    async def get_cts400_filter_days_remaining(self) -> int:
+        """Get CTS400 days remaining before filter change."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.filter_days_remaining, "input"
+        )
+
+    async def get_cts400_alarm_code_1(self) -> int:
+        """Get CTS400 raw alarm code 1 (idles at 49 with no alarm)."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.alarm_code_1, "input"
+        )
+
+    async def get_cts400_alarm_code_2(self) -> int:
+        """Get CTS400 raw alarm code 2 (idles at 49 with no alarm)."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.alarm_code_2, "input"
+        )
+
+    async def get_cts400_alarm_code_3(self) -> int:
+        """Get CTS400 raw alarm code 3 (idles at 0 with no alarm)."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.alarm_code_3, "input"
+        )
+
+    async def get_cts400_co2(self) -> int:
+        """Get CTS400 CO2 (ppm); only if a CO2 extra sensor is fitted."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.co2, "input"
+        )
+
+    async def get_cts400_voc(self) -> int:
+        """Get CTS400 VOC (ppm); only if a VOC extra sensor is fitted."""
+        return await self._read_cts400_register(
+            CTS400InputRegisters.voc, "input"
+        )
+
+    # --- CTS400 binary sensors ---
+
+    async def get_cts400_bypass_state(self) -> bool:
+        """Get CTS400 bypass damper state (1 = open)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.bypass_open, "input"
+        )
+        return None if value is None else bool(value)
+
+    async def get_cts400_filter_change_state(self) -> bool:
+        """Get CTS400 filter-change-due state (1 = change due)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.filter_change, "input"
+        )
+        return None if value is None else bool(value)
+
+    async def get_cts400_alarm_state(self) -> bool:
+        """Get CTS400 alarm state (input 50; 0 = no alarm)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.alarm_status, "input"
+        )
+        return None if value is None else bool(value)
+
+    async def get_cts400_winter_mode_state(self) -> bool:
+        """Get CTS400 season state (0 = summer, 1 = winter)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.mode_winter, "input"
+        )
+        return None if value is None else bool(value)
+
+    async def get_cts400_after_heating_state(self) -> bool:
+        """Get CTS400 after-heating active state."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.after_heating, "input"
+        )
+        return None if value is None else bool(value)
+
+    async def get_cts400_deicing_state(self) -> bool:
+        """Get CTS400 de-icing active state (1 = on)."""
+        value = await self._read_cts400_register(
+            CTS400InputRegisters.deicing, "input"
+        )
+        return None if value is None else bool(value)
+
+    # --- CTS400 switch (run/stop) ---
+
+    async def get_cts400_run_state(self) -> bool:
+        """Get CTS400 run/stop state (holding 70; 1 = run, 0 = stop)."""
+        value = await self._read_cts400_register(
+            CTS400HoldingRegisters.run_stop, "holding"
+        )
+        return None if value is None else bool(value)
+
+    async def set_cts400_run_state(self, state) -> bool:
+        """Set CTS400 run/stop (holding 70: 1 = run, 0 = stop)."""
+        return await self._write_cts400_holding(
+            CTS400HoldingRegisters.run_stop, 1 if state else 0
+        )
+
+    # --- CTS400 numbers (setpoints) ---
+
+    async def get_cts400_fan_level_setpoint(self) -> int:
+        """Get CTS400 fan-level setpoint (holding 69, 1-4)."""
+        return await self._read_cts400_register(
+            CTS400HoldingRegisters.fan_level_set, "holding"
+        )
+
+    async def set_cts400_fan_level_setpoint(self, value) -> bool:
+        """Set CTS400 fan-level setpoint (holding 69, 1-4)."""
+        value = int(value)
+        if value in (1, 2, 3, 4):
+            return await self._write_cts400_holding(
+                CTS400HoldingRegisters.fan_level_set, value
+            )
+        return False
+
+    async def get_cts400_wanted_room_temperature(self) -> float:
+        """Get CTS400 wanted room temperature (holding 37, scale 0.1)."""
+        value = await self._read_cts400_register(
+            CTS400HoldingRegisters.wanted_room_temp, "holding", signed=True
+        )
+        return None if value is None else float(value) / 10
+
+    async def set_cts400_wanted_room_temperature(self, value) -> bool:
+        """Set CTS400 wanted room temperature (holding 37, 10.0-30.0 C).
+
+        Protocol-verified register; not exercised by the live reference
+        package. Writes are clamped to the documented 100-300 raw range.
+        """
+        raw = int(round(float(value) * 10))
+        if 100 <= raw <= 300:
+            return await self._write_cts400_holding(
+                CTS400HoldingRegisters.wanted_room_temp, raw
+            )
+        return False
+
+    # --- CTS400 buttons (momentary, write-1 self-clearing) ---
+
+    async def set_cts400_reset_filter_timer(self) -> bool:
+        """Reset the CTS400 filter-change timer (write 1 to holding 51)."""
+        return await self._write_cts400_holding(
+            CTS400HoldingRegisters.reset_filter_timer, 1
+        )
+
+    async def set_cts400_reset_alarm(self) -> bool:
+        """Reset CTS400 alarms (write 1 to holding 30)."""
+        return await self._write_cts400_holding(
+            CTS400HoldingRegisters.reset_alarm, 1
         )
