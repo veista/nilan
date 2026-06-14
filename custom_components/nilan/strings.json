@@ -5,11 +5,21 @@
         "title": "[%key:common::config_flow::menu::title%]",
         "menu_options":{
           "tcp": "[%key:common::config_flow::menu_options::tcp%]",
-          "serial": "[%key:common::config_flow::menu_options::serial%]"
+          "serial": "[%key:common::config_flow::menu_options::serial%]",
+          "rtuovertcp": "Modbus RTU over TCP"
         }
       },
       "tcp": {
         "title": "[%key:common::config_flow::tcp::title%]",
+        "data": {
+          "name": "[%key:common::config_flow::data::name%]",
+          "host_ip": "[%key:common::config_flow::data::host_ip%]",
+          "host_port": "[%key:common::config_flow::data::host_port%]",
+          "unit_id": "[%key:common::config_flow::data::unit_id%]"
+        }
+      },
+      "rtuovertcp": {
+        "title": "Modbus RTU over TCP Configuration",
         "data": {
           "name": "[%key:common::config_flow::data::name%]",
           "host_ip": "[%key:common::config_flow::data::host_ip%]",
