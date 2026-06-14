@@ -219,15 +219,9 @@ class NilanClimate(NilanEntity, ClimateEntity):
 class NilanCTS400Climate(NilanEntity, ClimateEntity):
     """Minimal CTS400 climate: run/stop, fan level and (optionally) target temp.
 
-    The CTS400 has no HVAC-mode register, so it is modelled as FAN_ONLY / OFF.
-    A target-temperature setpoint (holding 37) only has an observable effect
-    when an after-heater is fitted (holding 53 = 2 water / 3 electric); on a
-    base unit (holding 53 = 1, verified live on the reference unit) it is inert,
-    so TARGET_TEMPERATURE is only advertised when a heater is present.
+    The CTS400 has no HVAC-mode register, so it is modelled as FAN_ONLY / OFF. A target-temperature setpoint (holding 37) only has an observable effect when an after-heater is fitted (holding 53 = 2 water / 3 electric); on a base unit (holding 53 = 1, verified live on the reference unit) it is inert, so TARGET_TEMPERATURE is only advertised when a heater is present.
 
-    Because it overlaps with the dedicated fan entity (the primary speed
-    control), this entity is disabled by default and can be enabled by users
-    who want a single thermostat card.
+    Because it overlaps with the dedicated fan entity (the primary speed control), this entity is disabled by default and can be enabled by users who want a single thermostat card.
     """
 
     _attr_translation_key = "cts400_hvac"

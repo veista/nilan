@@ -25,9 +25,7 @@ def _cts400_entity_map_keys() -> set[str]:
 def _referenced_cts400_names() -> set[str]:
     """All cts400_* entity names referenced by the platform modules.
 
-    These are the string literals used as a Map's name / translation_key
-    (e.g. "cts400_outdoor_temperature", "cts400_ventilation"). Entity-map
-    keys in device_map.py are get_/set_ prefixed and so do not match.
+    These are the string literals used as a Map's name / translation_key (e.g. "cts400_outdoor_temperature", "cts400_ventilation"). Entity-map keys in device_map.py are get_/set_ prefixed and so do not match.
     """
     names: set[str] = set()
     for pyfile in ("sensor.py", "binary_sensor.py", "switch.py",

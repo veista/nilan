@@ -522,10 +522,7 @@ class CTS602HoldingRegisters:
 class CTS400InputRegisters:
     """Register map of Nilan CTS400 / ES1077 (FC04 input registers).
 
-    Firmware 1.0. Verified live on a Comfort 250 Top (slave 30, 19200 8E1).
-    The CTS400 address space is completely different from the CTS602 above;
-    notably temperatures/humidity use one decimal (scale 0.1, divide by 10),
-    where the CTS602 uses two decimals (scale 0.01).
+    Firmware 1.0. Verified live on a Comfort 250 Top (slave 30, 19200 8E1). The CTS400 address space is completely different from the CTS602 above; notably temperatures/humidity use one decimal (scale 0.1, divide by 10), where the CTS602 uses two decimals (scale 0.01).
     """
 
     bypass_open = 23            # 1 = open

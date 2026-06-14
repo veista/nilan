@@ -3947,10 +3947,7 @@ class Device:
     async def _setup_cts400(self):
         """Build the entity map for a CTS400 / ES1077 board.
 
-        The CTS400 cannot be auto-detected (it has no control_type register),
-        so the board is selected in the config flow. A read of the run/stop
-        register (holding 70) is used purely as a reachability probe. CO2/VOC
-        entities are gated on the fitted extra sensor (holding 48).
+        The CTS400 cannot be auto-detected (it has no control_type register), so the board is selected in the config flow. A read of the run/stop register (holding 70) is used purely as a reachability probe. CO2/VOC entities are gated on the fitted extra sensor (holding 48).
         """
         probe = await self.get_cts400_run_state()
         if probe is None:
@@ -4142,9 +4139,7 @@ class Device:
     async def get_cts400_fan(self) -> bool:
         """CTS400 ventilation-fan handle (used by the fan platform).
 
-        The fan entity reads run state plus the current/setpoint level
-        directly; this method exists so the fan has an entity-map key and
-        mirrors the run/stop state for a quick reachability read.
+        The fan entity reads run state plus the current/setpoint level directly; this method exists so the fan has an entity-map key and mirrors the run/stop state for a quick reachability read.
         """
         return await self.get_cts400_run_state()
 
@@ -4188,10 +4183,7 @@ class Device:
     async def set_cts400_wanted_room_temperature(self, value) -> bool:
         """Set CTS400 wanted room temperature (holding 37, 10.0-30.0 C).
 
-        Live-verified (2026-06-14): write + exact read-back proven on the unit,
-        and the controller itself rejects out-of-range writes (9.0 and 31.0 C
-        left the value unchanged), so the hardware enforces the documented
-        10-30 C range on top of this software clamp (100-300 raw).
+        Live-verified (2026-06-14): write + exact read-back proven on the unit, and the controller itself rejects out-of-range writes (9.0 and 31.0 C left the value unchanged), so the hardware enforces the documented 10-30 C range on top of this software clamp (100-300 raw).
         """
         raw = int(round(float(value) * 10))
         if 100 <= raw <= 300:
@@ -4226,11 +4218,7 @@ class Device:
     async def set_cts400_summer_winter_threshold(self, value) -> bool:
         """Set CTS400 summer/winter threshold (holding 45, 5.0-20.0 C).
 
-        Live-verified: writing this register moves winter mode (input 72) by
-        comparison against the live outdoor temperature. Entry into winter is
-        fast (~40 s); exit is strongly hysteretic (the season state machine
-        latches winter and leaves it only slowly). Writes are clamped to the
-        documented 50-200 raw range.
+        Live-verified: writing this register moves winter mode (input 72) by comparison against the live outdoor temperature. Entry into winter is fast (~40 s); exit is strongly hysteretic (the season state machine latches winter and leaves it only slowly). Writes are clamped to the documented 50-200 raw range.
         """
         raw = int(round(float(value) * 10))
         if 50 <= raw <= 200:
@@ -4248,12 +4236,9 @@ class Device:
     async def set_cts400_filter_interval(self, value) -> bool:
         """Set CTS400 filter-change interval (holding 50, 0-360 days).
 
-        The hardware accepts 0-360; 0 means "always due", so the number entity
-        exposes a 1-360 range to avoid that foot-gun while the setter still
-        accepts the full documented hardware range.
+        The hardware accepts 0-360; 0 means "always due", so the number entity exposes a 1-360 range to avoid that foot-gun while the setter still accepts the full documented hardware range.
 
-        Live-verified: writing this register immediately updates the
-        filter-days-remaining countdown (input 110).
+        Live-verified: writing this register immediately updates the filter-days-remaining countdown (input 110).
         """
         raw = int(value)
         if 0 <= raw <= 360:
@@ -4265,9 +4250,6 @@ class Device:
     async def get_cts400_climate(self) -> bool:
         """CTS400 climate handle (used by the climate platform).
 
-        The climate entity reads run state, the wanted-temperature setpoint,
-        the extract (room) temperature and the fan level directly; this method
-        exists so the climate entity has an entity-map key and mirrors the
-        run/stop state for a quick reachability read.
+        The climate entity reads run state, the wanted-temperature setpoint, the extract (room) temperature and the fan level directly; this method exists so the climate entity has an entity-map key and mirrors the run/stop state for a quick reachability read.
         """
         return await self.get_cts400_run_state()
