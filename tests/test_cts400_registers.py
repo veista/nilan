@@ -14,8 +14,9 @@ DOC_INPUT = {
     "after_heating": 74, "deicing": 91, "filter_days_remaining": 110,
 }
 DOC_HOLDING = {
-    "reset_alarm": 30, "wanted_room_temp": 37, "extra_sensor": 48,
-    "reset_filter_timer": 51, "fan_level_set": 69, "run_stop": 70,
+    "reset_alarm": 30, "wanted_room_temp": 37, "summer_winter_threshold": 45,
+    "extra_sensor": 48, "filter_interval": 50, "reset_filter_timer": 51,
+    "heater_select": 53, "fan_level_set": 69, "run_stop": 70,
 }
 
 
@@ -37,7 +38,10 @@ def test_no_duplicate_addresses_within_a_space():
 
 
 def test_shared_numbers_are_cross_space_only():
-    # 30/48/51 legitimately exist in BOTH spaces with different meanings.
-    for addr in (30, 48, 51):
+    # These addresses legitimately exist in BOTH spaces with different
+    # meanings (input vs holding): 30 (T4 / reset alarm), 48 (VOC / extra
+    # sensor), 51 (alarm code 1 / reset filter timer), 53 (alarm code 3 /
+    # heater select).
+    for addr in (30, 48, 51, 53):
         assert addr in DOC_INPUT.values()
         assert addr in DOC_HOLDING.values()

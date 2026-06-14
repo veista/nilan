@@ -5,12 +5,11 @@ from homeassistant.components.fan import FanEntity, FanEntityFeature
 
 from .__init__ import NilanEntity
 from .const import DOMAIN
+from .cts400_util import SPEED_COUNT, level_to_percentage, percentage_to_level
 
 # CTS400 ventilation maps Home Assistant 0-100 % onto fan levels 1-4.
 # 0 % = stop; 25/50/75/100 % = level 1/2/3/4. speed_count = 4 makes the
 # tile's increase/decrease arrows step exactly one level.
-SPEED_COUNT = 4
-
 ATTRIBUTE_TO_FAN = {
     # entity-map key (a Device method) -> translation/unique_id name
     "get_cts400_fan": "cts400_ventilation",
@@ -72,7 +71,7 @@ class NilanCTS400Fan(FanEntity, NilanEntity):
 
     async def async_set_percentage(self, percentage: int) -> None:
         """Map a percentage to fan level 1-4 (0 % stops the unit)."""
-        level = max(0, min(SPEED_COUNT, round(percentage / 25)))
+        level = percentage_to_level(percentage)
         if level == 0:
             await self._device.set_cts400_run_state(False)
             return
@@ -91,4 +90,4 @@ class NilanCTS400Fan(FanEntity, NilanEntity):
         level = await self._device.get_cts400_fan_level()
         if not level:
             level = await self._device.get_cts400_fan_level_setpoint()
-        self._attr_percentage = level * 25 if level else None
+        self._attr_percentage = level_to_percentage(level) if level else None

@@ -261,12 +261,15 @@ class NilanCTS400Climate(NilanEntity, ClimateEntity):
     async def async_set_hvac_mode(self, hvac_mode) -> None:
         """Run (FAN_ONLY) or stop (OFF) the unit."""
         await self._device.set_cts400_run_state(hvac_mode != HVACMode.OFF)
+        self._attr_hvac_mode = hvac_mode
         self.async_write_ha_state()
 
     async def async_set_fan_mode(self, fan_mode) -> None:
         """Set the fan level (1-4) and ensure the unit is running."""
         await self._device.set_cts400_fan_level_setpoint(int(fan_mode))
         await self._device.set_cts400_run_state(True)
+        self._attr_fan_mode = fan_mode
+        self._attr_hvac_mode = HVACMode.FAN_ONLY
         self.async_write_ha_state()
 
     async def async_set_temperature(self, **kwargs) -> None:
@@ -274,6 +277,7 @@ class NilanCTS400Climate(NilanEntity, ClimateEntity):
         temperature = kwargs.get(ATTR_TEMPERATURE)
         if temperature is not None:
             await self._device.set_cts400_wanted_room_temperature(temperature)
+            self._attr_target_temperature = temperature
         self.async_write_ha_state()
 
     async def async_update(self) -> None:

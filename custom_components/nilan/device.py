@@ -19,6 +19,7 @@ from .registers import (
     CTS602HoldingRegisters,
     CTS602InputRegisters,
 )
+from .cts400_util import decode_signed16
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -3929,11 +3930,8 @@ class Device:
             self._unit_id, address, 1, reg_type
         )
         if result is not None:
-            return int.from_bytes(
-                result.registers[0].to_bytes(2, "little", signed=False),
-                "little",
-                signed=signed,
-            )
+            raw = result.registers[0]
+            return decode_signed16(raw) if signed else raw
         _LOGGER.error("Could not read CTS400 register %s (%s)", address, reg_type)
         return None
 
