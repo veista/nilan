@@ -9,6 +9,7 @@ CTS602 supported devices (as typed in HMI menu):
 - VPL 15c
 - CompactS
 - VP18cCom
+- COMPACTn
 - COMFORT
 - VP 18c
 - VP 18ek
@@ -22,7 +23,6 @@ CTS602 supported devices (as typed in HMI menu):
 - VGU180 ek
 - VENTEC
 - CompactP (AIR/GEO)
-- CompactP (Polar/Nordic)
 
 Majority of functions are supported. If some critical is missing please leave an issue.
 
