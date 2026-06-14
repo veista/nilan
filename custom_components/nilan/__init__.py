@@ -16,6 +16,7 @@ PLATFORMS = [
     "binary_sensor",
     "button",
     "climate",
+    "fan",
     "number",
     "select",
     "sensor",

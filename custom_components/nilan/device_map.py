@@ -1882,6 +1882,8 @@ CTS400_ENTITY_MAP = {
     "get_cts400_winter_mode_state": {"entity_type": "binary_sensor"},
     "get_cts400_after_heating_state": {"entity_type": "binary_sensor"},
     "get_cts400_deicing_state": {"entity_type": "binary_sensor"},
+    # --- fan (primary control) ---
+    "get_cts400_fan": {"entity_type": "fan"},
     # --- switch ---
     "get_cts400_run_state": {"entity_type": "switch"},
     # --- numbers ---

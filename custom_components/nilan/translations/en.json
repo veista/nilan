@@ -672,6 +672,9 @@
             "cts400_co2": {"name": "CO2"},
             "cts400_voc": {"name": "VOC"}
         },
+        "fan": {
+          "cts400_ventilation": {"name": "Ventilation"}
+        },
         "switch": {
           "supply_air_after_heating": {"name": "Supply Air After Heating"},
           "hps_main_switch": {"name": "AIR/GEO Power"},

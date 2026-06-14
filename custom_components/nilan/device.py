@@ -4123,6 +4123,15 @@ class Device:
 
     # --- CTS400 switch (run/stop) ---
 
+    async def get_cts400_fan(self) -> bool:
+        """CTS400 ventilation-fan handle (used by the fan platform).
+
+        The fan entity reads run state plus the current/setpoint level
+        directly; this method exists so the fan has an entity-map key and
+        mirrors the run/stop state for a quick reachability read.
+        """
+        return await self.get_cts400_run_state()
+
     async def get_cts400_run_state(self) -> bool:
         """Get CTS400 run/stop state (holding 70; 1 = run, 0 = stop)."""
         value = await self._read_cts400_register(
