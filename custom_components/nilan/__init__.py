@@ -103,6 +103,6 @@ class NilanEntity(Entity):
             "manufacturer": "Nilan",
             "model": self._device.get_device_type,
             "sw_version": self._device.get_device_sw_version,
-            "hw_version": self._device.get_device_hw_version,
+            "hw_version": str(self._device.get_device_hw_version),
             "suggested_area": "Boiler Room",
         }
