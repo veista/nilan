@@ -266,8 +266,8 @@ ATTRIBUTE_TO_ALARM_SELECT = {
     "alarm_reset": [
         MapAlarm(
             "get_alarm_1_code",
-            "get_alarm_1_code",
-            "get_alarm_1_code",
+            "get_alarm_2_code",
+            "get_alarm_3_code",
             "reset_alarm",
             "set_alarm_reset_code",
             "255",
