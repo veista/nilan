@@ -38,10 +38,7 @@ def test_no_duplicate_addresses_within_a_space():
 
 
 def test_shared_numbers_are_cross_space_only():
-    # These addresses legitimately exist in BOTH spaces with different
-    # meanings (input vs holding): 30 (T4 / reset alarm), 48 (VOC / extra
-    # sensor), 51 (alarm code 1 / reset filter timer), 53 (alarm code 3 /
-    # heater select).
+    # These addresses legitimately exist in BOTH spaces with different meanings (input vs holding): 30 (T4 / reset alarm), 48 (VOC / extra sensor), 51 (alarm code 1 / reset filter timer), 53 (alarm code 3 / heater select).
     for addr in (30, 48, 51, 53):
         assert addr in DOC_INPUT.values()
         assert addr in DOC_HOLDING.values()

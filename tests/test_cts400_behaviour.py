@@ -16,8 +16,7 @@ def test_percentage_to_level_slider_multiples():
 
 
 def test_percentage_to_level_half_boundaries_round_up():
-    # Round-half-up (not banker's rounding): .5 boundaries go to the higher
-    # level predictably.
+    # Round-half-up (not banker's rounding): .5 boundaries go to the higher level predictably.
     assert percentage_to_level(12.5) == 1
     assert percentage_to_level(37.5) == 2
     assert percentage_to_level(62.5) == 3

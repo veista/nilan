@@ -1,8 +1,6 @@
 """Pure helpers for the CTS400 board.
 
-Deliberately free of Home Assistant and pymodbus imports so the behavioural
-logic (fan percentage <-> level mapping and signed-register decoding) can be
-unit-tested without an HA harness.
+Deliberately free of Home Assistant and pymodbus imports so the behavioural logic (fan percentage <-> level mapping and signed-register decoding) can be unit-tested without an HA harness.
 """
 from __future__ import annotations
 
@@ -13,8 +11,7 @@ _STEP = 100 / SPEED_COUNT  # 25 % per level
 def percentage_to_level(percentage: float) -> int:
     """Map a 0-100 % onto fan level 0-4 (0 = off).
 
-    Uses round-half-up (not Python's banker's rounding) so a value sitting
-    exactly on a .5 boundary rounds to the higher level predictably.
+    Uses round-half-up (not Python's banker's rounding) so a value sitting exactly on a .5 boundary rounds to the higher level predictably.
     """
     level = int(percentage / _STEP + 0.5)
     return max(0, min(SPEED_COUNT, level))

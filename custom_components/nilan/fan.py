@@ -7,9 +7,7 @@ from .__init__ import NilanEntity
 from .const import DOMAIN
 from .cts400_util import SPEED_COUNT, level_to_percentage, percentage_to_level
 
-# CTS400 ventilation maps Home Assistant 0-100 % onto fan levels 1-4.
-# 0 % = stop; 25/50/75/100 % = level 1/2/3/4. speed_count = 4 makes the
-# tile's increase/decrease arrows step exactly one level.
+# CTS400 ventilation maps Home Assistant 0-100 % onto fan levels 1-4. 0 % = stop; 25/50/75/100 % = level 1/2/3/4. speed_count = 4 makes the tile's increase/decrease arrows step exactly one level.
 ATTRIBUTE_TO_FAN = {
     # entity-map key (a Device method) -> translation/unique_id name
     "get_cts400_fan": "cts400_ventilation",
