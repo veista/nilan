@@ -11,6 +11,13 @@
 
         },
         "step": {
+            "board": {
+                "title": "Select Controller Board",
+                "menu_options": {
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts400": "CTS400 / ES1077 (Comfort 250 Top)"
+                }
+            },
             "menu": {
                 "title": "Select Interface Type",
                 "menu_options": {
@@ -50,10 +57,18 @@
             "circulation_pump": {"name": "Circulation Pump"},
             "heater_relay_1": {"name": "Heater Relay 1"},
             "heater_relay_2": {"name": "Heater Relay 2"},
-            "heater_relay_3": {"name": "Heater Relay 3"}
+            "heater_relay_3": {"name": "Heater Relay 3"},
+            "cts400_bypass": {"name": "Bypass"},
+            "cts400_filter_change": {"name": "Filter Change"},
+            "cts400_alarm": {"name": "Alarm"},
+            "cts400_winter_mode": {"name": "Winter Mode"},
+            "cts400_after_heating": {"name": "After Heating"},
+            "cts400_deicing": {"name": "Deicing"}
         },
         "button": {
-          "sync_time": {"name": "Synchronize Time and Date"}
+          "sync_time": {"name": "Synchronize Time and Date"},
+          "cts400_reset_filter_timer": {"name": "Reset Filter Timer"},
+          "cts400_reset_alarm": {"name": "Reset Alarm"}
         },
         "climate": {
           "hvac": {
@@ -130,7 +145,8 @@
                 "name": "Target temperature"
               }
             }
-          }
+          },
+          "cts400_hvac": {"name": "Climate"}
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Scalding Protection Setpoint"},
@@ -177,7 +193,11 @@
           "user_selection_1_room_temperature": {"name": "User Selection 1 Room Temperature"},
           "user_selection_2_room_temperature": {"name": "User Selection 2 Room Temperature"},
           "user_selection_1_offset_temperature": {"name": "User Selection 1 Offset Temperature"},
-          "user_selection_2_offset_temperature": {"name": "User Selection 2 Offset Temperature"}
+          "user_selection_2_offset_temperature": {"name": "User Selection 2 Offset Temperature"},
+          "cts400_fan_level_setpoint": {"name": "Fan Level"},
+          "cts400_wanted_room_temperature": {"name": "Wanted Room Temperature"},
+          "cts400_summer_winter_threshold": {"name": "Summer/Winter Threshold"},
+          "cts400_filter_interval": {"name": "Filter Interval"}
         },
         "select": {
             "air_filter_alarm_interval": {
@@ -638,11 +658,30 @@
             "hps_output_compvolt1": {"name": "AIR/GEO Compressor Voltage"},
             "hps_alarms_active": {"name": "AIR/GEO Alarms Active"},
             "hps_water_heater_setpoint_actual": {"name": "AIR/GEO Water Heater Setpoint Actual"},
-            "hps_heating_setpoint_actual": {"name": "AIR/GEO Heating Setpoint Actual"}
+            "hps_heating_setpoint_actual": {"name": "AIR/GEO Heating Setpoint Actual"},
+            "cts400_outdoor_temperature": {"name": "Outdoor Temperature (T1)"},
+            "cts400_supply_temperature": {"name": "Supply Temperature (T2)"},
+            "cts400_extract_temperature": {"name": "Extract Temperature (T3)"},
+            "cts400_exhaust_temperature": {"name": "Exhaust Temperature (T4)"},
+            "cts400_humidity": {"name": "Humidity"},
+            "cts400_extract_air_capacity": {"name": "Extract Fan Capacity"},
+            "cts400_supply_air_capacity": {"name": "Supply Fan Capacity"},
+            "cts400_after_heating_capacity": {"name": "After Heating Capacity"},
+            "cts400_fan_level": {"name": "Fan Level"},
+            "cts400_filter_days_remaining": {"name": "Filter Days Remaining"},
+            "cts400_alarm_code_1": {"name": "Alarm Code 1"},
+            "cts400_alarm_code_2": {"name": "Alarm Code 2"},
+            "cts400_alarm_code_3": {"name": "Alarm Code 3"},
+            "cts400_co2": {"name": "CO2"},
+            "cts400_voc": {"name": "VOC"}
+        },
+        "fan": {
+          "cts400_ventilation": {"name": "Ventilation"}
         },
         "switch": {
           "supply_air_after_heating": {"name": "Supply Air After Heating"},
-          "hps_main_switch": {"name": "AIR/GEO Power"}
+          "hps_main_switch": {"name": "AIR/GEO Power"},
+          "cts400_ventilation": {"name": "Ventilation"}
         },
         "water_heater": {
           "top_water_heater": {

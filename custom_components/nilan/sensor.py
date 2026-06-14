@@ -575,6 +575,172 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    # --- CTS400 / ES1077 ---
+    "get_cts400_outdoor_temperature": [
+        Map(
+            "cts400_outdoor_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_supply_temperature": [
+        Map(
+            "cts400_supply_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_extract_temperature": [
+        Map(
+            "cts400_extract_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_exhaust_temperature": [
+        Map(
+            "cts400_exhaust_temperature",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_humidity": [
+        Map(
+            "cts400_humidity",
+            PERCENTAGE,
+            SensorDeviceClass.HUMIDITY,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_extract_air_capacity": [
+        Map(
+            "cts400_extract_air_capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            True,
+        )
+    ],
+    "get_cts400_supply_air_capacity": [
+        Map(
+            "cts400_supply_air_capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            True,
+        )
+    ],
+    "get_cts400_after_heating_capacity": [
+        Map(
+            "cts400_after_heating_capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:radiator",
+            True,
+        )
+    ],
+    "get_cts400_fan_level": [
+        Map(
+            "cts400_fan_level",
+            None,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan",
+            True,
+        )
+    ],
+    "get_cts400_filter_days_remaining": [
+        Map(
+            "cts400_filter_days_remaining",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:calendar-end",
+            True,
+        )
+    ],
+    "get_cts400_alarm_code_1": [
+        Map(
+            "cts400_alarm_code_1",
+            None,
+            None,
+            None,
+            EntityCategory.DIAGNOSTIC,
+            "mdi:alert-circle-outline",
+            True,
+        )
+    ],
+    "get_cts400_alarm_code_2": [
+        Map(
+            "cts400_alarm_code_2",
+            None,
+            None,
+            None,
+            EntityCategory.DIAGNOSTIC,
+            "mdi:alert-circle-outline",
+            True,
+        )
+    ],
+    "get_cts400_alarm_code_3": [
+        Map(
+            "cts400_alarm_code_3",
+            None,
+            None,
+            None,
+            EntityCategory.DIAGNOSTIC,
+            "mdi:alert-circle-outline",
+            True,
+        )
+    ],
+    "get_cts400_co2": [
+        Map(
+            "cts400_co2",
+            CONCENTRATION_PARTS_PER_MILLION,
+            SensorDeviceClass.CO2,
+            SensorStateClass.MEASUREMENT,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_voc": [
+        Map(
+            "cts400_voc",
+            CONCENTRATION_PARTS_PER_MILLION,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:air-filter",
+            True,
+        )
+    ],
 }
 
 

@@ -606,6 +606,59 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer-lines",
         )
     ],
+    # --- CTS400 / ES1077 ---
+    "get_cts400_fan_level_setpoint": [
+        Map(
+            "cts400_fan_level_setpoint",
+            "set_cts400_fan_level_setpoint",
+            None,
+            1,
+            4,
+            1,
+            NumberMode.BOX,
+            None,
+            "mdi:fan",
+        )
+    ],
+    "get_cts400_wanted_room_temperature": [
+        Map(
+            "cts400_wanted_room_temperature",
+            "set_cts400_wanted_room_temperature",
+            None,
+            10,
+            30,
+            0.5,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer",
+        )
+    ],
+    "get_cts400_summer_winter_threshold": [
+        Map(
+            "cts400_summer_winter_threshold",
+            "set_cts400_summer_winter_threshold",
+            EntityCategory.CONFIG,
+            5,
+            20,
+            0.5,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:sun-snowflake-variant",
+        )
+    ],
+    "get_cts400_filter_interval": [
+        Map(
+            "cts400_filter_interval",
+            "set_cts400_filter_interval",
+            EntityCategory.CONFIG,
+            1,
+            360,
+            1,
+            NumberMode.BOX,
+            UnitOfTime.DAYS,
+            "mdi:air-filter",
+        )
+    ],
 }
 
 
@@ -670,6 +723,9 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         self._attr_translation_key = self._name
         self._attr_has_entity_name = True
         self._attr_unique_id = self._name
+        # NOTE: keyed on the entity name string from ATTRIBUTE_TO_NUMBERS; if that name is renamed, update this guard too. Redundant with the CTS400 fan platform's speed control, so it ships disabled by default.
+        if self._name == "cts400_fan_level_setpoint":
+            self._attr_entity_registry_enabled_default = False
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
