@@ -3962,6 +3962,10 @@ class Device:
         # rather than invent a value.
         self._device_sw_ver = ""
         extra_sensor = await self.get_cts400_extra_sensor_type()
+        # A target-temperature setpoint only has an observable effect when an
+        # after-heater is fitted (holding 53 = 2 water / 3 electric); on a base
+        # unit it is inert, so the climate entity drops TARGET_TEMPERATURE.
+        self._cts400_has_heater = await self.get_cts400_heater_type() in (2, 3)
         for entity, value in CTS400_ENTITY_MAP.items():
             extra_type = value.get("extra_type")
             if extra_type == "co2" and extra_sensor != 2:
@@ -3969,6 +3973,18 @@ class Device:
             if extra_type == "voc" and extra_sensor != 1:
                 continue
             self._attributes[entity] = value["entity_type"]
+
+    @property
+    def cts400_has_heater(self) -> bool:
+        """Whether an after-heater is fitted (holding 53 = 2 or 3)."""
+        return getattr(self, "_cts400_has_heater", False)
+
+    async def get_cts400_heater_type(self) -> int:
+        """Get the after-heater option (0/1 = none, 2 = water, 3 = electric)."""
+        value = await self._read_cts400_register(
+            CTS400HoldingRegisters.heater_select, "holding"
+        )
+        return 0 if value is None else value
 
     async def get_cts400_extra_sensor_type(self) -> int:
         """Get the fitted extra sensor (0 = none, 1 = VOC, 2 = CO2)."""
@@ -4231,6 +4247,10 @@ class Device:
 
     async def set_cts400_filter_interval(self, value) -> bool:
         """Set CTS400 filter-change interval (holding 50, 0-360 days).
+
+        The hardware accepts 0-360; 0 means "always due", so the number entity
+        exposes a 1-360 range to avoid that foot-gun while the setter still
+        accepts the full documented hardware range.
 
         Live-verified: writing this register immediately updates the
         filter-days-remaining countdown (input 110).

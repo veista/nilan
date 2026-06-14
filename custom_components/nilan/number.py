@@ -651,7 +651,7 @@ ATTRIBUTE_TO_NUMBERS = {
             "cts400_filter_interval",
             "set_cts400_filter_interval",
             EntityCategory.CONFIG,
-            0,
+            1,
             360,
             1,
             NumberMode.BOX,

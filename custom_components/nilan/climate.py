@@ -96,7 +96,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
             NilanClimate(device, supported_features, extra_status_attributes)
         )
     if device.get_assigned("climate"):
-        entities.append(NilanCTS400Climate(device))
+        entities.append(NilanCTS400Climate(device, device.cts400_has_heater))
     async_add_entities(entities, True)
 
 
@@ -217,35 +217,44 @@ class NilanClimate(NilanEntity, ClimateEntity):
 
 
 class NilanCTS400Climate(NilanEntity, ClimateEntity):
-    """Minimal CTS400 climate: run/stop, target temperature and fan level.
+    """Minimal CTS400 climate: run/stop, fan level and (optionally) target temp.
 
-    The CTS400 has no HVAC-mode register and, on units without an after-heater
-    (holding 53 = 1, verified live on the reference unit), no active heating, so
-    it is modelled as FAN_ONLY / OFF. The target temperature drives the
-    after-heater only when one is fitted.
+    The CTS400 has no HVAC-mode register, so it is modelled as FAN_ONLY / OFF.
+    A target-temperature setpoint (holding 37) only has an observable effect
+    when an after-heater is fitted (holding 53 = 2 water / 3 electric); on a
+    base unit (holding 53 = 1, verified live on the reference unit) it is inert,
+    so TARGET_TEMPERATURE is only advertised when a heater is present.
+
+    Because it overlaps with the dedicated fan entity (the primary speed
+    control), this entity is disabled by default and can be enabled by users
+    who want a single thermostat card.
     """
 
     _attr_translation_key = "cts400_hvac"
     _attr_has_entity_name = True
     _attr_unique_id = "cts400_hvac"
+    _attr_entity_registry_enabled_default = False
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_hvac_modes = [HVACMode.FAN_ONLY, HVACMode.OFF]
     _attr_fan_modes = ["1", "2", "3", "4"]
     _attr_min_temp = 10
     _attr_max_temp = 30
     _attr_target_temperature_step = 0.5
-    _attr_supported_features = (
-        ClimateEntityFeature.TARGET_TEMPERATURE
-        | ClimateEntityFeature.FAN_MODE
-        | ClimateEntityFeature.TURN_ON
-        | ClimateEntityFeature.TURN_OFF
-    )
 
-    def __init__(self, device) -> None:
+    def __init__(self, device, has_heater) -> None:
         """Init the CTS400 climate entity."""
         super().__init__(device)
         self._device = device
+        self._has_heater = has_heater
         self._enable_turn_on_off_backwards_compatibility = False
+        supported = (
+            ClimateEntityFeature.FAN_MODE
+            | ClimateEntityFeature.TURN_ON
+            | ClimateEntityFeature.TURN_OFF
+        )
+        if has_heater:
+            supported |= ClimateEntityFeature.TARGET_TEMPERATURE
+        self._attr_supported_features = supported
 
     async def async_turn_on(self) -> None:
         """Start the unit."""
@@ -278,9 +287,10 @@ class NilanCTS400Climate(NilanEntity, ClimateEntity):
         is_on = await self._device.get_cts400_run_state()
         self._attr_hvac_mode = HVACMode.FAN_ONLY if is_on else HVACMode.OFF
         self._attr_hvac_action = HVACAction.FAN if is_on else HVACAction.OFF
-        self._attr_target_temperature = (
-            await self._device.get_cts400_wanted_room_temperature()
-        )
+        if self._attr_supported_features & ClimateEntityFeature.TARGET_TEMPERATURE:
+            self._attr_target_temperature = (
+                await self._device.get_cts400_wanted_room_temperature()
+            )
         self._attr_current_temperature = (
             await self._device.get_cts400_extract_temperature()
         )

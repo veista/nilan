@@ -564,5 +564,6 @@ class CTS400HoldingRegisters:
     summer_winter_threshold = 45  # int16 x0.1; season switch vs outdoor temp
     filter_interval = 50        # days between filter changes (0-360)
     reset_filter_timer = 51     # write 1, self-clearing
+    heater_select = 53          # 0/1 = none/norm, 2 = water, 3 = electric
     fan_level_set = 69          # 1-4 (write inert while stopped; applies on start)
     run_stop = 70               # 1 = run, 0 = stop  (protocol doc "1=Stop" is a typo)
