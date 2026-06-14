@@ -29,35 +29,16 @@ If you have CTS700 or another device you will have to help me with that.
 
 ## CTS400 / ES1077 (Comfort 250 Top)
 
-Experimental support for the **CTS400** controller (also labelled **ES1077**),
-as used in the **Nilan Comfort 250 Top**, is available as a separate board
-family. The CTS400 uses a completely different Modbus register space from the
-CTS602 above, so it is selected explicitly rather than auto-detected.
+Experimental support for the **CTS400** controller (also labelled **ES1077**), as used in the **Nilan Comfort 250 Top**, is available as a separate board family. The CTS400 uses a completely different Modbus register space from the CTS602 above, so it is selected explicitly rather than auto-detected.
 
-- **Pick the board during setup.** The config flow first asks which controller
-  board you have (CTS602 or CTS400). CTS400 cannot be auto-detected because it
-  has no `control_type` register, so the integration would otherwise reject it
-  as an unsupported device.
-- **Tested hardware.** Verified live on a Comfort 250 Top (CTS400, firmware 1.0)
-  over Modbus RTU (slave 30, 19200 8E1) through a Waveshare RS485 TO ETH (B)
-  bridge.
-- **CO2 / VOC are optional.** Those sensors appear only if the unit reports a
-  fitted extra sensor (holding register 48); on a base unit they are hidden.
-- **Ventilation control.** The unit is exposed as a `fan` entity with four speed
-  levels, and as a `climate` entity (FAN_ONLY) that combines the wanted room
-  temperature, run/stop and fan level into one thermostat card. A run/stop
-  switch and a fan-level number are also provided but disabled by default.
-- **Setpoints.** The wanted room temperature, the summer/winter switch-over
-  threshold, and the filter-change interval are exposed as adjustable numbers.
-  Note the season threshold is hysteretic: the unit leaves winter mode slowly
-  after the threshold is lowered.
-- **Alarms.** Raw alarm codes are exposed as diagnostic sensors; a code-to-name
-  mapping has not been confirmed for this controller and is therefore not
-  provided.
+- **Pick the board during setup.** The config flow first asks which controller board you have (CTS602 or CTS400). CTS400 cannot be auto-detected because it has no `control_type` register, so the integration would otherwise reject it as an unsupported device.
+- **Tested hardware.** Verified live on a Comfort 250 Top (CTS400, firmware 1.0) over Modbus RTU (slave 30, 19200 8E1) through a Waveshare RS485 TO ETH (B) bridge.
+- **CO2 / VOC are optional.** Those sensors appear only if the unit reports a fitted extra sensor (holding register 48); on a base unit they are hidden.
+- **Ventilation control.** The unit is exposed as a `fan` entity with four speed levels, and as a `climate` entity (FAN_ONLY) that combines the wanted room temperature, run/stop and fan level into one thermostat card. A run/stop switch and a fan-level number are also provided but disabled by default.
+- **Setpoints.** The wanted room temperature, the summer/winter switch-over threshold, and the filter-change interval are exposed as adjustable numbers. Note the season threshold is hysteretic: the unit leaves winter mode slowly after the threshold is lowered.
+- **Alarms.** Raw alarm codes are exposed as diagnostic sensors; a code-to-name mapping has not been confirmed for this controller and is therefore not provided.
 
-This support is a work in progress tracked in
-[discussion #165](https://github.com/veista/nilan/discussions/165). If you have a
-CTS400 / ES1077 unit, a debug log and a type-plate photo are very welcome.
+This support is a work in progress tracked in [discussion #165](https://github.com/veista/nilan/discussions/165). If you have a CTS400 / ES1077 unit, a debug log and a type-plate photo are very welcome.
 
 ## Installation
 ### Hardware
