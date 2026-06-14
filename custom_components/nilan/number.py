@@ -697,6 +697,10 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
         self._attr_translation_key = self._name
         self._attr_has_entity_name = True
         self._attr_unique_id = self._name
+        # Redundant with the CTS400 fan platform's speed control; ship it
+        # disabled so the fan is the single ventilation control by default.
+        if self._name == "cts400_fan_level_setpoint":
+            self._attr_entity_registry_enabled_default = False
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""

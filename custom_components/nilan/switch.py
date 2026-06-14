@@ -105,6 +105,11 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
         self._attr_translation_key = self._name
         self._attr_has_entity_name = True
         self._attr_unique_id = self._name
+        # The CTS400 fan platform is the primary ventilation control; the
+        # equivalent run/stop switch is shipped disabled to avoid two
+        # identical "Ventilation" controls. Users can enable it if preferred.
+        if self._name == "cts400_ventilation":
+            self._attr_entity_registry_enabled_default = False
 
     @property
     def icon(self) -> str | None:

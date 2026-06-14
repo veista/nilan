@@ -22,6 +22,28 @@ def _cts400_entity_map_keys() -> set[str]:
     raise AssertionError("CTS400_ENTITY_MAP not found")
 
 
+def _referenced_cts400_names() -> set[str]:
+    """All cts400_* entity names referenced by the platform modules.
+
+    These are the string literals used as a Map's name / translation_key
+    (e.g. "cts400_outdoor_temperature", "cts400_ventilation"). Entity-map
+    keys in device_map.py are get_/set_ prefixed and so do not match.
+    """
+    names: set[str] = set()
+    for pyfile in ("sensor.py", "binary_sensor.py", "switch.py",
+                   "number.py", "button.py", "fan.py"):
+        path = ROOT / pyfile
+        if not path.exists():
+            continue
+        tree = ast.parse(path.read_text(encoding="utf-8"))
+        for node in ast.walk(tree):
+            if (isinstance(node, ast.Constant)
+                    and isinstance(node.value, str)
+                    and node.value.startswith("cts400_")):
+                names.add(node.value)
+    return names
+
+
 def test_entity_map_keys_are_device_methods():
     methods = _methods("device.py")
     for key in _cts400_entity_map_keys():
@@ -43,4 +65,13 @@ def test_cts400_entity_names_have_translations():
 
     en_names, str_names = cts400_names(en), cts400_names(strings)
     assert en_names, "no cts400_* names in en.json"
+    # the two translation files must agree with each other ...
     assert en_names == str_names, en_names ^ str_names
+    # ... and every name actually referenced by a platform module must have a
+    # translation in BOTH files (catches a name missing from either file).
+    referenced = _referenced_cts400_names()
+    assert referenced, "no cts400_* names referenced by platform modules"
+    missing_en = referenced - en_names
+    assert not missing_en, f"missing from en.json: {sorted(missing_en)}"
+    missing_str = referenced - str_names
+    assert not missing_str, f"missing from strings.json: {sorted(missing_str)}"
