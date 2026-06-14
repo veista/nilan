@@ -561,6 +561,8 @@ class CTS400HoldingRegisters:
     reset_alarm = 30            # write 1
     extra_sensor = 48           # 0 = none, 1 = VOC, 2 = CO2
     wanted_room_temp = 37       # int16 x0.1
+    summer_winter_threshold = 45  # int16 x0.1; season switch vs outdoor temp
+    filter_interval = 50        # days between filter changes (0-360)
     reset_filter_timer = 51     # write 1, self-clearing
     fan_level_set = 69          # 1-4 (write inert while stopped; applies on start)
     run_stop = 70               # 1 = run, 0 = stop  (protocol doc "1=Stop" is a typo)

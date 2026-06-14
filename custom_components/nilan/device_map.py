@@ -1882,6 +1882,8 @@ CTS400_ENTITY_MAP = {
     "get_cts400_winter_mode_state": {"entity_type": "binary_sensor"},
     "get_cts400_after_heating_state": {"entity_type": "binary_sensor"},
     "get_cts400_deicing_state": {"entity_type": "binary_sensor"},
+    # --- climate (FAN_ONLY thermostat) ---
+    "get_cts400_climate": {"entity_type": "climate"},
     # --- fan (primary control) ---
     "get_cts400_fan": {"entity_type": "fan"},
     # --- switch ---
@@ -1889,6 +1891,8 @@ CTS400_ENTITY_MAP = {
     # --- numbers ---
     "get_cts400_fan_level_setpoint": {"entity_type": "number"},
     "get_cts400_wanted_room_temperature": {"entity_type": "number"},
+    "get_cts400_summer_winter_threshold": {"entity_type": "number"},
+    "get_cts400_filter_interval": {"entity_type": "number"},
     # --- buttons ---
     "set_cts400_reset_filter_timer": {"entity_type": "button"},
     "set_cts400_reset_alarm": {"entity_type": "button"},

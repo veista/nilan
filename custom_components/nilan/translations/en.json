@@ -145,7 +145,8 @@
                 "name": "Target temperature"
               }
             }
-          }
+          },
+          "cts400_hvac": {"name": "Climate"}
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Scalding Protection Setpoint"},
@@ -194,7 +195,9 @@
           "user_selection_1_offset_temperature": {"name": "User Selection 1 Offset Temperature"},
           "user_selection_2_offset_temperature": {"name": "User Selection 2 Offset Temperature"},
           "cts400_fan_level_setpoint": {"name": "Fan Level"},
-          "cts400_wanted_room_temperature": {"name": "Wanted Room Temperature"}
+          "cts400_wanted_room_temperature": {"name": "Wanted Room Temperature"},
+          "cts400_summer_winter_threshold": {"name": "Summer/Winter Threshold"},
+          "cts400_filter_interval": {"name": "Filter Interval"}
         },
         "select": {
             "air_filter_alarm_interval": {

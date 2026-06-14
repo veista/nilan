@@ -633,6 +633,32 @@ ATTRIBUTE_TO_NUMBERS = {
             "mdi:thermometer",
         )
     ],
+    "get_cts400_summer_winter_threshold": [
+        Map(
+            "cts400_summer_winter_threshold",
+            "set_cts400_summer_winter_threshold",
+            EntityCategory.CONFIG,
+            5,
+            20,
+            0.5,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:sun-snowflake-variant",
+        )
+    ],
+    "get_cts400_filter_interval": [
+        Map(
+            "cts400_filter_interval",
+            "set_cts400_filter_interval",
+            EntityCategory.CONFIG,
+            0,
+            360,
+            1,
+            NumberMode.BOX,
+            UnitOfTime.DAYS,
+            "mdi:air-filter",
+        )
+    ],
 }
 
 

@@ -31,7 +31,7 @@ def _referenced_cts400_names() -> set[str]:
     """
     names: set[str] = set()
     for pyfile in ("sensor.py", "binary_sensor.py", "switch.py",
-                   "number.py", "button.py", "fan.py"):
+                   "number.py", "button.py", "fan.py", "climate.py"):
         path = ROOT / pyfile
         if not path.exists():
             continue
