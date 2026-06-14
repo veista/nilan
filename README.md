@@ -44,7 +44,13 @@ CTS602 above, so it is selected explicitly rather than auto-detected.
 - **CO2 / VOC are optional.** Those sensors appear only if the unit reports a
   fitted extra sensor (holding register 48); on a base unit they are hidden.
 - **Ventilation control.** The unit is exposed as a `fan` entity with four speed
-  levels (plus a run/stop switch and a fan-level number).
+  levels, and as a `climate` entity (FAN_ONLY) that combines the wanted room
+  temperature, run/stop and fan level into one thermostat card. A run/stop
+  switch and a fan-level number are also provided but disabled by default.
+- **Setpoints.** The wanted room temperature, the summer/winter switch-over
+  threshold, and the filter-change interval are exposed as adjustable numbers.
+  Note the season threshold is hysteretic: the unit leaves winter mode slowly
+  after the threshold is lowered.
 - **Alarms.** Raw alarm codes are exposed as diagnostic sensors; a code-to-name
   mapping has not been confirmed for this controller and is therefore not
   provided.
