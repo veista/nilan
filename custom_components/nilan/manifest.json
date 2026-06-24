@@ -3,7 +3,7 @@
   "name": "Nilan",
   "codeowners": ["@veista"],
   "config_flow": true,
-  "dependencies": ["modbus"],
+  "dependencies": [],
   "documentation": "https://github.com/veista/nilan",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/veista/nilan/issues",
