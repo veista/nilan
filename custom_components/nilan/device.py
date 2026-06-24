@@ -2,16 +2,162 @@
 
 from __future__ import annotations
 
+import asyncio
 import datetime
 import logging
 
-from homeassistant.components.modbus import modbus
+from pymodbus.client import AsyncModbusSerialClient, AsyncModbusTcpClient
+from pymodbus.exceptions import ModbusException
+
 from homeassistant.core import HomeAssistant
 
 from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
 from .registers import CTS602HoldingRegisters, CTS602InputRegisters
 
 _LOGGER = logging.getLogger(__name__)
+
+
+class _NilanModbusClient:
+    """Pymodbus wrapper with TCP reconnect-desync recovery.
+
+    Nilan devices reset their Modbus TCP transaction_id counter on every
+    compressor stop / TCP disconnect.  pymodbus 3.11.x keeps incrementing its
+    own counter across reconnects, so responses get permanently discarded
+    ("request ask for transaction_id=54205 but got id=57, Skipping.").
+
+    Fix: detect N consecutive None returns and force-close + recreate the
+    client.  A brand-new AsyncModbusTcpClient starts its transaction counter
+    at 0, which re-syncs with the Nilan device.
+    """
+
+    _FAILURE_THRESHOLD = 5
+
+    def __init__(self, com_type: str, host: str | None, port) -> None:
+        self._com_type = com_type
+        self._host = host
+        self._port = port
+        self._client: AsyncModbusTcpClient | AsyncModbusSerialClient | None = None
+        self._lock: asyncio.Lock = asyncio.Lock()
+        self._consecutive_failures: int = 0
+        self._reconnect_scheduled: bool = False
+        self.event_connected: asyncio.Event = asyncio.Event()
+
+    def _create_client(self) -> AsyncModbusTcpClient | AsyncModbusSerialClient:
+        if self._com_type == "tcp":
+            return AsyncModbusTcpClient(
+                self._host,
+                port=int(self._port),
+                timeout=1,
+                reconnect_delay=0.1,
+                reconnect_delay_max=300.0,
+                on_reconnect_callback=self._on_reconnect,
+            )
+        return AsyncModbusSerialClient(
+            self._port,
+            stopbits=1,
+            bytesize=8,
+            parity="E",
+            baudrate=19200,
+            timeout=1,
+        )
+
+    def _on_reconnect(self) -> None:
+        """Called by pymodbus after an automatic TCP reconnect.
+
+        Resets the failure counter so a forced reconnect is not triggered
+        on top of the auto-reconnect that pymodbus already performed.
+        """
+        _LOGGER.warning(
+            "Nilan: TCP auto-reconnected — failure counter reset"
+        )
+        self._consecutive_failures = 0
+
+    async def async_setup(self) -> bool:
+        """Create and connect the Modbus client."""
+        self._client = self._create_client()
+        connected = await self._client.connect()
+        if connected:
+            self.event_connected.set()
+            return True
+        self._client.close()
+        self._client = None
+        return False
+
+    async def async_close(self) -> None:
+        """Disconnect and discard the Modbus client."""
+        self.event_connected.clear()
+        if self._client is not None:
+            self._client.close()
+            self._client = None
+
+    async def async_pb_call(
+        self,
+        unit_id: int,
+        register: int,
+        value,
+        use_call: str,
+    ):
+        """Execute a Modbus read or write, tracking failures for desync recovery."""
+        if self._client is None:
+            return None
+        async with self._lock:
+            try:
+                if use_call == "input":
+                    result = await self._client.read_input_registers(
+                        register, count=value, device_id=unit_id
+                    )
+                elif use_call == "holding":
+                    result = await self._client.read_holding_registers(
+                        register, count=value, device_id=unit_id
+                    )
+                elif use_call == "write_registers":
+                    await self._client.write_registers(
+                        register, value, device_id=unit_id
+                    )
+                    return None
+                else:
+                    return None
+                if result is None or result.isError():
+                    return self._on_failure()
+                self._consecutive_failures = 0
+                return result
+            except ModbusException as exc:
+                _LOGGER.debug("Modbus exception during %s: %s", use_call, exc)
+                return self._on_failure()
+
+    def _on_failure(self):
+        self._consecutive_failures += 1
+        if (
+            self._com_type == "tcp"
+            and self._consecutive_failures >= self._FAILURE_THRESHOLD
+            and not self._reconnect_scheduled
+        ):
+            self._reconnect_scheduled = True
+            asyncio.ensure_future(self._force_reconnect())
+        return None
+
+    async def _force_reconnect(self) -> None:
+        """Close and recreate the TCP client to reset the transaction ID counter."""
+        _LOGGER.warning(
+            "Nilan: %d consecutive Modbus failures — forcing reconnect to fix transaction ID desync",
+            self._consecutive_failures,
+        )
+        async with self._lock:
+            try:
+                if self._client is not None:
+                    self._client.close()
+            except Exception:  # pylint: disable=broad-except
+                pass
+            await asyncio.sleep(2.0)
+            self._consecutive_failures = 0
+            self._client = self._create_client()
+            connected = await self._client.connect()
+            if connected:
+                self.event_connected.set()
+                _LOGGER.warning("Nilan: forced reconnect successful")
+            else:
+                _LOGGER.error("Nilan: forced reconnect failed")
+            self._reconnect_scheduled = False
 
 
 class Device:
@@ -36,20 +182,7 @@ class Device:
         self._host_port = host_port
         self._unit_id = int(unit_id)
         self._com_type = com_type
-        self._client_config = {
-            "name": self._device_name,
-            "type": self._com_type,
-            "method": "rtu",
-            "delay": 0,
-            "port": self._host_port,
-            "timeout": 1,
-            "host": self._host_ip,
-            "parity": "E",
-            "baudrate": 19200,
-            "bytesize": 8,
-            "stopbits": 1,
-        }
-        self._modbus = modbus.ModbusHub(self.hass, self._client_config)
+        self._modbus = _NilanModbusClient(self._com_type, self._host_ip, self._host_port)
         self._attributes = {}
         self._air_geo_type = 0
 
