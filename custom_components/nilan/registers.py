@@ -517,3 +517,50 @@ class CTS602HoldingRegisters:
     hps_param_cooling_allow = 6700
     hps_param_select_hw_tank = 6701
     hps_param_buffer_tank = 6702
+
+
+class CTS400InputRegisters:
+    """Register map of Nilan CTS400 / ES1077 (FC04 input registers).
+
+    Firmware 1.0. Verified live on a Comfort 250 Top (slave 30, 19200 8E1). The CTS400 address space is completely different from the CTS602 above; notably temperatures/humidity use one decimal (scale 0.1, divide by 10), where the CTS602 uses two decimals (scale 0.01).
+    """
+
+    bypass_open = 23            # 1 = open
+    extract_air_pct = 24        # uint16 x0.1
+    supply_air_pct = 25         # uint16 x0.1
+    after_heat_pct = 26         # uint16 x0.1
+    t1_outdoor = 27             # int16 x0.1 (fresh air in)
+    t2_supply = 28              # int16 x0.1 (to rooms)
+    t3_extract = 29             # int16 x0.1 (from rooms)
+    t4_exhaust = 30             # int16 x0.1 (out)
+    humidity = 31               # uint16 x0.1
+    avg_humidity = 46           # uint16 x0.1 - reads 0 on fw 1.0; DO NOT expose
+    co2 = 47                    # ppm - option-gated (no sensor on base unit)
+    voc = 48                    # ppm - option-gated
+    filter_change = 49          # 1 = change due
+    alarm_status = 50           # 0 = no alarm
+    alarm_code_1 = 51
+    alarm_code_2 = 52
+    alarm_code_3 = 53
+    fan_level = 63              # current level 1-4 (0 when stopped)
+    mode_winter = 72            # 0 = summer, 1 = winter
+    after_heating = 74          # on/off
+    deicing = 91                # 0 = off, 1 = on
+    filter_days_remaining = 110  # days
+
+
+class CTS400HoldingRegisters:
+    """Setpoints of Nilan CTS400 / ES1077 (FC03 read / FC06 write).
+
+    Firmware 1.0. Verified live on a Comfort 250 Top.
+    """
+
+    reset_alarm = 30            # write 1
+    extra_sensor = 48           # 0 = none, 1 = VOC, 2 = CO2
+    wanted_room_temp = 37       # int16 x0.1
+    summer_winter_threshold = 45  # int16 x0.1; season switch vs outdoor temp
+    filter_interval = 50        # days between filter changes (0-360)
+    reset_filter_timer = 51     # write 1, self-clearing
+    heater_select = 53          # 0/1 = none/norm, 2 = water, 3 = electric
+    fan_level_set = 69          # 1-4 (write inert while stopped; applies on start)
+    run_stop = 70               # 1 = run, 0 = stop  (protocol doc "1=Stop" is a typo)

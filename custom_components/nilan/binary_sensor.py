@@ -135,6 +135,67 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             True,
         )
     ],
+    # --- CTS400 / ES1077 ---
+    "get_cts400_bypass_state": [
+        Map(
+            "cts400_bypass",
+            BinarySensorDeviceClass.OPENING,
+            None,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_filter_change_state": [
+        Map(
+            "cts400_filter_change",
+            BinarySensorDeviceClass.PROBLEM,
+            None,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_alarm_state": [
+        Map(
+            "cts400_alarm",
+            BinarySensorDeviceClass.PROBLEM,
+            None,
+            None,
+            None,
+            True,
+        )
+    ],
+    "get_cts400_winter_mode_state": [
+        Map(
+            "cts400_winter_mode",
+            None,
+            None,
+            "mdi:snowflake",
+            "mdi:weather-sunny",
+            True,
+        )
+    ],
+    "get_cts400_after_heating_state": [
+        Map(
+            "cts400_after_heating",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            "mdi:radiator",
+            "mdi:radiator-off",
+            True,
+        )
+    ],
+    "get_cts400_deicing_state": [
+        Map(
+            "cts400_deicing",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            "mdi:snowflake-melt",
+            None,
+            True,
+        )
+    ],
 }
 
 

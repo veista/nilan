@@ -36,6 +36,17 @@ ATTRIBUTE_TO_SWITCHES = {
             None,
         )
     ],
+    "get_cts400_run_state": [
+        Map(
+            "cts400_ventilation",
+            "set_cts400_run_state",
+            None,
+            0,
+            1,
+            "mdi:fan-off",
+            "mdi:fan",
+        )
+    ],
 }
 
 
@@ -94,6 +105,9 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
         self._attr_translation_key = self._name
         self._attr_has_entity_name = True
         self._attr_unique_id = self._name
+        # NOTE: keyed on the entity name string from ATTRIBUTE_TO_SWITCHES; if that name is renamed, update this guard too. The CTS400 fan platform is the primary ventilation control, so the equivalent run/stop switch is shipped disabled to avoid two identical "Ventilation" controls. Users can enable it if preferred.
+        if self._name == "cts400_ventilation":
+            self._attr_entity_registry_enabled_default = False
 
     @property
     def icon(self) -> str | None:

@@ -16,6 +16,7 @@ PLATFORMS = [
     "binary_sensor",
     "button",
     "climate",
+    "fan",
     "number",
     "select",
     "sensor",
@@ -36,9 +37,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unit_id = entry.data["unit_id"]
     com_type = entry.data["com_type"]
     host_ip = entry.data["host_ip"]
-    # board_type = entry.data["board_type"]
+    board_type = entry.data.get("board_type", "CTS602")
 
-    device = Device(hass, name, com_type, host_ip, host_port, unit_id)
+    device = Device(hass, name, com_type, host_ip, host_port, unit_id, board_type)
     try:
         await device.setup()
     except ValueError as ex:
