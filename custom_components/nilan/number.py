@@ -6,8 +6,8 @@ from collections import namedtuple
 
 from homeassistant.components.number import NumberEntity, NumberMode
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
+    UnitOfRatio,
     UnitOfTemperature,
     UnitOfTime,
 )
@@ -407,7 +407,7 @@ ATTRIBUTE_TO_NUMBERS = {
             750,
             1,
             NumberMode.SLIDER,
-            CONCENTRATION_PARTS_PER_MILLION,
+            UnitOfRatio.PARTS_PER_MILLION,
             "mdi:molecule-co2",
         )
     ],
@@ -420,7 +420,7 @@ ATTRIBUTE_TO_NUMBERS = {
             2500,
             1,
             NumberMode.SLIDER,
-            CONCENTRATION_PARTS_PER_MILLION,
+            UnitOfRatio.PARTS_PER_MILLION,
             "mdi:molecule-co2",
         )
     ],
