@@ -10,8 +10,8 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
+    UnitOfRatio,
     UnitOfTemperature,
     UnitOfTime,
 )
@@ -226,7 +226,7 @@ ATTRIBUTE_TO_SENSORS = {
     "get_co2_sensor_value": [
         Map(
             "co2_sensor",
-            CONCENTRATION_PARTS_PER_MILLION,
+            UnitOfRatio.PARTS_PER_MILLION,
             SensorDeviceClass.CO2,
             SensorStateClass.MEASUREMENT,
             None,
