@@ -7,6 +7,7 @@ from typing import Any, Optional
 
 from pymodbus.client import AsyncModbusSerialClient, AsyncModbusTcpClient
 from pymodbus.exceptions import ModbusException
+from pymodbus import FramerType
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -32,6 +33,15 @@ STEP_SERIAL_DATA_SCHEMA = vol.Schema(
     }
 )
 
+STEP_RTU_OVER_TCP_DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required("name", default="Nilan"): str,
+        vol.Required("host_ip"): str,
+        vol.Required("host_port", default="4001"): str,
+        vol.Required("unit_id", default=30): int,
+    }
+)
+
 _LOGGER = logging.getLogger(__name__)
 
 async def async_validate_device(com_type, port, unit_id, address: str | None) -> None:
@@ -40,6 +50,12 @@ async def async_validate_device(com_type, port, unit_id, address: str | None) ->
         client = AsyncModbusTcpClient(
             address,
             port=port,
+        )
+    elif com_type == "rtuovertcp":
+        client = AsyncModbusTcpClient(
+            address,
+            port=port,
+            framer=FramerType.RTU,
         )
     else:
         client = AsyncModbusSerialClient(
@@ -93,7 +109,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Show Communications Selection."""
         return self.async_show_menu(
             step_id="menu",
-            menu_options=["tcp", "serial"],
+            menu_options=["tcp", "serial", "rtuovertcp"],
             # description_placeholders={
             #     "model": "Example model",
             # },
@@ -143,4 +159,28 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(title=user_input["name"], data=self.data)
         return self.async_show_form(
             step_id="serial", data_schema=STEP_SERIAL_DATA_SCHEMA, errors=errors
+        )
+
+    async def async_step_rtuovertcp(self, user_input: Optional[dict(str, Any)] = None):
+        """Configure ModBus RTU over TCP entry."""
+        errors: dict(str, str) = {}
+
+        if user_input is not None:
+            try:
+                await async_validate_device(
+                    "rtuovertcp",
+                    user_input["host_port"],
+                    user_input["unit_id"],
+                    user_input["host_ip"],
+                )
+            except ValueError as error:
+                errors["base"] = str(error)
+            if not errors:
+                # Input is valid, set data.
+                self.data = user_input
+                self.data.update({"com_type": "rtuovertcp"})
+                self.data.update({"board_type": "CTS602"})
+                return self.async_create_entry(title=user_input["name"], data=self.data)
+        return self.async_show_form(
+            step_id="rtuovertcp", data_schema=STEP_RTU_OVER_TCP_DATA_SCHEMA, errors=errors
         )
