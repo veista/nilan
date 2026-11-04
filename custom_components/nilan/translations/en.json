@@ -11,14 +11,21 @@
                                          },
                                 "board":  {
                                               "title":  "Select Controller Board",
-                                              "description":  "Prefer Auto-detect when unsure. Pause YAML Modbus for this unit first so probes do not fight for the bus. {coexistence_warning}",
+                                              "description":  "Prefer Auto-detect when unsure. Pause YAML Modbus for this unit first so probes do not fight for the bus. Compact P GEO / NCS-700: try Auto-detect, or Nordic XL (fan steps 101-104) vs 2018+ Compact P (fan percent 21771). {coexistence_warning}",
                                               "menu_options":  {
                                                                    "auto_detect":  "Auto-detect (recommended)",
                                                                    "cts602":  "CTS602 (Comfort / Compact / VP)",
                                                                    "cts700":  "CTS700 2018+ Compact P (fan percent 21771)",
                                                                    "cts700_nordic":  "CTS700 Nordic/Polar/Arctic XL (fan steps 101-104)",
                                                                    "cts700_legacy":  "CTS700 2015 legacy map"
-                                                               }
+                                                               },
+                                              "menu_option_descriptions":  {
+                                                                               "auto_detect":  "Probes CTS602 then CTS700 Nordic / 2018+ / 2015. Best when unsure (for example Compact P GEO on NCS-700).",
+                                                                               "cts602":  "Classic Comfort / Compact / VP boards. Typical unit id 30.",
+                                                                               "cts700":  "2018+ Compact P Ethernet map. Fan holding 21771 as percent. Typical unit id 1.",
+                                                                               "cts700_nordic":  "Nordic / Polar / Arctic XL hybrid. Fan holding 4747 steps 101-104. Typical unit id 1.",
+                                                                               "cts700_legacy":  "2015 PDF-era map (registers mostly under 10000)."
+                                                                           }
                                           },
                                 "tcp":  {
                                             "title":  "TCP Configuration",

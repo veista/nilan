@@ -15,6 +15,7 @@ from .const import (
     BOARD_TYPE_CTS700_NORDIC,
     DOMAIN,
 )
+from .config_flow_menus import async_menu_options
 from .modbus_hub_util import coexistence_warning, find_conflicting_modbus_hub
 from .modbus_probe import (
     async_detect_board,
@@ -108,7 +109,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         """Show Communications Selection."""
         return self.async_show_menu(
             step_id="menu",
-            menu_options=["tcp", "serial"],
+            menu_options=await async_menu_options(self.hass, "menu"),
             description_placeholders=self._flow_placeholders(),
         )
 
@@ -124,15 +125,10 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_board(self, user_input: Optional[dict[str, Any]] = None):
         """Choose auto-detect, CTS602, or a CTS700 era map."""
+        # Dict labels stay visible if YAML hub ``nilan`` blanks translations (#6).
         return self.async_show_menu(
             step_id="board",
-            menu_options=[
-                "auto_detect",
-                "cts602",
-                "cts700",
-                "cts700_nordic",
-                "cts700_legacy",
-            ],
+            menu_options=await async_menu_options(self.hass, "board"),
             description_placeholders=self._flow_placeholders(),
         )
 
@@ -231,7 +227,7 @@ class NilanConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
         return self.async_show_menu(
             step_id="confirm",
-            menu_options=["accept", "manual"],
+            menu_options=await async_menu_options(self.hass, "confirm"),
             description_placeholders=placeholders,
         )
 

@@ -17,6 +17,24 @@
                     "serial": "Sarjaportti"
                 }
             },
+            "board": {
+                "title": "Valitse ohjainkortti",
+                "description": "Valitse Automaattinen tunnistus jos et ole varma. Keskeytä YAML Modbus tälle laitteelle ensin. {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Automaattinen tunnistus (suositus)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (tuuletin prosentti 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (tuuletinvaiheet 101-104)",
+                    "cts700_legacy": "CTS700 2015 vanha kartta"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Tutkii CTS602 sitten CTS700 Nordic / 2018+ / 2015. Paras kun et ole varma (esim. Compact P GEO / NCS-700).",
+                    "cts602": "Perinteiset Comfort / Compact / VP. Tyypillinen unit id 30.",
+                    "cts700": "2018+ Compact P Ethernet-kartta. Tuuletin holding 21771 prosenttina. Tyypillinen unit id 1.",
+                    "cts700_nordic": "Nordic / Polar / Arctic XL -hybridi. Tuuletin holding 4747 vaiheet 101-104. Tyypillinen unit id 1.",
+                    "cts700_legacy": "2015 PDF-kartta (rekisterit yleensä alle 10000)."
+                }
+            },
             "tcp": {
                 "title": "TCP-asetukset",
                 "data": {
