@@ -18,6 +18,24 @@
                     "serial": "Serial"
                 }
             },
+            "board": {
+                "title": "Steuerplatine wählen",
+                "description": "Auto-Erkennung bevorzugen wenn unsicher. YAML-Modbus für dieses Gerät zuerst pausieren. {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Auto-Erkennung (empfohlen)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (Lüfter Prozent 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (Lüfterstufen 101-104)",
+                    "cts700_legacy": "CTS700 2015 Legacy-Map"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Prüft CTS602, dann CTS700 Nordic / 2018+ / 2015. Beste Wahl bei Unsicherheit (z. B. Compact P GEO auf NCS-700).",
+                    "cts602": "Klassische Comfort / Compact / VP. Typische Unit-ID 30.",
+                    "cts700": "2018+ Compact P Ethernet-Map. Lüfter Holding 21771 als Prozent. Typische Unit-ID 1.",
+                    "cts700_nordic": "Nordic / Polar / Arctic XL Hybrid. Lüfter Holding 4747 Stufen 101-104. Typische Unit-ID 1.",
+                    "cts700_legacy": "2015 PDF-Map (Register meist unter 10000)."
+                }
+            },
             "tcp": {
                 "title": "TCP Konfiguration",
                 "data": {

@@ -6,6 +6,7 @@ GitHub Releases: https://github.com/master3395/veista-nilan/releases
 
 | Version | Date | Summary | Notes |
 |---|---|---|---|
+| [1.3.17](1.3.17.md) | 04/11/2026 | Fix blank Add Hub board menu labels (#6) | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.17) |
 | [1.3.16](1.3.16.md) | 04/10/2026 | Compact P 20464 electrical supplement switch | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.16) |
 | [1.3.15](1.3.15.md) | 03/09/2026 | Filter alarm logging + binary/switch last-good | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.15) |
 | [1.3.14](1.3.14.md) | 02/09/2026 | CTS700 Nordic Modbus read stability + manual links | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.14) |

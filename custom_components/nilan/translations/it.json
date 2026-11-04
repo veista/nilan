@@ -18,6 +18,24 @@
                     "serial": "Seriale"
                 }
             },
+            "board": {
+                "title": "Seleziona scheda di controllo",
+                "description": "Preferisci Auto-rilevamento se non sei sicuro. Metti in pausa YAML Modbus per questa unità prima. {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Auto-rilevamento (consigliato)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (ventilatore percento 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (passi ventilatore 101-104)",
+                    "cts700_legacy": "CTS700 2015 mappa legacy"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Verifica CTS602 poi CTS700 Nordic / 2018+ / 2015. Ideale se non sei sicuro (es. Compact P GEO su NCS-700).",
+                    "cts602": "Schede Comfort / Compact / VP classiche. Unit ID tipico 30.",
+                    "cts700": "Mappa Ethernet Compact P 2018+. Ventilatore holding 21771 in percentuale. Unit ID tipico 1.",
+                    "cts700_nordic": "Ibrido Nordic / Polar / Arctic XL. Ventilatore holding 4747 passi 101-104. Unit ID tipico 1.",
+                    "cts700_legacy": "Mappa PDF 2015 (registri soprattutto sotto 10000)."
+                }
+            },
             "tcp": {
                 "title": "Configurazione TCP",
                 "data": {

@@ -15,7 +15,13 @@ Also: do **not** name a YAML Modbus hub bare `nilan`. That name matches this int
 
 ## Why were Select Controller Board labels blank?
 
-Usually a YAML Modbus hub named `nilan`. Rename the hub and reload Modbus / restart HA, then open Add integration → Nilan again. Upstream CTS602-only flows did not show the new board/confirm menus, so the clash was less visible there.
+Usually a YAML Modbus hub named `nilan`. Rename the hub and reload Modbus / restart HA, then open Add hub again. Upstream CTS602-only flows did not show the new board/confirm menus, so the clash was less visible there.
+
+From **1.3.17** the board / TCP / confirm menus always pass explicit labels (not translation-only), so the five board choices stay readable even if that hub-name clash is still present. You should still rename a YAML hub named `nilan` so coexistence warnings and other strings load correctly.
+
+## Compact P GEO / NCS-700: which board option?
+
+Prefer **Auto-detect**. If you choose manually: Nordic / Polar / Arctic XL uses fan holding **4747** steps **101–104**; 2018+ Compact P uses fan **21771** as percent. GEO extras may still be dump-gated: [cts700/geo.md](cts700/geo.md).
 
 ## Does an offline Nilan block Home Assistant startup?
 
@@ -58,6 +64,10 @@ No CO2 module installed, or the entity is not applicable. Hide the entity in the
 ## Norwegian language (bokmål) missing strings?
 
 Use Home Assistant language **Norsk bokmål** (`nb`). This fork ships `translations/nb.json` (renamed from `no.json`).
+
+## Danish language missing setup strings?
+
+Use Home Assistant language **Dansk** (`da`). From **1.3.17** this fork ships `translations/da.json` for config-flow menus (entity names fall back to English when not translated).
 
 ## Slave 4 / floor / GEO missing on Compact P?
 
