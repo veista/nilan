@@ -6,7 +6,7 @@ GitHub Releases: https://github.com/master3395/veista-nilan/releases
 
 | Version | Date | Summary | Notes |
 |---|---|---|---|
-| [1.3.21](1.3.21.md) | 07/11/2026 | Nordic gaps + HVAC heating hysteresis (mark007) | PR open |
+| [1.3.21](1.3.21.md) | 07/11/2026 | Nordic gaps + HVAC heating hysteresis (mark007) | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.21) |
 | [1.3.20](1.3.20.md) | 07/11/2026 | Nordic compressor effort % + heat-pump-on | Superseded by 1.3.21 |
 | [1.3.19](1.3.19.md) | 07/11/2026 | Docs: Marketplace UI for HA 2026.11+ | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.19) |
 | [1.3.18](1.3.18.md) | 06/11/2026 | HA 2026.11 Nordic bypass status + AI context | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.18) |
