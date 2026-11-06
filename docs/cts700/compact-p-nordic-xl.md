@@ -1,6 +1,6 @@
 # Compact P Køl Polar/Nordic/Arctic (XL) — CTS700 hybrid
 
-Community-proven **CTS700** hybrid Modbus map for Compact P **Køl** Polar / Nordic / Arctic **(XL)** units on **CTS700 LC** boards (Ethernet). Fan user step is **4747 = 101–104**, not percent.
+Community-proven **CTS700** hybrid Modbus map for Compact P **Køl** Polar / Nordic / Arctic **(XL)** units on **CTS700 LC** boards (Ethernet). Fan user step on **4747** may be classic **101–104** or **percent 0–100** (same as **21771** on some firmwares); the integration maps percent to steps 1–4 via nearest of **20140/42/44/46**.
 
 ## Hardware match
 
@@ -38,9 +38,17 @@ Do **not** use this map on 2018+ Compact P units that use fan **21771** percent 
 | Function | Register | Notes |
 |---|---|---|
 | Room setpoint | 4746 holding | Scale 0.1 |
-| Fan step | 4747 holding | **101–104** = steps 1–4 |
+| Fan step | 4747 holding | **101–104** = steps 1–4, or **percent 0–100** (map via 20140/42/44/46) |
+| Fan step % targets | 20140 / 20142 / 20144 / 20146 | Supply percents for steps 1–4 |
 | Live humidity (RH) | 4716 input | 0–100 |
 | Average humidity | 20164 holding | 0–100 |
+| Ventilation pause | 20100 holding | Switch |
+| Humidity strategy | 20160–20163 | Low RH %, fan steps, timeout |
+| Allow active cooling | 20180 holding | Switch |
+| Frost / preheat | 20300 / 20340 / 20341 | Polar frost enable + thresholds |
+| DHW pause / days | 20440 / 20441 | Switch + days |
+| El-supplement below / scalding / el switch | 20462 / 20463 / 20464 | Numbers + switch (scale 0.1 on temps) |
+| Anti-legionella | 20480–20483 | Manual / auto / day / time |
 | T1 outdoor | 5152 input | Scale 0.1 |
 | T2 supply | 5153 input | Scale 0.1 |
 | T3 extract / room | 5154 input | Scale 0.1 |
@@ -62,6 +70,7 @@ Do **not** use this map on 2018+ Compact P units that use fan **21771** percent 
 | Bypass damper % / state | 21773 / 4704 / 4705 holding | **Status only** in the integration (Ethernet writes unreliable) |
 | Main compressor effort % | 4706 holding | 0 when heat pump off; positive % when running (mark007 / community) |
 | Heat pump on | derived from 4706 | Binary: effort > 0 |
+| Heater control bit | 4701 holding | Optional discrete heater; used with 4706 for hvac_action |
 | Supply / extract fan % | 4699 / 4700 | |
 | DHW setpoint | 5548 holding (legacy/hybrid), 20460 (2018+ map) | Ethernet dial often caps near ~25.5 C; tank current is T11/T12 (**5162** / **5163**), not the dial |
 
@@ -80,13 +89,14 @@ External CO2 (accessory on SG A/B) stays out of this bus map unless you add a se
 - **Week programs** are not synced. HA writes can fight a week program still active on the controller.
 - Active cooling (compressor M6) depends on outdoor conditions and unit alarms; mode **Kjøling** alone does not guarantee compressor run.
 - Never copy Nordic step fan writes onto a 2018+ Compact P entry.
-- **HVAC mode (holding 5432):** treated as **status** (active cool/heat/dehum/DHW), not a user setpoint. Climate selectable modes are **Auto** and **Off** only; heat/cool still show under HVAC *action* when the unit is doing that. Steer comfort with room setpoint (**4746**) and fan step.
-- **Fan steps:** climate offers **1–4** only (4747 = 101–104). There is no fan-off via step 0 on these boards.
+- **HVAC mode (holding 5432):** treated as **status** (active cool/heat/dehum/DHW), not a user setpoint. Climate selectable modes are **Auto** and **Off** only.
+- **HVAC action hysteresis (mark007):** do **not** keep `hvac_action=heating` for the whole thermostat call / mode=heat window. Report **heating** only while compressor effort **4706 > 0** (and/or heater bit **4701**). When mode is heat but effort is 0, action is **idle** (fans may still run). Smart-plug correlation on Compact P: idle about **40 W**, active heat about **500–700 W**. El-supplement **20464** is a separate DHW switch, not room `hvac_action`.
+- **Fan steps:** climate offers **1–4** only. **4747** may be 101–104 or percent; percent maps via nearest step table / **21771**. No fan-off via step 0.
 - **DHW Off:** top/bottom water heaters share setpoint **20460**. Off via setpoint 0 is not reliable, so Nordic entities expose temperature only (no Off operation mode).
-- **Electrical supplement heater (20464):** Compact P **2018** map only (writable HA switch). This Nordic hybrid path has **no** dedicated el-supplement holding in the community map; `get_electric_water_heater_state` stays False and writes are refused. Do not map 20464 onto Nordic.
+- **Electrical supplement heater (20464):** writable switch on Nordic (live R/W validated). Numbers **20463** (scalding) and **20462** (el-supplement below) exposed.
 - **Sensor names:** follow Nilan wiring (T1 outdoor, T6 evaporator, T7 after after-heater, T8 preheater path). T5/T6/T7/T8/T9 are diagnostic; T7 is disabled by default when unused (often reads 0.0).
 - **T1 vs T8:** different registers (input **5152** vs **5159**; optional holding **20296**). On Polar/Nordic both are outdoor / preheater-path NTCs, so equal readings with preheater idle are normal, not a double-map bug. If 5159 mirrors T1 but **20296** differs, the integration prefers **20296**.
-- **Extra percent sensors:** main compressor effort is holding **4706** (from 1.3.20; binary heat-pump-on derived when effort > 0). Configured max DHW effort and AI-guessed per-filter % stay out of the default entity set; filter **days** already cover service intervals. Secondary compressor stages **4707–4711** exist on some firmwares but stay unused here until field-verified as active.
+- **Extra percent sensors:** main compressor effort is holding **4706** (binary heat-pump-on when effort > 0). Configured max DHW effort and AI-guessed per-filter % stay out of the default entity set. Secondary compressor stages **4707–4711** stay unused until field-verified during a heating event.
 - **Setpoint writes:** room **4746** and DHW **20460** use Modbus **FC6** (`write_register`) first, same as HA YAML climate. Fan step **4747** may use FC16. If air/water temp UI snaps back, check HA logs for `CTS700 Nordic temp write`.
 
 ## Related

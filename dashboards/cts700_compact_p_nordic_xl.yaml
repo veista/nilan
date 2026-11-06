@@ -11,9 +11,10 @@ views:
           - type: markdown
             content: |
               ## Nilan CTS700 Compact P Nordic XL
-              Fan steps 101-104 on register 4747. Entities from the Nilan integration only
-              (example device name **Nilan CTS700 Nordic**). Search-replace `nilan_cts700_nordic_`
-              if your device name differs. Do not point cards at disabled YAML Modbus switches.
+              Fan step on 4747 may be 101-104 or percent (mapped to steps 1-4). Entities from
+              the Nilan integration only (example device name **Nilan CTS700 Nordic**).
+              Search-replace `nilan_cts700_nordic_` if your device name differs.
+              HVAC **heating** follows compressor effort 4706 (hysteresis), not mode alone.
               Bypass is **status only** over Ethernet. Week programs are not synced.
           - type: thermostat
             entity: climate.nilan_cts700_nordic_hvac
@@ -52,10 +53,29 @@ views:
             entities:
               - water_heater.nilan_cts700_nordic_top_water_heater
               - water_heater.nilan_cts700_nordic_bottom_water_heater
+              - switch.nilan_cts700_nordic_electrical_supplement_heater
+              - number.nilan_cts700_nordic_scalding_protection_setpoint
+              - number.nilan_cts700_nordic_el_supplement_activated_below
+              - switch.nilan_cts700_nordic_hot_water_production_pause
+              - number.nilan_cts700_nordic_hot_water_pause_days
+              - switch.nilan_cts700_nordic_automatic_anti_legionella
+              - select.nilan_cts700_nordic_legionella_day
+          - type: entities
+            title: Ventilation and Polar
+            entities:
+              - switch.nilan_cts700_nordic_ventilation_pause
+              - switch.nilan_cts700_nordic_allow_active_cooling
+              - switch.nilan_cts700_nordic_frost_protection
+              - number.nilan_cts700_nordic_frost_protection_below
+              - number.nilan_cts700_nordic_preheater_setpoint
+              - number.nilan_cts700_nordic_low_humidity_level
+              - select.nilan_cts700_nordic_low_humidity_ventilation_level
+              - select.nilan_cts700_nordic_high_humidity_ventilation_level
           - type: markdown
             content: |
               DHW: tank temperature is water heater **current**, not the Ethernet dial
               (often capped near 25.5 C). See docs/cts700/ethernet-limits.md.
+              Heating action tracks compressor effort (hysteresis), not a continuous mode band.
           - type: history-graph
             title: Room and outdoor
             hours_to_show: 24

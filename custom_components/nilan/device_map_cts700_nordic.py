@@ -47,9 +47,9 @@ CTS700_NORDIC_ENTITY_MAP = {
         "entity_type": "config",
         "requires_capabilities": "dhw",
     },
-    # Stay config (water_heater status only). Do not map Compact P 20464 as switch.
+    # Holding 20464: writable electrical supplement (live-validated on Nordic).
     "get_electric_water_heater_state": {
-        "entity_type": "config",
+        "entity_type": "switch",
         "requires_capabilities": "dhw",
     },
     "get_compressor_water_heater_setpoint": {
@@ -58,6 +58,52 @@ CTS700_NORDIC_ENTITY_MAP = {
     },
     "get_t12_compressor_water_heater_temperature": {
         "entity_type": "config",
+        "requires_capabilities": "dhw",
+    },
+    # DHW / el-supplement thresholds
+    "get_scalding_protection_setpoint": {
+        "entity_type": "number",
+        "requires_capabilities": "dhw",
+    },
+    "get_el_supplement_activated_below": {
+        "entity_type": "number",
+        "requires_capabilities": "dhw",
+    },
+    # Pauses
+    "get_ventilation_pause": {"entity_type": "switch"},
+    "get_hot_water_production_pause": {
+        "entity_type": "switch",
+        "requires_capabilities": "dhw",
+    },
+    "get_hot_water_pause_days": {
+        "entity_type": "number",
+        "requires_capabilities": "dhw",
+    },
+    # Cooling + humidity strategy
+    "get_allow_active_cooling": {"entity_type": "switch"},
+    "get_low_humidity_level": {"entity_type": "number"},
+    "get_low_humidity_step": {"entity_type": "select"},
+    "get_high_humidity_step": {"entity_type": "select"},
+    "get_max_high_humidity_vent_time": {"entity_type": "number"},
+    # Polar frost / preheat
+    "get_frost_protection": {"entity_type": "switch"},
+    "get_frost_protection_below": {"entity_type": "number"},
+    "get_preheater_setpoint": {"entity_type": "number"},
+    # Anti-legionella
+    "get_anti_legionella_manual": {
+        "entity_type": "switch",
+        "requires_capabilities": "dhw",
+    },
+    "get_automatic_anti_legionella": {
+        "entity_type": "switch",
+        "requires_capabilities": "dhw",
+    },
+    "get_legionella_day": {
+        "entity_type": "select",
+        "requires_capabilities": "dhw",
+    },
+    "get_anti_legionella_time": {
+        "entity_type": "number",
         "requires_capabilities": "dhw",
     },
 }

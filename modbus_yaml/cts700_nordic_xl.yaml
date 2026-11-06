@@ -5,8 +5,8 @@
 #   CTS700 LC Board Version 4.0 (styreprint #237501), varenr 75124xx
 #   Native Ethernet Modbus TCP, typical unit id 1
 #
-# Fan user step: holding 4747 values 101-104 (NOT percent).
-# Do NOT use this file on 2018+ Compact P (fan 21771 percent / setpoint 20102).
+# Fan user step: holding 4747 may be 101-104 OR percent 0-100 (map via 20140/42/44/46).
+# Do NOT use this file on 2018+ Compact P that uses only 21771 / setpoint 20102.
 #
 # Prefer custom_components/nilan board "CTS700 Compact P Nordic XL".
 # Never run this YAML and the Nilan integration on the same unit.
@@ -38,7 +38,55 @@ modbus:
         address: 4747
         input_type: holding
         data_type: uint16
-        # Expected values: 101, 102, 103, 104 (= fan steps 1-4)
+        # 101-104 = steps 1-4, or percent 0-100 on some firmwares
+
+      - name: Nilan Nordic Electrical Supplement
+        unique_id: nilan_nordic_el_supplement
+        slave: 1
+        address: 20464
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan Nordic Scalding Protection
+        unique_id: nilan_nordic_scalding
+        slave: 1
+        address: 20463
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+
+      - name: Nilan Nordic El Supplement Below
+        unique_id: nilan_nordic_el_below
+        slave: 1
+        address: 20462
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+
+      - name: Nilan Nordic Ventilation Pause
+        unique_id: nilan_nordic_vent_pause
+        slave: 1
+        address: 20100
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan Nordic Allow Cooling
+        unique_id: nilan_nordic_allow_cooling
+        slave: 1
+        address: 20180
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan Nordic Frost Protection
+        unique_id: nilan_nordic_frost
+        slave: 1
+        address: 20300
+        input_type: holding
+        data_type: uint16
 
       - name: Nilan Nordic Live Humidity
         unique_id: nilan_nordic_live_humidity

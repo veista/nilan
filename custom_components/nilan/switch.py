@@ -36,6 +36,72 @@ ATTRIBUTE_TO_SWITCHES = {
             "mdi:heating-coil",
         )
     ],
+    "get_ventilation_pause": [
+        Map(
+            "ventilation_pause",
+            "set_ventilation_pause",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:fan-off",
+            "mdi:fan-off",
+        )
+    ],
+    "get_hot_water_production_pause": [
+        Map(
+            "hot_water_production_pause",
+            "set_hot_water_production_pause",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:water-boiler-off",
+            "mdi:water-boiler-off",
+        )
+    ],
+    "get_allow_active_cooling": [
+        Map(
+            "allow_active_cooling",
+            "set_allow_active_cooling",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:snowflake-off",
+            "mdi:snowflake",
+        )
+    ],
+    "get_frost_protection": [
+        Map(
+            "frost_protection",
+            "set_frost_protection",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:snowflake-melt",
+            "mdi:snowflake-alert",
+        )
+    ],
+    "get_anti_legionella_manual": [
+        Map(
+            "anti_legionella_manual",
+            "set_anti_legionella_manual",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:bacteria-outline",
+            "mdi:bacteria",
+        )
+    ],
+    "get_automatic_anti_legionella": [
+        Map(
+            "automatic_anti_legionella",
+            "set_automatic_anti_legionella",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:bacteria-outline",
+            "mdi:bacteria",
+        )
+    ],
     "get_hps_main_switch": [
         Map(
             "hps_main_switch",

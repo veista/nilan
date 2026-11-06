@@ -225,25 +225,58 @@ class NilanClimate(NilanEntity, ClimateEntity):
         if control_state is None:
             return
 
+        # Prefer live heat/cool source activity when the device exposes it
+        # (CTS700 Nordic: holding 4706 effort / heater bit). Avoid continuous
+        # hvac_action=heating during thermostat hysteresis while compressor is idle.
+        actively_heating = None
+        if hasattr(self._device, "get_actively_heating"):
+            actively_heating = await self._device.get_actively_heating()
+        actively_cooling = None
+        if hasattr(self._device, "get_actively_cooling"):
+            actively_cooling = await self._device.get_actively_cooling()
+
         if self._extra_status_attributes:
             ventilation_state = await self._device.get_ventilation_state()
             fan_supply_level = await self._device.get_supply_fan_level()
             if ventilation_state == 3:
                 self._attr_hvac_action = HVACAction.DRYING
-            elif control_state in (7, 17):
+            elif actively_heating is True or (
+                control_state in (7, 17) and actively_heating is not False
+            ):
                 self._attr_hvac_action = HVACAction.HEATING
-            elif control_state in (8, 11):
+            elif actively_cooling is True or (
+                control_state in (8, 11) and actively_cooling is not False
+            ):
                 self._attr_hvac_action = HVACAction.COOLING
+            elif control_state in (7, 17) and actively_heating is False:
+                self._attr_hvac_action = (
+                    HVACAction.FAN if fan_supply_level > 0 else HVACAction.IDLE
+                )
+            elif control_state in (8, 11) and actively_cooling is False:
+                self._attr_hvac_action = (
+                    HVACAction.FAN if fan_supply_level > 0 else HVACAction.IDLE
+                )
             elif fan_supply_level > 0:
                 self._attr_hvac_action = HVACAction.FAN
             elif fan_supply_level == 0 and control_state > 0:
                 self._attr_hvac_action = HVACAction.IDLE
             else:
                 self._attr_hvac_action = HVACAction.OFF
-        elif control_state in (7, 17):
+        elif actively_heating is True or (
+            control_state in (7, 17) and actively_heating is not False
+        ):
             self._attr_hvac_action = HVACAction.HEATING
-        elif control_state in (8, 11):
+        elif actively_cooling is True or (
+            control_state in (8, 11) and actively_cooling is not False
+        ):
             self._attr_hvac_action = HVACAction.COOLING
+        elif control_state in (7, 17, 8, 11) and (
+            actively_heating is False or actively_cooling is False
+        ):
+            # Mode call without compressor/heater: idle (not a continuous heating band)
+            self._attr_hvac_action = HVACAction.IDLE
+        elif control_state > 0:
+            self._attr_hvac_action = HVACAction.IDLE
         else:
             self._attr_hvac_action = HVACAction.OFF
 
