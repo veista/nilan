@@ -14,7 +14,7 @@ No RS485 bridge is required for native Ethernet CTS700.
 
 ## Home Assistant setup
 
-1. Install from HACS or copy `custom_components/nilan` from this fork (`master`).
+1. Install from **Marketplace** (HA 2026.11+) / **HACS** (older), or copy `custom_components/nilan` from this fork (`master`). See [installation.md](../installation.md).
 2. Add **Nilan** integration.
 3. Choose **TCP**.
 4. Choose **CTS700 (2018+ / Compact P)**.

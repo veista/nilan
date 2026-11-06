@@ -12,7 +12,7 @@ Ship CTS700 Compact P eras (2015 / Nordic XL / 2018+) beside stable CTS602, docu
 
 ## Quick start
 
-1. Install via [HACS](docs/installation.md) (default upstream, or this fork as a custom repository while testing).
+1. Install via [Marketplace / HACS](docs/installation.md) (default upstream, or this fork as a custom repository while testing). On Home Assistant **2026.11+** the store UI is labeled **Marketplace** (`/marketplace/...`); older Core still shows **HACS**.
 2. Add **Nilan** → **TCP** or **Serial** → **Auto-detect** (or choose **CTS602** / **CTS700 2018+** / **CTS700 Nordic XL** / **CTS700 2015** manually).
 3. Confirm the detected board and unit id, or override manually.
 4. Typical unit ids: CTS602 **30**, Compact P CTS700 **1** (TCP port **502**).
@@ -26,17 +26,17 @@ Ship CTS700 Compact P eras (2015 / Nordic XL / 2018+) beside stable CTS602, docu
 
 **CTS700 maps:** era matrix in [cts700 README](docs/cts700/README.md). **2018+** 20xxx ([compact-p](docs/cts700/compact-p.md)), **Nordic XL** hybrid ([compact-p-nordic-xl](docs/cts700/compact-p-nordic-xl.md)), **2015** under 10000 ([legacy-2015](docs/cts700/legacy-2015.md)). Per-board Modbus YAML: [`modbus_yaml/`](modbus_yaml/). **Compact P2** prefers CTS602 ([compact-p2](docs/cts602/compact-p2.md)). Optional lag-aware 24/7 helpers: [CTS700 AI packages](docs/cts700-ai/README.md).
 
-### Install from this fork (HACS custom repository)
+### Install from this fork (Marketplace / HACS custom repository)
 
 Until CTS700 and related fixes are merged upstream:
 
-1. HACS → three-dot menu → **Custom repositories**
-2. URL: `https://github.com/master3395/veista-nilan`
+1. **Marketplace** (HA 2026.11+) or **HACS** (older) → three-dot menu → **Custom repositories**
+2. URL: `https://github.com/master3395/veista-nilan` (Marketplace custom repository id **1323343841**; deep link `/marketplace/repository/1323343841`)
 3. Category: **Integration**
 4. Download **Nilan** → restart Home Assistant
 5. If you already had veista/nilan installed, remove the old integration entry first (same domain)
 
-Fork: https://github.com/master3395/veista-nilan (`master`)
+Fork: https://github.com/master3395/veista-nilan (`master`) · full steps: [docs/installation.md](docs/installation.md)
 
 ## Controllers
 

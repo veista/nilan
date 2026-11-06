@@ -85,4 +85,4 @@ Product pages and gateway docs point to **CTS602** Modbus RS485 (default unit id
 
 ## Where are the dashboards?
 
-Optional Nilan-only Lovelace YAML lives under [`dashboards/`](../dashboards/). See [dashboards.md](dashboards.md). They are not auto-installed by HACS.
+Optional Nilan-only Lovelace YAML lives under [`dashboards/`](../dashboards/). See [dashboards.md](dashboards.md). They are not auto-installed by Marketplace / HACS.
