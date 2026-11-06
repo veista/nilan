@@ -872,6 +872,9 @@
                                   "fan_speed_percent":  {
                                                             "name":  "Fan Speed Percent"
                                                         },
+                                  "bypass_damper_percent":  {
+                                                                "name":  "Bypass Damper Percent"
+                                                            },
                                   "display_text_line_1":  {
                                                               "name":  "Display Text Line 1"
                                                           },

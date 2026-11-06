@@ -17,6 +17,7 @@ Example Modbus host in this folder: `192.168.1.50` (port 502, unit id 1). Replac
 | Autotune script | `script.cts700_ai_autotune_once` |
 | Periodic sense | every 20 minutes (`automation.cts700_ai_autotune_periodic`) |
 | Assist prompt | [`system-prompt.md`](system-prompt.md) |
+| Runtime context (date / HA version) | [`packages/cts700_ai_context.yaml`](packages/cts700_ai_context.yaml) |
 | Lovelace card | [`lovelace-card.yaml`](lovelace-card.yaml) |
 | Settings view | [`lovelace-settings-view.yaml`](lovelace-settings-view.yaml) |
 
@@ -29,11 +30,12 @@ Example Modbus host in this folder: `192.168.1.50` (port 502, unit id 1). Replac
      packages: !include_dir_named packages
    ```
 
-2. Copy both YAML files into `/config/packages/` on Home Assistant.
+2. Copy the YAML files into `/config/packages/` on Home Assistant (`cts700_ai.yaml`, `cts700_ai_autotune.yaml`, and optionally `cts700_ai_context.yaml` for date/HA version injection).
 3. Check configuration, then reload helpers, scripts, automations, and template entities (or restart once for new helpers).
-4. Confirm states for `input_boolean.cts700_ai_enabled`, `input_boolean.cts700_ai_allow_writes`, `input_text.cts700_ai_last_action`, `input_text.cts700_ai_last_advice`.
+4. Confirm states for `input_boolean.cts700_ai_enabled`, `input_boolean.cts700_ai_allow_writes`, `input_text.cts700_ai_last_action`, `input_text.cts700_ai_last_advice`. With context package: `sensor.cts700_ai_runtime_context` and run `script.cts700_ai_refresh_runtime_context` once.
 5. Paste [`lovelace-card.yaml`](lovelace-card.yaml) onto a Nilan dashboard. Optional: add [`lovelace-settings-view.yaml`](lovelace-settings-view.yaml) as a view. Example dashboard path: `/nilan-compact-p/`.
-6. Optional Assist: paste [`system-prompt.md`](system-prompt.md) into a conversation agent. Local OpenAI-compatible example: `http://192.168.1.50:1235/v1`. Put tokens only in `/config/secrets.yaml` ([`secrets.example.yaml`](secrets.example.yaml)). Never commit real keys.
+6. Optional Assist: paste [`system-prompt.md`](system-prompt.md) into a conversation agent. Prefer Assist tools on when you need live temps/date from entities. Local OpenAI-compatible example: `http://192.168.1.50:1235/v1`. Put tokens only in `/config/secrets.yaml` ([`secrets.example.yaml`](secrets.example.yaml)). Never commit real keys.
+7. Do **not** fine-tune the local model for calendar date or HA version. Inject via runtime context + system prompt + (when enabled) Assist entity tools. RAG-lite notes can live under `/config/cts700-docs/`.
 
 ## Behaviour (keep this)
 
@@ -57,6 +59,9 @@ Thermal lag defaults: **3 h** sense-ahead, **2.5 h** write hold, example flat **
 - Nilan integration on this fork (`master`, CTS700 Compact P Nordic XL board).
 - Optional helpers used by autotune: `input_number.nilan_fan_percent`, `input_boolean.nilan_auto_mode`, `input_boolean.nilan_cts_write_busy` (omit or stub if you do not have the last one).
 - One Modbus client to the unit. Example docs host: `192.168.1.50:502`.
+- Home Assistant OS reference stack for these packages: Core **2026.11.0**, Supervisor **2026.11.0**, OS **18.5.rc1**, Frontend **20261028.4**.
+
+If `nilan_cts_write_busy` sticks **on** after an interrupted self-test, autotune exits immediately. Clear the helper, or rely on the 10-minute watchdog automation in `cts700_ai_autotune.yaml`.
 
 ## Privacy
 

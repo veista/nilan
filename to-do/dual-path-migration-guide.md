@@ -43,13 +43,20 @@ Typical overlaps to remove from YAML when integration is active:
 
 ## Step 4: Dashboard entity mapping
 
-| Card role | Integration entity (Nordic example) |
-|-----------|-------------------------------------|
-| Filter inlet remaining | `sensor.nilan_cts700_nordic_days_to_inlet_filter_change` |
-| Filter exhaust remaining | `sensor.nilan_cts700_nordic_days_to_exhaust_filter_change` |
-| Days since change | `sensor.nilan_cts700_nordic_days_since_*_filter_change` |
-| Room climate | `climate.nilan_cts700_nordic_hvac` |
-| Fan | `sensor.nilan_cts700_nordic_fan_speed_percent` |
+Entity ids follow the **device name** you set in the config flow (example below assumes `Nilan CTS700 Nordic`). Search-replace the prefix if yours differs.
+
+| Card role | Integration entity (Nordic example) | Do **not** keep (YAML hub disabled) |
+|-----------|-------------------------------------|-------------------------------------|
+| Filter inlet remaining | `sensor.nilan_cts700_nordic_days_to_inlet_filter_change` | YAML filter sensors on wrong regs |
+| Filter exhaust remaining | `sensor.nilan_cts700_nordic_days_to_exhaust_filter_change` | |
+| Days since change | `sensor.nilan_cts700_nordic_days_since_*_filter_change` | |
+| Room climate | `climate.nilan_cts700_nordic_hvac` | YAML `climate.room_temperature` if overlapping |
+| Fan | `sensor.nilan_cts700_nordic_fan_speed_percent` | |
+| Control / system mode | `sensor.nilan_cts700_nordic_control_state` | YAML `sensor.system_state` |
+| Bypass status | `binary_sensor.nilan_cts700_nordic_bypass_flap` + `sensor.nilan_cts700_nordic_bypass_damper_percent` | `switch.bypass_damper` (unavailable / write unreliable) |
+| DHW tank | `water_heater.nilan_cts700_nordic_top_water_heater` (current temp) | Ethernet dial alone as “tank target” |
+
+Hardware limits (bypass write, DHW dial cap, installer auth): [docs/cts700/ethernet-limits.md](../docs/cts700/ethernet-limits.md).
 
 ## Step 5: Validate
 

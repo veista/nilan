@@ -705,6 +705,10 @@ class CTS700NordicRegisters:
     t8_before_preheater_holding = 20296
     fan_power_percent = 21771
     ventilation_pause = 20100  # optional; may work on hybrid units
+    # Bypass status (read-only over Ethernet; writes on 21773 often do not stick)
+    bypass_damper_percent = 21773
+    bypass_1_state = 4704
+    bypass_2_state = 4705
 
 
 class CTS700LegacyHoldingRegisters:

@@ -11,6 +11,8 @@ Different controller boards, register maps, and typical unit ids.
 
 **Not on the same unit.** Compact P / CTS700 often allow only one overlapping Modbus session. If both poll, you can see Control State flicker (Ventilation ↔ Unknown) or failed setpoint writes. Pause or remove the YAML Modbus file for that host before enabling Nilan (or the reverse).
 
+When the YAML hub is disabled, YAML coils/switches (for example `switch.bypass_damper`) stay **unavailable**. Use Nordic integration entities instead. Bypass is **status-only** over Ethernet (binary + percent sensors from 1.3.18+). DHW dial is not tank temperature. Details: [cts700/ethernet-limits.md](cts700/ethernet-limits.md).
+
 Also: do **not** name a YAML Modbus hub bare `nilan`. That name matches this integration’s domain and can blank config-flow menu labels. Use something like `nilan_compactpc` or `nilan_cts700` instead. The integration’s internal hub is always prefixed (`nilan_hub_…`) so it does not fight your YAML hub name.
 
 ## Why were Select Controller Board labels blank?

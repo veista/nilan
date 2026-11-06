@@ -506,6 +506,7 @@
           "return_fan_level": {"name": "Abluftventilator Stufe"},
           "return_fan_speed": {"name": "Abluftventilator Geschwindigkeit"},
           "supply_fan_speed": {"name": "Zuluftventilator Geschwindigkeit"},
+          "bypass_damper_percent": {"name": "Bypass-Klappe Prozent"},
           "display_text_line_1": {"name": "Display Text Zeile 1"},
           "display_text_line_2": {"name": "Display Text Zeile 2"},
           "modbus_version": {"name": "ModBus Version"}

@@ -29,6 +29,9 @@ CTS700_NORDIC_ENTITY_MAP = {
     "get_filter_interval_inlet": {"entity_type": "sensor"},
     "get_filter_interval_exhaust": {"entity_type": "sensor"},
     "get_filter_alarm_state": {"entity_type": "binary_sensor"},
+    # Bypass: status only (Ethernet writes on 21773 are unreliable).
+    "get_bypass_flap_state": {"entity_type": "binary_sensor"},
+    "get_bypass_damper_percent": {"entity_type": "sensor"},
     "get_fan_speed_percent": {"entity_type": "sensor"},
     "get_supply_fan_speed": {"entity_type": "sensor"},
     "get_return_fan_speed": {"entity_type": "sensor"},
