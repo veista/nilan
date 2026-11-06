@@ -6,7 +6,7 @@ These examples live in [`dashboards/`](../dashboards/) and contain **only Nilan*
 
 1. Install and configure the Nilan integration.
 2. Confirm entities exist under Settings → Devices → Nilan.
-3. If your device name is not `Nilan`, search-replace `nilan_` in the YAML (HA entity ids follow the device name).
+3. Entity ids follow the **device name**. Nordic example dashboard assumes `Nilan CTS700 Nordic` (`nilan_cts700_nordic_…`). Search-replace that prefix if yours differs. Do not point cards at disabled YAML Modbus switches (bypass write, etc.).
 
 ## Import (UI)
 

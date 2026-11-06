@@ -1,5 +1,21 @@
 # Installation
 
+## Supported Home Assistant stack (this fork)
+
+Validated on **Home Assistant OS** with:
+
+| Component | Version |
+|---|---|
+| Installation | Home Assistant OS |
+| Core | 2026.11.0 |
+| Supervisor | 2026.11.0 |
+| Operating System | 18.5.rc1 |
+| Frontend | 20261028.4 |
+
+HACS `homeassistant` minimum in [`hacs.json`](../hacs.json) stays lower so older Core installs can still install the package. Prefer Core **2025.9.1+**; use the table above as the current CTS700 Nordic dual-path reference.
+
+CTS700 Compact P Nordic: pause overlapping YAML Modbus for the same unit, then use the Nilan hub. Bypass is status-only over Ethernet; see [cts700/ethernet-limits.md](cts700/ethernet-limits.md).
+
 ## HACS (upstream / default store)
 
 1. Install **Nilan** from HACS (default repository for the upstream release).

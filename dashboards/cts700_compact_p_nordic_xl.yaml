@@ -11,42 +11,52 @@ views:
           - type: markdown
             content: |
               ## Nilan CTS700 Compact P Nordic XL
-              Fan steps 101–104 on register 4747. Entities from the Nilan integration only.
-              Week programs are not synced; pause conflicting slots while testing.
+              Fan steps 101-104 on register 4747. Entities from the Nilan integration only
+              (example device name **Nilan CTS700 Nordic**). Search-replace `nilan_cts700_nordic_`
+              if your device name differs. Do not point cards at disabled YAML Modbus switches.
+              Bypass is **status only** over Ethernet. Week programs are not synced.
           - type: thermostat
-            entity: climate.nilan_hvac
+            entity: climate.nilan_cts700_nordic_hvac
           - type: entities
             title: Climate and air quality
             entities:
-              - climate.nilan_hvac
-              - sensor.nilan_humidity
-              - sensor.nilan_24h_average_humidity
-              - sensor.nilan_days_to_air_filter_change
-              - binary_sensor.nilan_filter_alarm
-              - sensor.nilan_fan_speed_percent
-              - sensor.nilan_supply_fan_speed
-              - sensor.nilan_return_fan_speed
-              - sensor.nilan_anode_state
+              - climate.nilan_cts700_nordic_hvac
+              - sensor.nilan_cts700_nordic_control_state
+              - sensor.nilan_cts700_nordic_humidity
+              - sensor.nilan_cts700_nordic_24h_average_humidity
+              - sensor.nilan_cts700_nordic_days_to_inlet_filter_change
+              - sensor.nilan_cts700_nordic_days_to_exhaust_filter_change
+              - binary_sensor.nilan_cts700_nordic_filter_alarm
+              - binary_sensor.nilan_cts700_nordic_bypass_flap
+              - sensor.nilan_cts700_nordic_bypass_damper_percent
+              - sensor.nilan_cts700_nordic_fan_speed_percent
+              - sensor.nilan_cts700_nordic_supply_fan_speed
+              - sensor.nilan_cts700_nordic_return_fan_speed
+              - sensor.nilan_cts700_nordic_anode_state
       - type: grid
         cards:
           - type: entities
             title: Temperatures
             entities:
-              - sensor.nilan_fresh_air_intake_temperature_t1
-              - sensor.nilan_supply_air_temperature_t2
-              - sensor.nilan_return_air_temperature_t3
-              - sensor.nilan_waste_air_temperature_t4
-              - sensor.nilan_condenser_temperature_t5
-              - sensor.nilan_waste_air_temperature_t6
-              - sensor.nilan_fresh_air_intake_temperature_t8
+              - sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1
+              - sensor.nilan_cts700_nordic_supply_air_temperature_t2
+              - sensor.nilan_cts700_nordic_return_air_temperature_t3
+              - sensor.nilan_cts700_nordic_waste_air_temperature_t4
+              - sensor.nilan_cts700_nordic_condenser_temperature_t5
+              - sensor.nilan_cts700_nordic_waste_air_temperature_t6
+              - sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t8
           - type: entities
             title: Domestic hot water
             entities:
-              - water_heater.nilan_top_water_heater
-              - water_heater.nilan_bottom_water_heater
+              - water_heater.nilan_cts700_nordic_top_water_heater
+              - water_heater.nilan_cts700_nordic_bottom_water_heater
+          - type: markdown
+            content: |
+              DHW: tank temperature is water heater **current**, not the Ethernet dial
+              (often capped near 25.5 C). See docs/cts700/ethernet-limits.md.
           - type: history-graph
             title: Room and outdoor
             hours_to_show: 24
             entities:
-              - climate.nilan_hvac
-              - sensor.nilan_fresh_air_intake_temperature_t1
+              - climate.nilan_cts700_nordic_hvac
+              - sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1

@@ -34,7 +34,9 @@ This integration does **not** sync week/year programs. HA climate writes can fig
 - **Nordic XL hybrid:** community parity (mark007 map). See [compact-p-nordic-xl.md](compact-p-nordic-xl.md).
 - **2015 legacy:** MVP from the 20150826 PDF; percent fan on 4747 (not 101–104).
 
-Current integration version: **1.3.16**.
+Current integration version: **1.3.18**.
+
+Ethernet / dual-path limits (bypass status-only, DHW dial vs tank, YAML coils): [ethernet-limits.md](ethernet-limits.md). Validated on HA Core **2026.11.0** / OS **18.5.rc1**.
 
 Hardware drawings for Compact P Køl Polar/Nordic/Arctic XL: [hardware/](hardware/).
 

@@ -610,6 +610,29 @@ class DeviceCTS700Nordic:
         """Fan power / max percent (21771)."""
         return await self._read_holding_unsigned(Reg.fan_power_percent)
 
+    async def get_bypass_damper_percent(self) -> int | None:
+        """Bypass damper readout percent (holding 21773). Status only."""
+        return await self._read_holding_unsigned(Reg.bypass_damper_percent)
+
+    async def get_bypass_flap_state(self) -> bool | None:
+        """Bypass open/closed status (read-only).
+
+        Prefer discrete holding 4704 (bypass 1). Fall back to 21773 percent.
+        Do not expose a writable switch: Ethernet writes to 21773 often fail
+        to stick on Compact P Nordic (see docs/cts700/ethernet-limits.md).
+        """
+        state = await self._read_holding_unsigned(Reg.bypass_1_state)
+        if state is not None:
+            return bool(state)
+        pct = await self._read_holding_unsigned(Reg.bypass_damper_percent)
+        if pct is None:
+            _LOGGER.debug(
+                "CTS700 Nordic bypass status unavailable (4704/21773). "
+                "YAML Modbus coils stay unavailable while that hub is disabled."
+            )
+            return None
+        return pct > 0
+
     async def get_supply_fan_speed(self) -> int | None:
         """Supply fan actual percent."""
         return await self._read_holding_unsigned(Reg.supply_fan_speed)

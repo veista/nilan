@@ -810,6 +810,9 @@
                                   "supply_fan_speed":  {
                                                            "name":  "Tilluftsviftehastighet"
                                                        },
+                                  "bypass_damper_percent":  {
+                                                                "name":  "Bypass-spjeld prosent"
+                                                            },
                                   "display_text_line_1":  {
                                                               "name":  "Display tekst linje 1"
                                                           },

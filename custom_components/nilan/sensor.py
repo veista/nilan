@@ -487,6 +487,17 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_bypass_damper_percent": [
+        Map(
+            "bypass_damper_percent",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:valve",
+            True,
+        )
+    ],
     "get_display_text_1": [
         Map(
             "display_text_line_1",

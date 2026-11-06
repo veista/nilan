@@ -59,8 +59,9 @@ Do **not** use this map on 2018+ Compact P units that use fan **21771** percent 
 | Op mode | 5432 holding | 0 off, 1 cool, 2 heat, 3 dehum, 4 DHW |
 | Anode | 4233 holding | |
 | Fan power % | 21771 holding | Readout; climate fan writes use 4747 steps |
+| Bypass damper % / state | 21773 / 4704 / 4705 holding | **Status only** in the integration (Ethernet writes unreliable) |
 | Supply / extract fan % | 4699 / 4700 | |
-| DHW setpoint | 5548 holding (legacy/hybrid), 20460 (2018+ map) | Probe; do not use 20460 if it reads as tank temp |
+| DHW setpoint | 5548 holding (legacy/hybrid), 20460 (2018+ map) | Ethernet dial often caps near ~25.5 C; tank current is T11/T12 (**5162** / **5163**), not the dial |
 
 External CO2 (accessory on SG A/B) stays out of this bus map unless you add a separate sensor.
 
@@ -73,6 +74,7 @@ External CO2 (accessory on SG A/B) stays out of this bus map unless you add a se
 
 ## Caveats
 
+- **Ethernet limits:** [ethernet-limits.md](ethernet-limits.md) (bypass status-only, DHW dial vs tank, YAML coils when hub disabled). Tested on HA Core **2026.11.0** / OS **18.5.rc1**.
 - **Week programs** are not synced. HA writes can fight a week program still active on the controller.
 - Active cooling (compressor M6) depends on outdoor conditions and unit alarms; mode **Kjøling** alone does not guarantee compressor run.
 - Never copy Nordic step fan writes onto a 2018+ Compact P entry.
