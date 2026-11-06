@@ -1,6 +1,6 @@
 # Lovelace dashboards (Nilan only)
 
-These examples live in [`dashboards/`](../dashboards/) and contain **only Nilan** cards and entities. They are not installed automatically by HACS.
+These examples live in [`dashboards/`](../dashboards/) and contain **only Nilan** cards and entities. They are not installed automatically by Marketplace / HACS.
 
 ## Before you import
 
@@ -28,4 +28,4 @@ Optional 24/7 comfort helpers (not required for the integration): [CTS700 AI](ct
 
 - Nilan ventilation, DHW, filters, setpoints, and related integration entities only
 - No energy tariffs, cameras, weather, or other house dashboards
-- Stock Home Assistant cards only (no required custom HACS cards)
+- Stock Home Assistant cards only (no required custom Marketplace / HACS cards)

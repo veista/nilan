@@ -31,7 +31,7 @@ Use **one register truth** from a live probe (see `to-do/probe_registers.ps1` or
 **Migration split (recommended on an existing YAML site):**
 
 1. Probe the unit once (PowerShell script in `to-do/` or add Nilan config entry).
-2. Upgrade Nilan via HACS to **1.3.13+**.
+2. Upgrade Nilan via Marketplace (HA 2026.11+) or HACS (older) to **1.3.13+**.
 3. **Comment out** YAML Modbus sensors/climates that duplicate integration entities (room, filter, fan, temps, DHW).
 4. Add Nilan config entry (TCP, board CTS700 Nordic or auto-detect). Probe stores `dead_registers`.
 5. Keep YAML for CTS Log selftest, event-log dump (10000+), and other custom reads only.

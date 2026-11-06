@@ -1,6 +1,6 @@
 # CTS700 AI packages (optional)
 
-Reusable Home Assistant **packages** for a Nilan **CTS700 Compact P Nordic** example site. They add preference helpers and a rule-based 24/7 autotune loop. They are **not** part of the Python integration and are **not** installed by HACS.
+Reusable Home Assistant **packages** for a Nilan **CTS700 Compact P Nordic** example site. They add preference helpers and a rule-based 24/7 autotune loop. They are **not** part of the Python integration and are **not** installed by Marketplace / HACS.
 
 Example Modbus host in this folder: `192.168.1.50` (port 502, unit id 1). Replace entity ids if your device name is not `Nilan CTS700 Nordic`.
 

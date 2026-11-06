@@ -27,7 +27,7 @@ template:
             {% set v = states('sensor.current_version') %}
             {% if v not in ['unknown', 'unavailable', ''] %}{{ v }}
             {% else %}{{ state_attr('update.home_assistant_core_update', 'installed_version') | default('ukjent') }}{% endif %}
-          nilan_integration: "Nilan CTS700 Nordic (custom, se HACS/custom_components)"
+          nilan_integration: "Nilan CTS700 Nordic (custom, se Marketplace/HACS/custom_components)"
           home_brief: >-
             Compact P Nordic, ca. {{ states('input_number.cts700_ai_apartment_m2') | int(60) }} m2,
             preferert rom {{ states('input_number.cts700_ai_pref_room_c') }} C

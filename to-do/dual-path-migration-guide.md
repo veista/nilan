@@ -9,7 +9,7 @@ Generic operator guide for sites running both YAML Modbus and the Nilan custom i
 
 ## Step 1: Upgrade Nilan
 
-1. HACS → Custom repositories → `https://github.com/master3395/veista-nilan`
+1. **Marketplace** (HA 2026.11+) or **HACS** (older) → Custom repositories → `https://github.com/master3395/veista-nilan` (Marketplace id **1323343841**, path `/marketplace/repository/1323343841`)
 2. Update **Nilan** to latest release
 3. Restart Home Assistant
 4. Do **not** add hub until YAML overlap is trimmed or entities disabled
