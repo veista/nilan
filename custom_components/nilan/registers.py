@@ -709,6 +709,10 @@ class CTS700NordicRegisters:
     bypass_damper_percent = 21773
     bypass_1_state = 4704
     bypass_2_state = 4705
+    # Main compressor / heat-pump effort % (0 off, typically 0-100 when running)
+    # Community + mark007 YAML: holding 4706; secondary stages 4707-4711 on some units
+    main_compressor_effort = 4706
+    secondary_compressor_effort = 4707
 
 
 class CTS700LegacyHoldingRegisters:

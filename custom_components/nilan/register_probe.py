@@ -37,6 +37,8 @@ PROBE_SPECS: dict[str, dict[str, list[tuple[str, int]]]] = {
         "get_fan_speed_percent": [("holding", 21771)],
         "get_bypass_flap_state": [("holding", 4704), ("holding", 21773)],
         "get_bypass_damper_percent": [("holding", 21773)],
+        "get_main_compressor_effort": [("holding", 4706)],
+        "get_heat_pump_state": [("holding", 4706)],
         "get_electric_water_heater_setpoint": [("holding", 20460)],
         "get_days_to_inlet_filter_change": [
             ("holding", 1328),

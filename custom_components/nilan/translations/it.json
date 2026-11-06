@@ -61,6 +61,7 @@
             "smoke_alarm": {"name": "Allarme antincendio"},
             "defrost": {"name": "Defrost"},
             "bypass_flap": {"name": "Valvola bypass"},
+            "heat_pump": {"name": "Pompa di calore"},
             "user_selection_1": {"name": "Configurazione utente 1"},
             "user_selection_2": {"name": "Configurazione utente 2"},
             "display_led_1": {"name": "Display LED 1"},

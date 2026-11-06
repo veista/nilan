@@ -60,6 +60,8 @@ Do **not** use this map on 2018+ Compact P units that use fan **21771** percent 
 | Anode | 4233 holding | |
 | Fan power % | 21771 holding | Readout; climate fan writes use 4747 steps |
 | Bypass damper % / state | 21773 / 4704 / 4705 holding | **Status only** in the integration (Ethernet writes unreliable) |
+| Main compressor effort % | 4706 holding | 0 when heat pump off; positive % when running (mark007 / community) |
+| Heat pump on | derived from 4706 | Binary: effort > 0 |
 | Supply / extract fan % | 4699 / 4700 | |
 | DHW setpoint | 5548 holding (legacy/hybrid), 20460 (2018+ map) | Ethernet dial often caps near ~25.5 C; tank current is T11/T12 (**5162** / **5163**), not the dial |
 
@@ -84,7 +86,7 @@ External CO2 (accessory on SG A/B) stays out of this bus map unless you add a se
 - **Electrical supplement heater (20464):** Compact P **2018** map only (writable HA switch). This Nordic hybrid path has **no** dedicated el-supplement holding in the community map; `get_electric_water_heater_state` stays False and writes are refused. Do not map 20464 onto Nordic.
 - **Sensor names:** follow Nilan wiring (T1 outdoor, T6 evaporator, T7 after after-heater, T8 preheater path). T5/T6/T7/T8/T9 are diagnostic; T7 is disabled by default when unused (often reads 0.0).
 - **T1 vs T8:** different registers (input **5152** vs **5159**; optional holding **20296**). On Polar/Nordic both are outdoor / preheater-path NTCs, so equal readings with preheater idle are normal, not a double-map bug. If 5159 mirrors T1 but **20296** differs, the integration prefers **20296**.
-- **Extra percent sensors:** heat-pump effort % is useful if the unit exposes a live register (share address to add). Configured max DHW effort and per-filter % are low value when filter **days** already exist; keep those out of the default entity set.
+- **Extra percent sensors:** main compressor effort is holding **4706** (from 1.3.20; binary heat-pump-on derived when effort > 0). Configured max DHW effort and AI-guessed per-filter % stay out of the default entity set; filter **days** already cover service intervals. Secondary compressor stages **4707–4711** exist on some firmwares but stay unused here until field-verified as active.
 - **Setpoint writes:** room **4746** and DHW **20460** use Modbus **FC6** (`write_register`) first, same as HA YAML climate. Fan step **4747** may use FC16. If air/water temp UI snaps back, check HA logs for `CTS700 Nordic temp write`.
 
 ## Related

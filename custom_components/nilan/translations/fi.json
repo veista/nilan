@@ -60,6 +60,7 @@
             "smoke_alarm": {"name": "Palovaroitin"},
             "defrost": {"name": "Sulatus"},
             "bypass_flap": {"name": "Ohivirtaus Ohjain"},
+            "heat_pump": {"name": "Lämpöpumppu"},
             "user_selection_1": {"name": "Käyttäjän Valinta 1"},
             "user_selection_2": {"name": "Käyttäjän Valinta 2"},
             "display_led_1": {"name": "Näyttö LED 1"},

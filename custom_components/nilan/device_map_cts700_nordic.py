@@ -32,6 +32,9 @@ CTS700_NORDIC_ENTITY_MAP = {
     # Bypass: status only (Ethernet writes on 21773 are unreliable).
     "get_bypass_flap_state": {"entity_type": "binary_sensor"},
     "get_bypass_damper_percent": {"entity_type": "sensor"},
+    # Heat pump / main compressor effort (holding 4706); on when effort > 0.
+    "get_main_compressor_effort": {"entity_type": "sensor"},
+    "get_heat_pump_state": {"entity_type": "binary_sensor"},
     "get_fan_speed_percent": {"entity_type": "sensor"},
     "get_supply_fan_speed": {"entity_type": "sensor"},
     "get_return_fan_speed": {"entity_type": "sensor"},

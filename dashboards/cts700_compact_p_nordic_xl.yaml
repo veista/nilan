@@ -29,6 +29,8 @@ views:
               - binary_sensor.nilan_cts700_nordic_filter_alarm
               - binary_sensor.nilan_cts700_nordic_bypass_flap
               - sensor.nilan_cts700_nordic_bypass_damper_percent
+              - binary_sensor.nilan_cts700_nordic_heat_pump
+              - sensor.nilan_cts700_nordic_main_compressor_effort
               - sensor.nilan_cts700_nordic_fan_speed_percent
               - sensor.nilan_cts700_nordic_supply_fan_speed
               - sensor.nilan_cts700_nordic_return_fan_speed

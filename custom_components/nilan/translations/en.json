@@ -116,6 +116,9 @@
                                          "bypass_flap":  {
                                                              "name":  "Bypass Flap"
                                                          },
+                                         "heat_pump":  {
+                                                           "name":  "Heat Pump"
+                                                       },
                                          "user_selection_1":  {
                                                                   "name":  "User Selection 1"
                                                               },
@@ -875,6 +878,9 @@
                                   "bypass_damper_percent":  {
                                                                 "name":  "Bypass Damper Percent"
                                                             },
+                                  "main_compressor_effort":  {
+                                                                 "name":  "Main Compressor Effort"
+                                                             },
                                   "display_text_line_1":  {
                                                               "name":  "Display Text Line 1"
                                                           },

@@ -614,6 +614,22 @@ class DeviceCTS700Nordic:
         """Bypass damper readout percent (holding 21773). Status only."""
         return await self._read_holding_unsigned(Reg.bypass_damper_percent)
 
+    async def get_main_compressor_effort(self) -> int | None:
+        """Main compressor / heat-pump effort percent (holding 4706).
+
+        Community maps and mark007 YAML treat this as 0 when the heat pump is
+        off and a positive percent (often up to 100) when the compressor runs.
+        Useful as a live "is the heat pump on" signal on Compact P Nordic.
+        """
+        return await self._read_holding_unsigned(Reg.main_compressor_effort)
+
+    async def get_heat_pump_state(self) -> bool | None:
+        """Heat pump running derived from main compressor effort (4706 > 0)."""
+        effort = await self.get_main_compressor_effort()
+        if effort is None:
+            return None
+        return effort > 0
+
     async def get_bypass_flap_state(self) -> bool | None:
         """Bypass open/closed status (read-only).
 

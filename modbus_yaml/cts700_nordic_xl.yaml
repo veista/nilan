@@ -290,6 +290,16 @@ modbus:
         unit_of_measurement: "%"
         state_class: measurement
 
+      # Main compressor / heat-pump effort (0 off; positive % when running).
+      - name: Nilan Nordic Main Compressor Effort
+        unique_id: nilan_nordic_main_compressor_effort
+        slave: 1
+        address: 4706
+        input_type: holding
+        data_type: int16
+        unit_of_measurement: "%"
+        state_class: measurement
+
       - name: Nilan Nordic DHW Setpoint
         unique_id: nilan_nordic_dhw_setpoint
         slave: 1

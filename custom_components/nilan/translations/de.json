@@ -61,6 +61,7 @@
             "smoke_alarm": {"name": "Rauch Alarm"},
             "defrost": {"name": "Auftauen"},
             "bypass_flap": {"name": "Bypass-Klappe"},
+            "heat_pump": {"name": "Wärmepumpe"},
             "user_selection_1": {"name": "Benutzer Auswahl 1"},
             "user_selection_2": {"name": "Benutzer Auswahl 2"},
             "display_led_1": {"name": "Anzeige LED 1"},
@@ -507,6 +508,7 @@
           "return_fan_speed": {"name": "Abluftventilator Geschwindigkeit"},
           "supply_fan_speed": {"name": "Zuluftventilator Geschwindigkeit"},
           "bypass_damper_percent": {"name": "Bypass-Klappe Prozent"},
+          "main_compressor_effort": {"name": "Hauptkompressor Leistung"},
           "display_text_line_1": {"name": "Display Text Zeile 1"},
           "display_text_line_2": {"name": "Display Text Zeile 2"},
           "modbus_version": {"name": "ModBus Version"}

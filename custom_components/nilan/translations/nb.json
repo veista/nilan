@@ -116,6 +116,9 @@
                                          "bypass_flap":  {
                                                              "name":  "Bypass-spjeld"
                                                          },
+                                         "heat_pump":  {
+                                                           "name":  "Varmepumpe"
+                                                       },
                                          "user_selection_1":  {
                                                                   "name":  "Brukervalg 1"
                                                               },
@@ -813,6 +816,9 @@
                                   "bypass_damper_percent":  {
                                                                 "name":  "Bypass-spjeld prosent"
                                                             },
+                                  "main_compressor_effort":  {
+                                                                 "name":  "Hovedkompressor innsats"
+                                                             },
                                   "display_text_line_1":  {
                                                               "name":  "Display tekst linje 1"
                                                           },
