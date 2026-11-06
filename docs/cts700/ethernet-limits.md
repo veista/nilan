@@ -22,6 +22,7 @@ Do **not** name a YAML hub bare `nilan` (use `nilan_cts700_nordic` or similar). 
 | Control | Ethernet behaviour | Integration behaviour |
 |---|---|---|
 | Bypass damper (holding **21773**, discrete **4704** / **4705**) | Writes often do not stick | **Read-only** binary + percent sensors from Nordic map. No writable switch. |
+| Main compressor effort (holding **4706**) | Read-only status | Nordic sensor + derived heat-pump binary (effort > 0). Not a write target. |
 | DHW “dial” (**5548** / sometimes **20460**) | Often capped near ~25.5 C | Setpoint entity is not tank temperature. Use water heater **current** (T11/T12, inputs **5162** / **5163**) for tank. |
 | DHW min/max (**2828** / **3935**) | May return Modbus exception when stuck | Fix on CTS panel; do not hammer restores from HA |
 | Installer auth (**7777**) | Auth over Ethernet often fails | Panel only |

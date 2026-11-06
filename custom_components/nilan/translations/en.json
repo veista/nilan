@@ -23,7 +23,7 @@
                                                                                "auto_detect":  "Probes CTS602 then CTS700 Nordic / 2018+ / 2015. Best when unsure (for example Compact P GEO on NCS-700).",
                                                                                "cts602":  "Classic Comfort / Compact / VP boards. Typical unit id 30.",
                                                                                "cts700":  "2018+ Compact P Ethernet map. Fan holding 21771 as percent. Typical unit id 1.",
-                                                                               "cts700_nordic":  "Nordic / Polar / Arctic XL hybrid. Fan holding 4747 steps 101-104. Typical unit id 1.",
+                                                                               "cts700_nordic":  "Nordic / Polar / Arctic XL hybrid. Fan holding 4747 steps 101-104 or percent. Typical unit id 1.",
                                                                                "cts700_legacy":  "2015 PDF-era map (registers mostly under 10000)."
                                                                            }
                                           },
@@ -116,6 +116,9 @@
                                          "bypass_flap":  {
                                                              "name":  "Bypass Flap"
                                                          },
+                                         "heat_pump":  {
+                                                           "name":  "Heat Pump"
+                                                       },
                                          "user_selection_1":  {
                                                                   "name":  "User Selection 1"
                                                               },
@@ -230,6 +233,24 @@
                                   "scalding_protection_setpoint":  {
                                                                        "name":  "Scalding Protection Setpoint"
                                                                    },
+                                  "el_supplement_activated_below":  {
+                                                                        "name":  "El-supplement activated below"
+                                                                    },
+                                  "hot_water_pause_days":  {
+                                                               "name":  "Hot water pause days"
+                                                           },
+                                  "low_humidity_level":  {
+                                                             "name":  "Low humidity level"
+                                                         },
+                                  "frost_protection_below":  {
+                                                                 "name":  "Frost protection below"
+                                                             },
+                                  "preheater_setpoint":  {
+                                                             "name":  "Preheater setpoint"
+                                                         },
+                                  "anti_legionella_time":  {
+                                                               "name":  "Anti-legionella time"
+                                                           },
                                   "maximum_time_in_high_humidity_ventilation":  {
                                                                                     "name":  "Maximum Time in High Humidity Ventilation"
                                                                                 },
@@ -875,6 +896,9 @@
                                   "bypass_damper_percent":  {
                                                                 "name":  "Bypass Damper Percent"
                                                             },
+                                  "main_compressor_effort":  {
+                                                                 "name":  "Main Compressor Effort"
+                                                             },
                                   "display_text_line_1":  {
                                                               "name":  "Display Text Line 1"
                                                           },
@@ -963,6 +987,24 @@
                                   "electrical_supplement_heater":  {
                                                                        "name":  "Electrical supplement heater"
                                                                    },
+                                  "ventilation_pause":  {
+                                                            "name":  "Ventilation pause"
+                                                        },
+                                  "hot_water_production_pause":  {
+                                                                     "name":  "Hot water production pause"
+                                                                 },
+                                  "allow_active_cooling":  {
+                                                               "name":  "Allow active cooling"
+                                                           },
+                                  "frost_protection":  {
+                                                           "name":  "Frost protection"
+                                                       },
+                                  "anti_legionella_manual":  {
+                                                                 "name":  "Start anti-legionella"
+                                                             },
+                                  "automatic_anti_legionella":  {
+                                                                    "name":  "Automatic anti-legionella"
+                                                                },
                                   "hps_main_switch":  {
                                                           "name":  "AIR/GEO Power"
                                                       }

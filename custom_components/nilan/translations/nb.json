@@ -33,7 +33,7 @@
                                                                                "auto_detect":  "Søker CTS602 deretter CTS700 Nordic / 2018+ / 2015. Best når du er usikker (for eksempel Compact P GEO på NCS-700).",
                                                                                "cts602":  "Klassiske Comfort / Compact / VP-kort. Typisk enhets-ID 30.",
                                                                                "cts700":  "2018+ Compact P Ethernet-kart. Vifte holding 21771 som prosent. Typisk enhets-ID 1.",
-                                                                               "cts700_nordic":  "Nordic / Polar / Arctic XL hybrid. Vifte holding 4747 steg 101-104. Typisk enhets-ID 1.",
+                                                                               "cts700_nordic":  "Nordic / Polar / Arctic XL hybrid. Vifte holding 4747 steg 101-104 eller prosent. Typisk enhets-ID 1.",
                                                                                "cts700_legacy":  "2015 PDF-era kart (registre mest under 10000)."
                                                                            }
                                           },
@@ -116,6 +116,9 @@
                                          "bypass_flap":  {
                                                              "name":  "Bypass-spjeld"
                                                          },
+                                         "heat_pump":  {
+                                                           "name":  "Varmepumpe"
+                                                       },
                                          "user_selection_1":  {
                                                                   "name":  "Brukervalg 1"
                                                               },
@@ -227,6 +230,24 @@
                                   "scalding_protection_setpoint":  {
                                                                        "name":  "Settpunkt for skåldebeskyttelse"
                                                                    },
+                                  "el_supplement_activated_below":  {
+                                                                        "name":  "El-tillegg aktiveres under"
+                                                                    },
+                                  "hot_water_pause_days":  {
+                                                               "name":  "Varmtvannspause dager"
+                                                           },
+                                  "low_humidity_level":  {
+                                                             "name":  "Lavt fuktighetsnivå"
+                                                         },
+                                  "frost_protection_below":  {
+                                                                 "name":  "Frostbeskyttelse under"
+                                                             },
+                                  "preheater_setpoint":  {
+                                                             "name":  "Forvarmersettpunkt"
+                                                         },
+                                  "anti_legionella_time":  {
+                                                               "name":  "Anti-legionella tid"
+                                                           },
                                   "maximum_time_in_high_humidity_ventilation":  {
                                                                                     "name":  "Maks tid i høy fuktighetsventilasjon"
                                                                                 },
@@ -813,6 +834,9 @@
                                   "bypass_damper_percent":  {
                                                                 "name":  "Bypass-spjeld prosent"
                                                             },
+                                  "main_compressor_effort":  {
+                                                                 "name":  "Hovedkompressor innsats"
+                                                             },
                                   "display_text_line_1":  {
                                                               "name":  "Display tekst linje 1"
                                                           },
@@ -901,6 +925,24 @@
                                   "electrical_supplement_heater":  {
                                                                        "name":  "Elektrisk tilleggsvarme (VV)"
                                                                    },
+                                  "ventilation_pause":  {
+                                                            "name":  "Ventilasjonspause"
+                                                        },
+                                  "hot_water_production_pause":  {
+                                                                     "name":  "Pause varmtvannsproduksjon"
+                                                                 },
+                                  "allow_active_cooling":  {
+                                                               "name":  "Tillat aktiv kjøling"
+                                                           },
+                                  "frost_protection":  {
+                                                           "name":  "Frostbeskyttelse"
+                                                       },
+                                  "anti_legionella_manual":  {
+                                                                 "name":  "Start anti-legionella"
+                                                             },
+                                  "automatic_anti_legionella":  {
+                                                                    "name":  "Automatisk anti-legionella"
+                                                                },
                                   "hps_main_switch":  {
                                                           "name":  "AIR/GEO strøm"
                                                       }

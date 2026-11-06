@@ -26,12 +26,90 @@ ATTRIBUTE_TO_NUMBERS = {
             "scalding_protection_setpoint",
             "set_scalding_protection_setpoint",
             EntityCategory.CONFIG,
-            60,
+            50,
             80,
             1,
             NumberMode.BOX,
             UnitOfTemperature.CELSIUS,
             "mdi:coolant-temperature",
+        )
+    ],
+    "get_el_supplement_activated_below": [
+        Map(
+            "el_supplement_activated_below",
+            "set_el_supplement_activated_below",
+            EntityCategory.CONFIG,
+            5,
+            60,
+            1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:thermometer-chevron-down",
+        )
+    ],
+    "get_hot_water_pause_days": [
+        Map(
+            "hot_water_pause_days",
+            "set_hot_water_pause_days",
+            EntityCategory.CONFIG,
+            1,
+            30,
+            1,
+            NumberMode.BOX,
+            UnitOfTime.DAYS,
+            "mdi:calendar-clock",
+        )
+    ],
+    "get_low_humidity_level": [
+        Map(
+            "low_humidity_level",
+            "set_low_humidity_level",
+            EntityCategory.CONFIG,
+            15,
+            45,
+            1,
+            NumberMode.BOX,
+            PERCENTAGE,
+            "mdi:water-percent",
+        )
+    ],
+    "get_frost_protection_below": [
+        Map(
+            "frost_protection_below",
+            "set_frost_protection_below",
+            EntityCategory.CONFIG,
+            -20,
+            10,
+            0.1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:snowflake-thermometer",
+        )
+    ],
+    "get_preheater_setpoint": [
+        Map(
+            "preheater_setpoint",
+            "set_preheater_setpoint",
+            EntityCategory.CONFIG,
+            0,
+            20,
+            0.1,
+            NumberMode.BOX,
+            UnitOfTemperature.CELSIUS,
+            "mdi:heating-coil",
+        )
+    ],
+    "get_anti_legionella_time": [
+        Map(
+            "anti_legionella_time",
+            "set_anti_legionella_time",
+            EntityCategory.CONFIG,
+            0,
+            23,
+            1,
+            NumberMode.BOX,
+            None,
+            "mdi:clock-outline",
         )
     ],
     "get_max_high_humidity_vent_time": [
@@ -686,7 +764,8 @@ class NilanCTS602Number(NumberEntity, NilanEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
-        await getattr(self._device, self._set_attr)(int(value))
+        # Pass float through (0.1 C setpoints); device setters coerce ints.
+        await getattr(self._device, self._set_attr)(value)
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""

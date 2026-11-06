@@ -60,6 +60,7 @@
             "smoke_alarm": {"name": "Palovaroitin"},
             "defrost": {"name": "Sulatus"},
             "bypass_flap": {"name": "Ohivirtaus Ohjain"},
+            "heat_pump": {"name": "Lämpöpumppu"},
             "user_selection_1": {"name": "Käyttäjän Valinta 1"},
             "user_selection_2": {"name": "Käyttäjän Valinta 2"},
             "display_led_1": {"name": "Näyttö LED 1"},
@@ -151,6 +152,12 @@
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Suurin Veden Lämpötila"},
+          "el_supplement_activated_below": {"name": "Sähkölisä aktivoidaan alle"},
+          "hot_water_pause_days": {"name": "Käyttöveden tauon päivät"},
+          "low_humidity_level": {"name": "Matala kosteustaso"},
+          "frost_protection_below": {"name": "Pakkasuoja alle"},
+          "preheater_setpoint": {"name": "Esikuumennuksen asetus"},
+          "anti_legionella_time": {"name": "Anti-legionella aika"},
           "maximum_time_in_high_humidity_ventilation": {"name": "Suurin Aika Kosteudenpoistoilmanvaihdossa"},
           "low_temperature_curve": {"name": "Pienen Lämpötilan Käyrä"},
           "high_temperature_curve": {"name": "Korkean Lämpötilan Käyrä"},
@@ -551,7 +558,14 @@
           "modbus_version": {"name": "ModBus Versio"}
         },
         "switch": {
-          "supply_air_after_heating": {"name": "Tuloilman Jälkilämmitys"}
+          "supply_air_after_heating": {"name": "Tuloilman Jälkilämmitys"},
+          "electrical_supplement_heater": {"name": "Sähköinen lisälämmitin"},
+          "ventilation_pause": {"name": "Ilmanvaihdon tauko"},
+          "hot_water_production_pause": {"name": "Käyttöveden tuotannon tauko"},
+          "allow_active_cooling": {"name": "Salli aktiivinen jäähdytys"},
+          "frost_protection": {"name": "Pakkasuoja"},
+          "anti_legionella_manual": {"name": "Käynnistä anti-legionella"},
+          "automatic_anti_legionella": {"name": "Automaattinen anti-legionella"}
         },
         "water_heater": {
           "top_water_heater": {

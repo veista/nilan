@@ -704,11 +704,41 @@ class CTS700NordicRegisters:
     # Alternate T8 on some Compact P firmwares (20xxx); prefer when 5159 mirrors T1
     t8_before_preheater_holding = 20296
     fan_power_percent = 21771
-    ventilation_pause = 20100  # optional; may work on hybrid units
+    ventilation_pause = 20100
+    # Humidity strategy / cooling (20xxx; live on Compact P Nordic Ethernet)
+    low_humidity_level = 20160
+    fan_speed_at_low_humidity = 20161
+    fan_speed_at_high_humidity = 20162
+    timeout_high_humidity = 20163
+    allow_active_cooling = 20180
+    # Fan step percent targets (supply) used when 4747 holds percent not 101-104
+    fan_speed_level_1_supply = 20140
+    fan_speed_level_2_supply = 20142
+    fan_speed_level_3_supply = 20144
+    fan_speed_level_4_supply = 20146
+    # Polar frost / preheat
+    frost_protection = 20300
+    start_frost_protection_below = 20340
+    set_point_for_pre_heater = 20341
+    # DHW pause / el-supplement / scalding / legionella
+    pause_hot_water_production = 20440
+    pause_duration_days = 20441
+    el_supplement_activated_below = 20462
+    scalding_protection = 20463
+    electrical_supplement_heater = 20464
+    start_anti_legionella_manual = 20480
+    automatic_anti_legionella = 20481
+    day_for_anti_legionella = 20482
+    time_for_anti_legionella = 20483
     # Bypass status (read-only over Ethernet; writes on 21773 often do not stick)
     bypass_damper_percent = 21773
     bypass_1_state = 4704
     bypass_2_state = 4705
+    heater_control = 4701  # after-heater / discrete heater bit when present
+    # Main compressor / heat-pump effort % (0 off, typically 0-100 when running)
+    # Community + mark007 YAML: holding 4706; secondary stages 4707-4711 on some units
+    main_compressor_effort = 4706
+    secondary_compressor_effort = 4707
 
 
 class CTS700LegacyHoldingRegisters:

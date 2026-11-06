@@ -61,6 +61,7 @@
             "smoke_alarm": {"name": "Allarme antincendio"},
             "defrost": {"name": "Defrost"},
             "bypass_flap": {"name": "Valvola bypass"},
+            "heat_pump": {"name": "Pompa di calore"},
             "user_selection_1": {"name": "Configurazione utente 1"},
             "user_selection_2": {"name": "Configurazione utente 2"},
             "display_led_1": {"name": "Display LED 1"},
@@ -152,6 +153,12 @@
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Punto temperatura antiscottatura"},
+          "el_supplement_activated_below": {"name": "Integrazione elettrica sotto"},
+          "hot_water_pause_days": {"name": "Giorni pausa ACS"},
+          "low_humidity_level": {"name": "Livello bassa umidità"},
+          "frost_protection_below": {"name": "Antigelo sotto"},
+          "preheater_setpoint": {"name": "Setpoint preriscaldatore"},
+          "anti_legionella_time": {"name": "Ora antilegionella"},
           "maximum_time_in_high_humidity_ventilation": {"name": "Tempo massimo in ventilazione per alta umidità"},
           "low_temperature_curve": {"name": "Curva basse temperatura"},
           "high_temperature_curve": {"name": "Curva alte temperatura"},
@@ -511,7 +518,14 @@
           "modbus_version": {"name": "Versione ModBus"}
         },
         "switch": {
-          "supply_air_after_heating": {"name": "Aria immissione dopo riscaldamento"}
+          "supply_air_after_heating": {"name": "Aria immissione dopo riscaldamento"},
+          "electrical_supplement_heater": {"name": "Riscaldatore elettrico supplementare"},
+          "ventilation_pause": {"name": "Pausa ventilazione"},
+          "hot_water_production_pause": {"name": "Pausa produzione ACS"},
+          "allow_active_cooling": {"name": "Consenti raffrescamento attivo"},
+          "frost_protection": {"name": "Protezione antigelo"},
+          "anti_legionella_manual": {"name": "Avvia antilegionella"},
+          "automatic_anti_legionella": {"name": "Antilegionella automatica"}
         },
         "water_heater": {
           "top_water_heater": {

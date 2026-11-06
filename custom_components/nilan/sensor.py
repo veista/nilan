@@ -498,6 +498,17 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_main_compressor_effort": [
+        Map(
+            "main_compressor_effort",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:heat-pump",
+            True,
+        )
+    ],
     "get_display_text_1": [
         Map(
             "display_text_line_1",

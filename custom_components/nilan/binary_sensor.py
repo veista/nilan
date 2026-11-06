@@ -55,6 +55,16 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             True,
         )
     ],
+    "get_heat_pump_state": [
+        Map(
+            "heat_pump",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            "mdi:heat-pump",
+            "mdi:heat-pump-outline",
+            True,
+        )
+    ],
     "get_user_function_1_state": [
         Map(
             "user_selection_1",
