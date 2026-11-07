@@ -713,6 +713,21 @@ class Device:
         _LOGGER.error("Could not read get_hps_compressor_capacity")
         return None
 
+    async def get_central_heater_capacity(self) -> float:
+        """Get Central Heater (EK) Capacity."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id, CTS602HoldingRegisters.output_cen_heat_cap, 1, "holding"
+        )
+        if result is not None:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=False,
+            )
+            return float(value) / 100
+        _LOGGER.error("Could not read get_central_heater_capacity")
+        return None
+
     async def get_control_temperature(self) -> float:
         """Get Control Temperature."""
         result = await self._modbus.async_pb_call(

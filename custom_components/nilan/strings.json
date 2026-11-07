@@ -516,6 +516,7 @@
       "central_heating_setpoint": {"name": "Central Heating Setpoint"},
       "humidity": {"name": "Humidity"},
       "24h_average_humidity": {"name": "24h Average Humidity"},
+      "central_heater_capacity": {"name": "Central Heater Capacity"},
       "after_heating_element_capacity": {"name": "After Heating Element Capacity"},
       "co2_sensor": {"name": "CO2 Sensor"},
       "control_state": {

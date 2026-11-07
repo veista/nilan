@@ -475,6 +475,7 @@
           "central_heating_setpoint": {"name": "Sentralvarme settpunkt"},
           "humidity": {"name": "Fuktighet"},
           "24h_average_humidity": {"name": "24t gjennomsnittlig fuktighet"},
+          "central_heater_capacity": {"name": "Sentralvarme elkolbe kapasitet"},
           "after_heating_element_capacity": {"name": "Ettervarmeelement kapasitet"},
           "co2_sensor": {"name": "CO2-sensor"},
           "control_state": {

@@ -410,6 +410,7 @@
           "central_heating_setpoint": {"name": "Setpoint riscaldamento centralizzato"},
           "humidity": {"name": "Umidità"},
           "24h_average_humidity": {"name": "Umidità media 24 ore"},
+          "central_heater_capacity": {"name": "Capacità resistenza riscaldamento centrale"},
           "after_heating_element_capacity": {"name": "Capacità elemento postriscaldamento"},
           "co2_sensor": {"name": "Sensore CO2"},
           "control_state": {

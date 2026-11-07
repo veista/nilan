@@ -590,6 +590,12 @@ CTS602_ENTITY_MAP = {
         "min_hps_bus_version": 2,
         "supported_devices": (30, 44),
     },
+    "get_central_heater_capacity": {
+        "entity_type": "sensor",
+        "min_bus_version": 1,
+        "min_hps_bus_version": 1,
+        "supported_devices": (38,),
+    },
     "get_hps_compressor_capacity": {
         "entity_type": "sensor",
         "min_hps_bus_version": 2,
