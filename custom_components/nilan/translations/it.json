@@ -449,7 +449,7 @@
                 "6": "Ventilazione",
                 "7": "Riscaldamento",
                 "8": "Raffrescamento",
-                "9": "Acqua calda",
+                "9": "Produzione acqua calda",
                 "10": "Antilegionella",
                 "11": "Raffrescamento + acqua calda",
                 "12": "Riscaldamento Centralizzato",
@@ -458,6 +458,16 @@
                 "15": "Manutenzione",
                 "16": "Allarme",
                 "17": "Riscaldamento + acqua calda"
+              }
+            },
+          "panel_operating_mode": {
+              "name": "Modalità pannello",
+              "state": {
+                "0": "Spento",
+                "1": "Raffrescamento",
+                "2": "Riscaldamento",
+                "3": "Deumidificazione",
+                "4": "Produzione acqua calda"
               }
             },
           "after_heating_type": {

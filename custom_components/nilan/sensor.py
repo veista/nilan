@@ -256,6 +256,17 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_panel_operating_mode": [
+        Map(
+            "panel_operating_mode",
+            None,
+            None,
+            None,
+            None,
+            "mdi:heat-pump",
+            True,
+        )
+    ],
     "get_after_heating_type": [
         Map(
             "after_heating_type",

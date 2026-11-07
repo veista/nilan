@@ -86,3 +86,23 @@ Product pages and gateway docs point to **CTS602** Modbus RS485 (default unit id
 ## Where are the dashboards?
 
 Optional Nilan-only Lovelace YAML lives under [`dashboards/`](../dashboards/). See [dashboards.md](dashboards.md). They are not auto-installed by Marketplace / HACS.
+
+## Heat pump on: is that DHW, air heating, or cooling?
+
+**Compressor effort (holding 4706)** and the heat-pump binary only mean the compressor is working. They do **not** say which duty.
+
+On Compact P Nordic XL, **holding 5432** is the panel operating mode:
+
+| 5432 | Panel text (approx.) | When effort > 0, `control_state` |
+|---|---|---|
+| 0 | Off | Off |
+| 1 | Cooling | Cooling (8) |
+| 2 | Heating | Heating (7) |
+| 3 | Dehumidification | Ventilation (6) idle path |
+| 4 | Hot water production | Hot water production (9) |
+
+Use **Panel operating mode** for the live 5432 value (including hysteresis when effort is 0). Use **Control State** / climate `hvac_action` for “actively doing heat/cool/DHW” (effort gated). CTS602-style input **1002** control-state display is **not** present on Nordic Ethernet (illegal address). Details: [cts700/compact-p-nordic-xl.md](cts700/compact-p-nordic-xl.md).
+
+## Is Nilan “water priority” readable over Modbus on Nordic?
+
+CTS602 **Hot Water Priority** (holding **1702**, Water vs Inlet) is exposed on CTS602 boards only. On Compact P Nordic it returns illegal address. Holding **20184** exists in the 2018+ map as `cooling_priority_to_hot_water` and **reads** on Nordic, but values are not confirmed against the HMI priority screen. Prefer panel observation until a heating+DHW demand event proves the enum.

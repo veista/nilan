@@ -6,6 +6,7 @@ GitHub Releases: https://github.com/master3395/veista-nilan/releases
 
 | Version | Date | Summary | Notes |
 |---|---|---|---|
+| [1.3.22](1.3.22.md) | 07/11/2026 | Nordic panel operating mode (DHW vs Heating vs Cooling) | Pending release |
 | [1.3.21](1.3.21.md) | 07/11/2026 | Nordic gaps + HVAC heating hysteresis (mark007) | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.21) |
 | [1.3.20](1.3.20.md) | 07/11/2026 | Nordic compressor effort % + heat-pump-on | Superseded by 1.3.21 |
 | [1.3.19](1.3.19.md) | 07/11/2026 | Docs: Marketplace UI for HA 2026.11+ | [Release](https://github.com/master3395/veista-nilan/releases/tag/v1.3.19) |
