@@ -248,7 +248,8 @@ modbus:
         address: 5432
         input_type: holding
         data_type: uint16
-        # 0 off, 1 cool, 2 heat, 3 dehum, 4 DHW
+        # Panel: 0 Off, 1 Cooling, 2 Heating, 3 Dehumidification, 4 Hot water production
+        # Integration sensor: panel_operating_mode (same register)
 
       - name: Nilan Nordic Filter Interval Inlet
         unique_id: nilan_nordic_filter_interval_inlet

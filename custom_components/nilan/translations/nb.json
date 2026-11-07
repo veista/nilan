@@ -735,7 +735,7 @@
                                                                       "6":  "Ventilasjon",
                                                                       "7":  "Oppvarming",
                                                                       "8":  "Kjøling",
-                                                                      "9":  "Varmt vann",
+                                                                      "9":  "Varmtvannsproduksjon",
                                                                       "10":  "Legionella",
                                                                       "11":  "Kjøling + Varmt vann",
                                                                       "12":  "Sentralvarme",
@@ -746,6 +746,16 @@
                                                                       "17":  "Oppvarming + Varmt vann"
                                                                   }
                                                     },
+                                  "panel_operating_mode":  {
+                                                               "name":  "Panel driftsmodus",
+                                                               "state":  {
+                                                                             "0":  "Av",
+                                                                             "1":  "Kjøling",
+                                                                             "2":  "Oppvarming",
+                                                                             "3":  "Avfukting",
+                                                                             "4":  "Varmtvannsproduksjon"
+                                                                         }
+                                                           },
                                   "after_heating_type":  {
                                                              "name":  "Ettervarmetype",
                                                              "state":  {

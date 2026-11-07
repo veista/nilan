@@ -89,13 +89,17 @@ class CTS700NordicControlsMixin:
         return await self._write_holding(Reg.user_fan_step, percent)
 
     async def get_actively_heating(self) -> bool | None:
-        """True only when a heat source is actually running.
+        """True only when room heat is actually running.
 
         Holding 5432 can stay in heat for many hours while compressor effort
         (4706) cycles through 0 during thermostat hysteresis. Smart-plug
         correlation on Compact P: idle about 40 W, active heat about 500-700 W.
         Do not treat mode=heat alone as hvac_action=heating.
+        DHW (5432=4) and cool (5432=1) compressor work is not room heating.
         """
+        raw = await self._raw_operation_mode()
+        if raw in (1, 4):
+            return False
         effort = await self.get_main_compressor_effort()
         heater = await self._read_holding_unsigned(Reg.heater_control)
         if effort is None and heater is None:
@@ -108,17 +112,33 @@ class CTS700NordicControlsMixin:
 
     async def get_actively_cooling(self) -> bool | None:
         """True when compressor effort shows active cooling work."""
+        raw = await self._raw_operation_mode()
+        if raw is None:
+            return None
+        if raw != 1:
+            return False
         effort = await self.get_main_compressor_effort()
         if effort is None:
             return None
         return effort > 0
 
+    async def get_panel_operating_mode(self) -> int | None:
+        """Raw holding 5432: panel Hot water production / Heating / Cooling.
+
+        Values (community + Compact P Nordic map): 0 off, 1 cool, 2 heat,
+        3 dehum, 4 DHW. Always reports the controller mode, including during
+        thermostat hysteresis when compressor effort 4706 is 0.
+        """
+        return await self._raw_operation_mode()
+
     async def get_control_state(self) -> int | None:
         """Approximate control state for climate action UI from raw 5432.
 
-        Heat (7) / cool (8) are only reported when the compressor (or heater
-        bit) is actually running. Otherwise return idle-like 6 so climate can
-        show idle instead of a continuous heating band during hysteresis.
+        Heat (7) / cool (8) / hot water (9) are only reported when the
+        compressor (or heater bit) is actually running. Otherwise return
+        idle-like 6 so climate can show idle instead of a continuous heating
+        band during hysteresis. Use get_panel_operating_mode for the panel
+        mode text even when effort is 0.
         """
         running = await self.get_run_state()
         if running is None:
@@ -129,6 +149,11 @@ class CTS700NordicControlsMixin:
         if raw is None:
             return None
         # Nordic 5432: 1 cool, 2 heat, 3 dehum, 4 DHW
+        if raw == 4:
+            effort = await self.get_main_compressor_effort()
+            if effort is not None and effort > 0:
+                return 9  # Hot water production
+            return 6
         if raw == 2:
             active = await self.get_actively_heating()
             if active is True:

@@ -35,7 +35,10 @@ Do **not** name a YAML hub bare `nilan` (use `nilan_cts700_nordic` or similar). 
 |---|---|
 | Room setpoint **4746** | Primary comfort write (about 5-40 C) |
 | Fan step **4747** | Nordic values **101-104** = steps 1-4 |
-| Op mode **5432** | Status of cool/heat/dehum/DHW; climate Auto/Off only |
+| Op mode **5432** | Panel status Off / Cooling / Heating / Dehum / Hot water production; climate selectable modes Auto/Off only. Sensor **Panel operating mode** exposes raw 5432. |
+| CTS602 control state **1002** input | Illegal address on Nordic; do not expect CTS602 `control_state` enum from that register |
+| CTS602 hot water priority **1702** | Illegal address on Nordic; Water/Inlet select is CTS602-only |
+| Holding **20184** | Readable candidate (`cooling_priority_to_hot_water`); HMI priority enum not verified |
 
 ## AI / write-busy
 

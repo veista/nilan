@@ -489,7 +489,7 @@
                 "6": "Ilmanvaihto",
                 "7": "Lämmittää",
                 "8": "Viilentää",
-                "9": "Lämmin Vesi",
+                "9": "Lämpimän veden tuotanto",
                 "10": "Legionella",
                 "11": "Viilentää + Lämmin Vesi",
                 "12": "Keskuslämmitys",
@@ -498,6 +498,16 @@
                 "15": "Huolto",
                 "16": "Hälytys",
                 "17": "Lämmittää + Lämmin Vesi"
+              }
+            },
+          "panel_operating_mode": {
+              "name": "Paneelin toimintatila",
+              "state": {
+                "0": "Sammutettu",
+                "1": "Viilentää",
+                "2": "Lämmittää",
+                "3": "Kosteudenpoisto",
+                "4": "Lämpimän veden tuotanto"
               }
             },
           "after_heating_type": {

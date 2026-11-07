@@ -794,7 +794,7 @@
                                                                       "6":  "Ventilation",
                                                                       "7":  "Heating",
                                                                       "8":  "Cooling",
-                                                                      "9":  "Hot Water",
+                                                                      "9":  "Hot water production",
                                                                       "10":  "Legionella",
                                                                       "11":  "Cooling + Hot Water",
                                                                       "12":  "Central Heating",
@@ -805,6 +805,16 @@
                                                                       "17":  "Heating + Hot Water"
                                                                   }
                                                     },
+                                  "panel_operating_mode":  {
+                                                               "name":  "Panel operating mode",
+                                                               "state":  {
+                                                                             "0":  "Off",
+                                                                             "1":  "Cooling",
+                                                                             "2":  "Heating",
+                                                                             "3":  "Dehumidification",
+                                                                             "4":  "Hot water production"
+                                                                         }
+                                                           },
                                   "after_heating_type":  {
                                                              "name":  "After Heating Type",
                                                              "state":  {

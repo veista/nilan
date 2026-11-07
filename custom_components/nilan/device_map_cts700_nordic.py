@@ -9,6 +9,8 @@ CTS700_NORDIC_ENTITY_MAP = {
     "get_operation_mode": {"entity_type": "config"},
     "get_ventilation_step": {"entity_type": "config"},
     "get_control_state": {"entity_type": "sensor"},
+    # Raw holding 5432: Off / Cooling / Heating / Dehumidification / Hot water production
+    "get_panel_operating_mode": {"entity_type": "sensor"},
     "get_user_temperature_setpoint": {"entity_type": "config"},
     "get_control_temperature": {"entity_type": "config"},
     "get_t1_intake_temperature": {"entity_type": "sensor"},

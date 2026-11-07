@@ -449,7 +449,7 @@
                 "6": "Lüftung",
                 "7": "Heizen",
                 "8": "Kühlen",
-                "9": "Heißwasser",
+                "9": "Warmwasserproduktion",
                 "10": "Legionellen",
                 "11": "Kühlen + Heißwasser",
                 "12": "Zentralheizung",
@@ -458,6 +458,16 @@
                 "15": "Service",
                 "16": "Alarm",
                 "17": "Heizen + Heißwasser"
+              }
+            },
+          "panel_operating_mode": {
+              "name": "Panel Betriebsmodus",
+              "state": {
+                "0": "Aus",
+                "1": "Kühlen",
+                "2": "Heizen",
+                "3": "Entfeuchtung",
+                "4": "Warmwasserproduktion"
               }
             },
           "after_heating_type": {

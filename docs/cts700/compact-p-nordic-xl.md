@@ -64,7 +64,7 @@ Do **not** use this map on 2018+ Compact P units that use fan **21771** percent 
 | Filter remaining inlet / exhaust | 1328 / 1329 holding | Days until change |
 | Filter days (alternate) | 20103 holding | May mirror 1328 on some firmware; **absent** on others (see issue #3) |
 | Days since change | 1326 − 1328 (inlet), 1327 − 1329 (exhaust) | Matches HMI "days since filter change" |
-| Op mode | 5432 holding | 0 off, 1 cool, 2 heat, 3 dehum, 4 DHW |
+| Op / panel mode | 5432 holding | **Panel text match:** 0 Off, 1 Cooling, 2 Heating, 3 Dehumidification, 4 Hot water production. Exposed as `panel_operating_mode` (always) and drives `control_state` when compressor effort **4706 > 0** (7 Heating / 8 Cooling / 9 Hot water production). |
 | Anode | 4233 holding | |
 | Fan power % | 21771 holding | Readout; climate fan writes use 4747 steps |
 | Bypass damper % / state | 21773 / 4704 / 4705 holding | **Status only** in the integration (Ethernet writes unreliable) |
@@ -89,8 +89,9 @@ External CO2 (accessory on SG A/B) stays out of this bus map unless you add a se
 - **Week programs** are not synced. HA writes can fight a week program still active on the controller.
 - Active cooling (compressor M6) depends on outdoor conditions and unit alarms; mode **Kjøling** alone does not guarantee compressor run.
 - Never copy Nordic step fan writes onto a 2018+ Compact P entry.
-- **HVAC mode (holding 5432):** treated as **status** (active cool/heat/dehum/DHW), not a user setpoint. Climate selectable modes are **Auto** and **Off** only.
-- **HVAC action hysteresis (mark007):** do **not** keep `hvac_action=heating` for the whole thermostat call / mode=heat window. Report **heating** only while compressor effort **4706 > 0** (and/or heater bit **4701**). When mode is heat but effort is 0, action is **idle** (fans may still run). Smart-plug correlation on Compact P: idle about **40 W**, active heat about **500–700 W**. El-supplement **20464** is a separate DHW switch, not room `hvac_action`.
+- **HVAC mode (holding 5432):** treated as **status** (active cool/heat/dehum/DHW), not a user setpoint. Climate selectable modes are **Auto** and **Off** only. This is the register that answers “is compressor effort for DHW, air heating, or cooling?” when **4706 > 0**. Use sensor **Panel operating mode** for the live panel value even while effort is 0 (hysteresis).
+- **HVAC action hysteresis (mark007):** do **not** keep `hvac_action=heating` for the whole thermostat call / mode=heat window. Report room **heating** only while compressor effort **4706 > 0** (and/or heater bit **4701**) and **5432** is heat (not DHW or cool). When mode is heat but effort is 0, action is **idle** (fans may still run). Smart-plug correlation on Compact P: idle about **40 W**, active heat about **500-700 W**. El-supplement **20464** is a separate DHW switch, not room `hvac_action`.
+- **Water vs air priority:** CTS602 select **Hot Water Priority** (holding **1702**, Water/Inlet) is **illegal address** on Compact P Nordic Ethernet. Holding **20184** (`cooling_priority_to_hot_water`) reads on Nordic (live value seen as 1) but enum / HMI “water priority” mapping is **not verified**; do not treat it as a confirmed writable priority select yet.
 - **Fan steps:** climate offers **1–4** only. **4747** may be 101–104 or percent; percent maps via nearest step table / **21771**. No fan-off via step 0.
 - **DHW Off:** top/bottom water heaters share setpoint **20460**. Off via setpoint 0 is not reliable, so Nordic entities expose temperature only (no Off operation mode).
 - **Electrical supplement heater (20464):** writable switch on Nordic (live R/W validated). Numbers **20463** (scalding) and **20462** (el-supplement below) exposed.
