@@ -1,0 +1,80 @@
+name: Unsupported device / register dump
+description: Request support for a Nilan model or share a Modbus dump (bolig or næring)
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when install fails with unsupported device, or when adding catalog coverage.
+        Never paste real LAN IPs (use `192.168.1.50`). Never paste installer passwords.
+        Checklist: [CONTRIBUTING.md](https://github.com/master3395/veista-nilan/blob/master/CONTRIBUTING.md#register-dump-checklist)
+  - type: dropdown
+    id: segment
+    attributes:
+      label: Catalog segment
+      options:
+        - Bolig (residential)
+        - Næring (commercial)
+        - Unknown
+    validations:
+      required: true
+  - type: input
+    id: plate
+    attributes:
+      label: Device plate / marketing model
+      description: e.g. Compact P2 AIR, Comfort 600, VPM 240 M2
+    validations:
+      required: true
+  - type: input
+    id: type_id
+    attributes:
+      label: CTS602 type id (if known)
+      description: From debug log "Device Type X" or HMI SHOW DATA -> TYPE.
+  - type: dropdown
+    id: board
+    attributes:
+      label: Board
+      options:
+        - CTS602
+        - CTS700 (2018+ / 20xxx)
+        - CTS700 (2015 legacy)
+        - CTS400
+        - Unknown
+    validations:
+      required: true
+  - type: input
+    id: firmware
+    attributes:
+      label: Firmware / software / bus version
+  - type: input
+    id: unit_id
+    attributes:
+      label: Modbus unit id
+      placeholder: "1 or 30"
+  - type: dropdown
+    id: link
+    attributes:
+      label: Connection
+      options:
+        - Modbus TCP
+        - Serial / USB-RS485
+        - TCP via RS485 bridge
+        - Unknown
+  - type: textarea
+    id: dump
+    attributes:
+      label: Register dump or Modbus YAML
+      description: 20–30 key registers with labels (temps, fan, humidity, DHW, alarms).
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: photos
+    attributes:
+      label: Photos
+      description: Describe or attach plate / HMI type photos (no personal home details).
+  - type: textarea
+    id: notes
+    attributes:
+      label: What works / fails
+      description: Entities or HMI values you need in Home Assistant.

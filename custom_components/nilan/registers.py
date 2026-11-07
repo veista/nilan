@@ -517,3 +517,265 @@ class CTS602HoldingRegisters:
     hps_param_cooling_allow = 6700
     hps_param_select_hw_tank = 6701
     hps_param_buffer_tank = 6702
+
+
+class CTS700NewHoldingRegisters:
+    """CTS700 holding registers (new Compact P / Ethernet map).
+
+    Room climate on live Compact P: current = t3_extract_air_temperature (20286),
+    setpoint = room_temperature_setpoint (20102). Do not use 20260 as room current.
+    Temperatures typically use scale 0.1 unless noted.
+    """
+
+    reset_target_board = 20000
+    plc_clarification_of_addressing_1 = 20002
+    plc_clarification_of_addressing_2 = 20003
+    request_data_save = 20004
+
+    set_ventilation_on_pause = 20100
+
+    # Live Compact P: 20102 is room setpoint (PDF / old branch label differed).
+    room_temperature_setpoint = 20102
+    air_filter_days_to_filter_change = 20103
+    # PDF / some dumps may still document filter interval here; keep alias documented.
+    # air_filter_days_between_filter_change was previously assigned 20102 (incorrect for Compact P).
+
+    operating_mode = 20120
+
+    fan_speed_level_1_supply_air = 20140
+    fan_speed_level_1_extract_air = 20141
+    fan_speed_level_2_supply_air = 20142
+    fan_speed_level_2_extract_air = 20143
+    fan_speed_level_3_supply_air = 20144
+    fan_speed_level_3_extract_air = 20145
+    fan_speed_level_4_supply_air = 20146
+    fan_speed_level_4_extract_air = 20147
+
+    low_humidity_level = 20160
+    fan_speed_at_low_humidity = 20161
+    fan_speed_at_high_humidity = 20162
+    timeout_high_humidity = 20163
+    average_humidity = 20164  # no 0.1 scale on Compact P
+
+    allow_active_cooling = 20180
+    high_fan_speed_when_cooling = 20181
+    fan_speed_when_cooling = 20182
+    minimum_cooling_supply_temp = 20183
+    cooling_priority_to_hot_water = 20184
+
+    low_fan_speed_at_low_outdoor_temp = 20200
+    below_outdoor_temperature = 20201
+    fan_speed_at_low_outdoor_temperature = 20202
+
+    co2_level_fan_speed_2 = 20220
+    co2_level_fan_speed_3 = 20221
+    co2_level_fan_speed_4 = 20222
+
+    after_heating_element_type = 20240
+    min_supply_air_temperature = 20241
+    max_supply_air_temperature = 20242
+
+    # Not used as room current on Compact P (reads ~5 C wrong vs extract).
+    wanted_room_temperature_legacy = 20260
+    summer_winter_mode_switch = 20261
+    offset_summer_winter_switch = 20262
+    master_sensor_indoor_temperature = 20263
+    temperature_regulation_deadband = 20264
+    bypass_damper_offset = 20266
+    external_room_regulation_deadband = 20267
+
+    text_room_temperature = 20280
+    text_room_temperature_state = 20281
+    t1_outdoor_air_temperature = 20282
+    t1_outdoor_air_temperature_state = 20283
+    t2_supply_air_temperature = 20284
+    t2_supply_air_temperature_state = 20285
+    t3_extract_air_temperature = 20286
+    t3_extract_air_temperature_state = 20287
+    t4_discharge_air_after_heat_exchanger = 20288
+    t4_discharge_air_after_heat_exchanger_state = 20289
+    t5_discharge_air_after_heat_pump = 20290
+    t5_discharge_air_after_heat_pump_state = 20291
+    t6_evaporator_temperature = 20292
+    t6_evaporator_temperature_state = 20293
+    t7_supply_air_temperature_after_heater = 20294
+    t7_supply_air_temperature_after_heater_state = 20295
+    t8_outdoor_air_before_pre_heater = 20296
+    t8_outdoor_air_before_pre_heater_state = 20297
+    t9_temperature_in_water_after_heater = 20298
+    t9_temperature_in_water_after_heater_state = 20299
+
+    frost_protection = 20300
+
+    t8_temperature_sensor = 20320
+
+    start_frost_protection_below = 20340
+    set_point_for_pre_heater_t4 = 20341
+
+    ehd_offset = 20360
+    ehd_hold_time = 20361
+    ehd_stabilisation_time = 20362
+
+    bah_under_temperature = 20380
+    bah_above_temperature = 20381
+    bah_regulation_deadband = 20382
+
+    he_outdoor_temperature_for_de_icing = 20400
+    he_maximum_time_de_icing = 20401
+    he_minimum_time_between_de_icing = 20402
+    he_extract_fan_speed_during_de_icing = 20403
+    he_supply_fan_speed_during_de_icing = 20404
+
+    hp_evaporator_defrost_t6 = 20420
+    hp_maximum_time_de_icing = 20421
+    hp_minimum_time_between_de_icing = 20422
+    hp_start_de_icing = 20423
+    hp_stop_de_icing = 20424
+
+    pause_hot_water_production = 20440
+    pause_duration_days = 20441
+
+    hot_water_set_point = 20460
+    frost_protection_hot_water_tank = 20461
+    el_supplement_activated_below = 20462
+    scalding_protection = 20463
+    electrical_supplement_heater = 20464
+
+    start_anti_legionella_manual = 20480
+    automatic_anti_legionella = 20481
+    day_for_anti_legionella = 20482
+    time_for_anti_legionella = 20483
+
+    minimum_time_between_start_up = 20500
+    time_between_stop_and_start_up = 20501
+
+    t11_top_temperature_in_dhw_water_tank = 20520
+    t11_top_state_in_dhw_water_tank = 20521
+    t12_bottom_temperature_in_dhw_water_tank = 20522
+    t12_bottom_state_in_dhw_water_tank = 20523
+
+    # Compact P fan speed percent 0-100 (not discrete 0-4; not in Dec 2023 list).
+    fan_speed = 21771
+
+
+class CTS700NordicRegisters:
+    """CTS700 Compact P Køl Polar/Nordic/Arctic (XL) hybrid map.
+
+    Matches community Modbus YAML (mark007) on CTS700 LC board units with fan
+    step encoding. Hardware ref: Nilan wiring 75124xx / CTS700 LC Board v4.0
+    (Compact P Køl Polar/Nordic/Arctic XL).
+
+    Fan user step is holding 4747 with values 101-104 (not percent).
+    Do not use this encoding on CTS700 2018+ (21771 percent) or 2015 legacy
+    (4747 percent 0-100).
+    """
+
+    # Classic user / climate
+    user_temperature = 4746
+    user_fan_step = 4747  # 101-104 = steps 1-4
+    humidity_live = 4716  # input register (RH on produktliste)
+    supply_fan_speed = 4699
+    extract_fan_speed = 4700
+    operation_mode = 5432  # 0 off, 1 cool, 2 heat, 3 dehum, 4 DHW
+    anode_status = 4233
+
+    # Input temps (scale 0.1) — physical T labels from CTS700 LC wiring
+    t1_outdoor = 5152  # T1 Udetemperatur
+    t2_supply = 5153  # T2 Tilluft før eftervarme
+    t3_extract = 5154  # T3 Fraluft
+    t8_preheater = 5159  # T8 / preheat path (Polar/Nordic)
+    t11_dhw_top = 5162  # T11 Brugsvand top
+    t12_dhw_bottom = 5163  # T12 Brugsvand bund
+    filter_alarm = 5168  # input binary (Filtervagt B14 when present)
+
+    # Holding 20xxx / shared (same Compact P addresses as 2018 PDF extras)
+    filter_days = 20103
+    filter_interval_inlet = 1326
+    filter_interval_exhaust = 1327
+    filter_remaining_inlet = 1328
+    filter_remaining_exhaust = 1329
+    average_humidity = 20164
+    hot_water_set_point = 20460
+    t4_exhaust = 20288  # T4 Afgang veksler
+    t5_condenser = 20290  # T5 Kondensator
+    t6_evaporator = 20292  # T6 Fordamper
+    t7_after_heater = 20294  # T7 Tilluft efter eftervarme
+    t9_water_surface = 20298  # T9 Vandflade
+    # Alternate T8 on some Compact P firmwares (20xxx); prefer when 5159 mirrors T1
+    t8_before_preheater_holding = 20296
+    fan_power_percent = 21771
+    ventilation_pause = 20100
+    # Humidity strategy / cooling (20xxx; live on Compact P Nordic Ethernet)
+    low_humidity_level = 20160
+    fan_speed_at_low_humidity = 20161
+    fan_speed_at_high_humidity = 20162
+    timeout_high_humidity = 20163
+    allow_active_cooling = 20180
+    # Fan step percent targets (supply) used when 4747 holds percent not 101-104
+    fan_speed_level_1_supply = 20140
+    fan_speed_level_2_supply = 20142
+    fan_speed_level_3_supply = 20144
+    fan_speed_level_4_supply = 20146
+    # Polar frost / preheat
+    frost_protection = 20300
+    start_frost_protection_below = 20340
+    set_point_for_pre_heater = 20341
+    # DHW pause / el-supplement / scalding / legionella
+    pause_hot_water_production = 20440
+    pause_duration_days = 20441
+    el_supplement_activated_below = 20462
+    scalding_protection = 20463
+    electrical_supplement_heater = 20464
+    start_anti_legionella_manual = 20480
+    automatic_anti_legionella = 20481
+    day_for_anti_legionella = 20482
+    time_for_anti_legionella = 20483
+    # Bypass status (read-only over Ethernet; writes on 21773 often do not stick)
+    bypass_damper_percent = 21773
+    bypass_1_state = 4704
+    bypass_2_state = 4705
+    heater_control = 4701  # after-heater / discrete heater bit when present
+    # Main compressor / heat-pump effort % (0 off, typically 0-100 when running)
+    # Community + mark007 YAML: holding 4706; secondary stages 4707-4711 on some units
+    main_compressor_effort = 4706
+    secondary_compressor_effort = 4707
+
+
+class CTS700LegacyHoldingRegisters:
+    """CTS700 holding registers from Nilan Modbus PDF dated 20150826.
+
+    Older firmware uses addresses mostly under 10000. Temperatures use scale 0.1
+    (example: 245 = 24.5 C). Humidity and fan percent are unscaled 0-100.
+
+    Sensor roles follow common Compact P labeling (T1 outdoor … T6 evaporator).
+    DHW tank top/bottom are not uniquely named in that PDF, so tank current
+    sensors are omitted from the legacy MVP entity map.
+    """
+
+    # Installer / filter (user-accessible counters)
+    filter_inlet_time_threshold = 1326
+    filter_exhaust_time_threshold = 1327
+    filter_inlet_pass_days = 1328
+    filter_exhaust_pass_days = 1329
+
+    # User operation
+    system_working_mode = 1047
+    operation_type = 2402  # 0 auto, 1 cooling, 2 heating (PDF)
+    pause_mode = 4727  # 0 none, 1 vent, 2 DHW, 3 all
+    user_temperature = 4746
+    # Fan percent 0-100 on 2015 map. Not Nordic step encoding 101-104.
+    user_fan_speed = 4747
+    user_temp_dhw = 5548
+
+    # Sensors
+    humidity = 4716
+    master_sensor_temperature = 5088
+    tsens1 = 5152
+    tsens2 = 5153
+    tsens3 = 5154
+    tsens4 = 5155
+    tsens5 = 5156
+    tsens6 = 5157
+
+    heater_control = 4701
+    software_version = 5065

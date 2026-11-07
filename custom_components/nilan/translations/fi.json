@@ -17,6 +17,24 @@
                     "serial": "Sarjaportti"
                 }
             },
+            "board": {
+                "title": "Valitse ohjainkortti",
+                "description": "Valitse Automaattinen tunnistus jos et ole varma. Keskeytä YAML Modbus tälle laitteelle ensin. {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Automaattinen tunnistus (suositus)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (tuuletin prosentti 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (tuuletinvaiheet 101-104)",
+                    "cts700_legacy": "CTS700 2015 vanha kartta"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Tutkii CTS602 sitten CTS700 Nordic / 2018+ / 2015. Paras kun et ole varma (esim. Compact P GEO / NCS-700).",
+                    "cts602": "Perinteiset Comfort / Compact / VP. Tyypillinen unit id 30.",
+                    "cts700": "2018+ Compact P Ethernet-kartta. Tuuletin holding 21771 prosenttina. Tyypillinen unit id 1.",
+                    "cts700_nordic": "Nordic / Polar / Arctic XL -hybridi. Tuuletin holding 4747 vaiheet 101-104. Tyypillinen unit id 1.",
+                    "cts700_legacy": "2015 PDF-kartta (rekisterit yleensä alle 10000)."
+                }
+            },
             "tcp": {
                 "title": "TCP-asetukset",
                 "data": {
@@ -42,6 +60,7 @@
             "smoke_alarm": {"name": "Palovaroitin"},
             "defrost": {"name": "Sulatus"},
             "bypass_flap": {"name": "Ohivirtaus Ohjain"},
+            "heat_pump": {"name": "Lämpöpumppu"},
             "user_selection_1": {"name": "Käyttäjän Valinta 1"},
             "user_selection_2": {"name": "Käyttäjän Valinta 2"},
             "display_led_1": {"name": "Näyttö LED 1"},
@@ -133,6 +152,12 @@
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Suurin Veden Lämpötila"},
+          "el_supplement_activated_below": {"name": "Sähkölisä aktivoidaan alle"},
+          "hot_water_pause_days": {"name": "Käyttöveden tauon päivät"},
+          "low_humidity_level": {"name": "Matala kosteustaso"},
+          "frost_protection_below": {"name": "Pakkasuoja alle"},
+          "preheater_setpoint": {"name": "Esikuumennuksen asetus"},
+          "anti_legionella_time": {"name": "Anti-legionella aika"},
           "maximum_time_in_high_humidity_ventilation": {"name": "Suurin Aika Kosteudenpoistoilmanvaihdossa"},
           "low_temperature_curve": {"name": "Pienen Lämpötilan Käyrä"},
           "high_temperature_curve": {"name": "Korkean Lämpötilan Käyrä"},
@@ -207,7 +232,7 @@
                     "2": "Kosteus + Hiilidioksidi"
                 }
             },
-            "compressor_heating_priority": {
+            "hot_water_priority": {
                 "name": "Kompressorin Lämmitysprioriteetti",
                 "state": {
                     "0": "Vesi",
@@ -434,14 +459,14 @@
         },
         "sensor": {
           "controller_board_temperature_t0": {"name": "Ohjainkortin Lämpötila (T0)"},
-          "fresh_air_intake_temperature_t1": {"name": "Raitisilman Lämpötila(T1)"},
+          "fresh_air_intake_temperature_t1": {"name": "Ulkolämpötila (T1)"},
           "supply_air_temperature_t2": {"name": "Tuloilman Lämpötila (T2)"},
-          "return_air_temperature_t3": {"name": "Paluuilman Lämpötila (T3)"},
-          "waste_air_temperature_t4": {"name": "Jäteilman Lämpötila (T4)"},
+          "return_air_temperature_t3": {"name": "Poistoilman lämpötila (T3)"},
+          "waste_air_temperature_t4": {"name": "Jäteilma lämmönvaihtimen jälkeen (T4)"},
           "condenser_temperature_t5": {"name": "Lauhdittimen Lämpötila (T5)"},
-          "waste_air_temperature_t6": {"name": "Jäteilman Lämpötila (T6)"},
-          "supply_air_temperature_t7": {"name": "Tuloilman Lämpötila (T7)"},
-          "fresh_air_intake_temperature_t8": {"name": "Raitisilman Lämpötila (T8)"},
+          "waste_air_temperature_t6": {"name": "Höyrystimen lämpötila (T6)"},
+          "supply_air_temperature_t7": {"name": "Tuloilma jälkilämmityksen jälkeen (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Ulko / esilämmitinpolku (T8)"},
           "return_air_temperature_t10": {"name": "Paluuilman Lämpötila (T10)"},
           "return_water_temperature_t13": {"name": "Paluuveden Lämpötila (T13)"},
           "supply_water_temperature_t14": {"name": "Menoveden Lämpötila (T14)"},
@@ -464,7 +489,7 @@
                 "6": "Ilmanvaihto",
                 "7": "Lämmittää",
                 "8": "Viilentää",
-                "9": "Lämmin Vesi",
+                "9": "Lämpimän veden tuotanto",
                 "10": "Legionella",
                 "11": "Viilentää + Lämmin Vesi",
                 "12": "Keskuslämmitys",
@@ -473,6 +498,16 @@
                 "15": "Huolto",
                 "16": "Hälytys",
                 "17": "Lämmittää + Lämmin Vesi"
+              }
+            },
+          "panel_operating_mode": {
+              "name": "Paneelin toimintatila",
+              "state": {
+                "0": "Sammutettu",
+                "1": "Viilentää",
+                "2": "Lämmittää",
+                "3": "Kosteudenpoisto",
+                "4": "Lämpimän veden tuotanto"
               }
             },
           "after_heating_type": {
@@ -488,6 +523,12 @@
           "alarms_active": {"name": "Aktiivisia Hälytyksiä"},
           "days_since_air_filter_change": {"name": "Päiviä Suodatinvaihdosta"},
           "days_to_air_filter_change": {"name": "Päiviä Suodatinvaihtoon"},
+          "days_since_inlet_filter_change": {"name": "Päiviä Tulopuolen Suodatinvaihdosta"},
+          "days_to_inlet_filter_change": {"name": "Päiviä Tulopuolen Suodatinvaihtoon"},
+          "days_since_exhaust_filter_change": {"name": "Päiviä Poistopuolen Suodatinvaihdosta"},
+          "days_to_exhaust_filter_change": {"name": "Päiviä Poistopuolen Suodatinvaihtoon"},
+          "filter_interval_inlet": {"name": "Tulopuolen Suodatinväli"},
+          "filter_interval_exhaust": {"name": "Poistopuolen Suodatinväli"},
           "climate_season": {
               "name": "Kausi",
               "state": {
@@ -527,7 +568,14 @@
           "modbus_version": {"name": "ModBus Versio"}
         },
         "switch": {
-          "supply_air_after_heating": {"name": "Tuloilman Jälkilämmitys"}
+          "supply_air_after_heating": {"name": "Tuloilman Jälkilämmitys"},
+          "electrical_supplement_heater": {"name": "Sähköinen lisälämmitin"},
+          "ventilation_pause": {"name": "Ilmanvaihdon tauko"},
+          "hot_water_production_pause": {"name": "Käyttöveden tuotannon tauko"},
+          "allow_active_cooling": {"name": "Salli aktiivinen jäähdytys"},
+          "frost_protection": {"name": "Pakkasuoja"},
+          "anti_legionella_manual": {"name": "Käynnistä anti-legionella"},
+          "automatic_anti_legionella": {"name": "Automaattinen anti-legionella"}
         },
         "water_heater": {
           "top_water_heater": {

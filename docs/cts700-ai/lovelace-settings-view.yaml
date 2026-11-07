@@ -1,0 +1,110 @@
+# Dedicated Lovelace view for a generic Compact P dashboard
+# Example path: /nilan-compact-p/cts700-ai-innstillinger
+# Title (NO): CTS700 AI innstillinger
+# Merge as a new item under views[].
+# No street names. No em/en dashes in UI strings.
+
+title: CTS700 AI innstillinger
+path: cts700-ai-innstillinger
+icon: mdi:robot-outline
+type: sections
+max_columns: 2
+sections:
+  - type: grid
+    cards:
+      - type: markdown
+        content: |
+          ## CTS700 AI innstillinger
+
+          Juster suggestive preferanser her (rom 22 til 23 C, vifte, lag, hold).
+          Autotune sikter mot komfortbandet og handler i forkant gitt termisk lag.
+
+          Hurtig: [Oversikt](/nilan-compact-p/home) · [Nilan CTS](/nilan-compact-p/nilan)
+      - type: entities
+        title: Hovedbrytere
+        show_header_toggle: false
+        entities:
+          - entity: input_boolean.cts700_ai_enabled
+            name: AI 24/7
+          - entity: input_boolean.cts700_ai_allow_writes
+            name: Auto-skriv til CTS
+          - entity: input_boolean.cts700_ai_learn_preferences
+            name: Lær preferanser
+          - entity: input_boolean.cts700_ai_quiet_hours
+            name: Stilletid
+          - entity: input_boolean.cts700_ai_prefer_local_llm
+            name: Preferer lokal LLM
+      - type: entities
+        title: Romtemperatur (22 til 23 C)
+        show_header_toggle: false
+        entities:
+          - entity: input_number.cts700_ai_pref_room_c
+            name: Preferert romtemp (mål)
+          - entity: input_number.cts700_ai_pref_min_room_c
+            name: Min romtemp
+          - entity: input_number.cts700_ai_pref_max_room_c
+            name: Maks romtemp
+          - entity: input_number.cts700_ai_room_deadband_c
+            name: Rom deadband
+      - type: entities
+        title: Vifte og stilletid
+        show_header_toggle: false
+        entities:
+          - entity: input_number.cts700_ai_pref_fan_percent
+            name: Preferert vifte %
+          - entity: input_number.cts700_ai_quiet_fan_percent
+            name: Stilletid vifte %
+          - entity: input_number.cts700_ai_fan_deadband_pct
+            name: Vifte deadband
+          - entity: input_number.cts700_ai_quiet_start_hour
+            name: Stilletid start (time)
+          - entity: input_number.cts700_ai_quiet_end_hour
+            name: Stilletid slutt (time)
+      - type: entities
+        title: Lag, hold og bolig
+        show_header_toggle: false
+        entities:
+          - entity: input_number.cts700_ai_lag_hours
+            name: Termisk lag (timer)
+          - entity: input_number.cts700_ai_write_hold_hours
+            name: Skriv-hold (timer)
+          - entity: input_number.cts700_ai_apartment_m2
+            name: Leilighet m2
+          - entity: input_number.cts700_ai_pref_dhw_c
+            name: Preferert VV-setpunkt
+          - entity: input_datetime.cts700_ai_last_write
+            name: Siste CTS-skriv
+      - type: entities
+        title: Siste status
+        show_header_toggle: false
+        entities:
+          - entity: input_text.cts700_ai_last_action
+            name: Siste handling
+          - entity: input_text.cts700_ai_last_advice
+            name: Siste råd
+          - entity: sensor.cts700_ai_context_brief
+            name: Kontekst (kort)
+          - entity: input_text.cts700_ai_notes
+            name: Notater
+          - entity: input_text.cts700_ai_constraints
+            name: Begrensninger
+      - type: horizontal-stack
+        cards:
+          - type: button
+            name: Les minne
+            icon: mdi:book-open-page-variant
+            tap_action:
+              action: call-service
+              service: script.cts700_ai_memory_read
+          - type: button
+            name: Kjør autotune nå
+            icon: mdi:play-circle-outline
+            tap_action:
+              action: call-service
+              service: script.cts700_ai_autotune_once
+          - type: button
+            name: Assist
+            icon: mdi:robot-outline
+            tap_action:
+              action: navigate
+              navigation_path: /assist

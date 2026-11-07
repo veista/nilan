@@ -1,0 +1,62 @@
+# Paste onto a Nilan Lovelace dashboard (example path /nilan-compact-p/).
+# Dedicated settings tab: /nilan-compact-p/cts700-ai-innstillinger
+# See also: lovelace-settings-view.yaml
+# Do not put secrets or street names here.
+
+type: vertical-stack
+cards:
+  - type: markdown
+    content: |
+      ## CTS700 AI 24/7
+
+      Hovedbryter **CTS700 AI 24/7** styrer periodisk sensing (ca. hvert 20. min).
+      CTS-skriv er sjeldnere: hold etter forrige skriv (standard 2.5 t).
+
+      - Preferert rom: **22 til 23 C** (mål 22.5)
+      - Eksempelbolig ca. **60 m2**: hoy treghet. Kjoling og vifte tar timer.
+      - Termisk lag standard **3 t**: ver i forkant, ikke thrash setpunkt.
+      - Når **av**: ingen auto-handlinger eller CTS-skriv
+      - Når **på** + **auto-skriv**: kan justere rom-setpunkt og vifte % mot preferanser
+      - Full innstillingsside: [CTS700 AI innstillinger](/nilan-compact-p/cts700-ai-innstillinger)
+      - Assist (valgfritt): agent for spørsmål; 24/7 er regelbasert
+      - Aldri kamera eller ikke-CTS enheter
+  - type: entities
+    title: CTS700 AI 24/7 og preferanser
+    show_header_toggle: false
+    entities:
+      - entity: input_boolean.cts700_ai_enabled
+      - entity: input_boolean.cts700_ai_allow_writes
+      - entity: input_boolean.cts700_ai_quiet_hours
+      - entity: input_boolean.cts700_ai_learn_preferences
+      - entity: input_number.cts700_ai_pref_room_c
+      - entity: input_number.cts700_ai_pref_min_room_c
+      - entity: input_number.cts700_ai_pref_max_room_c
+      - entity: input_number.cts700_ai_pref_fan_percent
+      - entity: input_number.cts700_ai_quiet_fan_percent
+      - entity: input_number.cts700_ai_lag_hours
+      - entity: input_number.cts700_ai_write_hold_hours
+      - entity: input_number.cts700_ai_apartment_m2
+      - entity: input_datetime.cts700_ai_last_write
+      - entity: input_text.cts700_ai_last_action
+      - entity: input_text.cts700_ai_last_advice
+      - entity: sensor.cts700_ai_context_brief
+  - type: horizontal-stack
+    cards:
+      - type: button
+        name: Les minne
+        icon: mdi:book-open-page-variant
+        tap_action:
+          action: call-service
+          service: script.cts700_ai_memory_read
+      - type: button
+        name: Kjør autotune nå
+        icon: mdi:play-circle-outline
+        tap_action:
+          action: call-service
+          service: script.cts700_ai_autotune_once
+      - type: button
+        name: Assist
+        icon: mdi:robot-outline
+        tap_action:
+          action: navigate
+          navigation_path: /assist

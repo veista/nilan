@@ -1,0 +1,105 @@
+{
+    "config": {
+        "abort": {
+            "already_configured": "Enheden er allerede konfigureret"
+        },
+        "error": {
+            "cannot_connect": "Kunne ikke oprette forbindelse",
+            "invalid_response": "Ugyldigt svar fra enheden",
+            "unsupported_device": "Enheden understøttes ikke",
+            "cannot_detect": "Kunne ikke registrere CTS602 eller CTS700 (Nordic / 2018+ / 2015). Tjek host, port og unit id, eller vælg kort manuelt.",
+            "unknown": "Uventet fejl"
+        },
+        "step": {
+            "menu": {
+                "title": "Vælg grænsefladetype",
+                "description": "{coexistence_warning}",
+                "menu_options": {
+                    "tcp": "TCP",
+                    "serial": "Seriel"
+                }
+            },
+            "board": {
+                "title": "Vælg styrekort",
+                "description": "Vælg Auto-registrering hvis du er usikker. Sæt YAML Modbus for samme aggregat på pause først. Compact P GEO / NCS-700: prøv Auto-registrering, eller Nordic XL (viftetrin 101-104) vs 2018+ Compact P (vifte procent 21771). {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Auto-registrering (anbefalet)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (vifte procent 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (viftetrin 101-104)",
+                    "cts700_legacy": "CTS700 2015 ældre kort"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Søger CTS602 derefter CTS700 Nordic / 2018+ / 2015. Bedst når du er usikker (fx Compact P GEO på NCS-700).",
+                    "cts602": "Klassiske Comfort / Compact / VP-kort. Typisk unit id 30.",
+                    "cts700": "2018+ Compact P Ethernet-kort. Vifte holding 21771 som procent. Typisk unit id 1.",
+                    "cts700_nordic": "Nordic / Polar / Arctic XL hybrid. Vifte holding 4747 trin 101-104. Typisk unit id 1.",
+                    "cts700_legacy": "2015 PDF-era kort (registre mest under 10000)."
+                }
+            },
+            "tcp": {
+                "title": "TCP-konfiguration",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_ip": "IP-adresse",
+                    "host_port": "Port",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "tcp_config": {
+                "title": "TCP-konfiguration",
+                "description": "{coexistence_warning}",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_ip": "IP-adresse",
+                    "host_port": "Port",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "tcp_detect": {
+                "title": "TCP auto-registrering",
+                "description": "Lad Unit ID stå tom for at prøve 1 derefter 30. {coexistence_warning}",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_ip": "IP-adresse",
+                    "host_port": "Port",
+                    "unit_id": "Unit ID (valgfri)"
+                }
+            },
+            "serial_detect": {
+                "title": "Seriel auto-registrering",
+                "description": "Lad Unit ID stå tom for at prøve 1 derefter 30. {coexistence_warning}",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_port": "Sti",
+                    "unit_id": "Unit ID (valgfri)"
+                }
+            },
+            "confirm": {
+                "title": "Bekræft registreret Nilan",
+                "description": "Registreret kort: {board_type}. Model: {model}. Unit ID: {unit_id}. {coexistence_warning}",
+                "menu_options": {
+                    "accept": "Acceptér og opret",
+                    "manual": "Vælg kort manuelt"
+                }
+            },
+            "serial": {
+                "title": "Seriel konfiguration",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_port": "Sti",
+                    "unit_id": "Unit ID"
+                }
+            },
+            "serial_config": {
+                "title": "Seriel konfiguration",
+                "description": "{coexistence_warning}",
+                "data": {
+                    "name": "Enhedsnavn",
+                    "host_port": "Sti",
+                    "unit_id": "Unit ID"
+                }
+            }
+        }
+    }
+}

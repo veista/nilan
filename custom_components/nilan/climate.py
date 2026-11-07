@@ -106,7 +106,7 @@ class NilanClimate(NilanEntity, ClimateEntity):
         super().__init__(device)
         self._attr_translation_key = "hvac"
         self._attr_has_entity_name = True
-        self._attr_unique_id = "hvac"
+        self._attr_unique_id = self.make_unique_id("hvac")
         self._hvac_on = False
         self._attr_max_humidity = 45
         self._attr_min_humidity = 15
@@ -114,21 +114,42 @@ class NilanClimate(NilanEntity, ClimateEntity):
         self._attr_max_temp = 30
         self._attr_target_temperature_step = 1
         self._enable_turn_on_off_backwards_compatibility = False
-        self._attr_hvac_modes = [
-            HVACMode.COOL,
-            HVACMode.HEAT,
-            HVACMode.AUTO,
-            HVACMode.OFF,
-        ]
+        if hasattr(device, "get_climate_hvac_modes"):
+            mode_map = {
+                "cool": HVACMode.COOL,
+                "heat": HVACMode.HEAT,
+                "auto": HVACMode.AUTO,
+                "off": HVACMode.OFF,
+            }
+            self._attr_hvac_modes = [
+                mode_map[m]
+                for m in device.get_climate_hvac_modes()
+                if m in mode_map
+            ]
+        else:
+            self._attr_hvac_modes = [
+                HVACMode.COOL,
+                HVACMode.HEAT,
+                HVACMode.AUTO,
+                HVACMode.OFF,
+            ]
         self._attr_preset_modes = ["energy", "comfort", "water"]
-        self._attr_fan_modes = ["0", "1", "2", "3", "4"]
+        if hasattr(device, "get_climate_fan_modes"):
+            self._attr_fan_modes = device.get_climate_fan_modes()
+        else:
+            self._attr_fan_modes = ["0", "1", "2", "3", "4"]
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_supported_features = supported_featrures
         self._extra_status_attributes = extra_status_attributes
 
     async def async_set_fan_mode(self, fan_mode):
         """Set new target fan mode."""
-        await self._device.set_ventilation_step(int(fan_mode))
+        ok = await self._device.set_ventilation_step(int(fan_mode))
+        if ok is False and hasattr(self._device, "get_climate_fan_modes"):
+            # Keep UI on a valid Nordic step (1-4)
+            step = await self._device.get_ventilation_step()
+            if step is not None:
+                self._attr_fan_mode = str(step)
         self.async_write_ha_state()
 
     async def async_set_preset_mode(self, preset_mode):
@@ -141,16 +162,36 @@ class NilanClimate(NilanEntity, ClimateEntity):
         if hvac_mode == HVACMode.OFF:
             await self._device.set_run_state(False)
         else:
+            mode = STATE_TO_HVAC_MODE.get(hvac_mode)
             self._hvac_on = await self._device.get_run_state()
             if not self._hvac_on:
                 await self._device.set_run_state(True)
-            await self._device.set_operation_mode(STATE_TO_HVAC_MODE.get(hvac_mode))
-        self._attr_hvac_mode = hvac_mode
+            if mode is not None:
+                await self._device.set_operation_mode(mode)
+        # Refresh from device so UI matches readback (Nordic 5432 may revert)
+        self._hvac_on = await self._device.get_run_state()
+        if self._hvac_on is False:
+            self._attr_hvac_mode = HVACMode.OFF
+        else:
+            self._attr_hvac_mode = HVAC_MODE_TO_STATE.get(
+                await self._device.get_operation_mode(),
+                HVACMode.AUTO,
+            )
         self.async_write_ha_state()
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
-        await self._device.set_user_temperature_setpoint(kwargs[ATTR_TEMPERATURE])
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        if temperature is None:
+            return
+        ok = await self._device.set_user_temperature_setpoint(temperature)
+        if ok is False:
+            # Refresh from device so UI does not keep a rejected value
+            self._attr_target_temperature = (
+                await self._device.get_user_temperature_setpoint()
+            )
+        else:
+            self._attr_target_temperature = temperature
         self.async_write_ha_state()
 
     async def async_set_humidity(self, humidity):
@@ -184,31 +225,66 @@ class NilanClimate(NilanEntity, ClimateEntity):
         if control_state is None:
             return
 
+        # Prefer live heat/cool source activity when the device exposes it
+        # (CTS700 Nordic: holding 4706 effort / heater bit). Avoid continuous
+        # hvac_action=heating during thermostat hysteresis while compressor is idle.
+        actively_heating = None
+        if hasattr(self._device, "get_actively_heating"):
+            actively_heating = await self._device.get_actively_heating()
+        actively_cooling = None
+        if hasattr(self._device, "get_actively_cooling"):
+            actively_cooling = await self._device.get_actively_cooling()
+
         if self._extra_status_attributes:
             ventilation_state = await self._device.get_ventilation_state()
             fan_supply_level = await self._device.get_supply_fan_level()
             if ventilation_state == 3:
                 self._attr_hvac_action = HVACAction.DRYING
-            elif control_state in (7, 17):
+            elif actively_heating is True or (
+                control_state in (7, 17) and actively_heating is not False
+            ):
                 self._attr_hvac_action = HVACAction.HEATING
-            elif control_state in (8, 11):
+            elif actively_cooling is True or (
+                control_state in (8, 11) and actively_cooling is not False
+            ):
                 self._attr_hvac_action = HVACAction.COOLING
+            elif control_state in (7, 17) and actively_heating is False:
+                self._attr_hvac_action = (
+                    HVACAction.FAN if fan_supply_level > 0 else HVACAction.IDLE
+                )
+            elif control_state in (8, 11) and actively_cooling is False:
+                self._attr_hvac_action = (
+                    HVACAction.FAN if fan_supply_level > 0 else HVACAction.IDLE
+                )
             elif fan_supply_level > 0:
                 self._attr_hvac_action = HVACAction.FAN
             elif fan_supply_level == 0 and control_state > 0:
                 self._attr_hvac_action = HVACAction.IDLE
             else:
                 self._attr_hvac_action = HVACAction.OFF
-        elif control_state in (7, 17):
+        elif actively_heating is True or (
+            control_state in (7, 17) and actively_heating is not False
+        ):
             self._attr_hvac_action = HVACAction.HEATING
-        elif control_state in (8, 11):
+        elif actively_cooling is True or (
+            control_state in (8, 11) and actively_cooling is not False
+        ):
             self._attr_hvac_action = HVACAction.COOLING
+        elif control_state in (7, 17, 8, 11) and (
+            actively_heating is False or actively_cooling is False
+        ):
+            # Mode call without compressor/heater: idle (not a continuous heating band)
+            self._attr_hvac_action = HVACAction.IDLE
+        elif control_state > 0:
+            self._attr_hvac_action = HVACAction.IDLE
         else:
             self._attr_hvac_action = HVACAction.OFF
 
-        if not self._hvac_on:
-            self._attr_hvac_mode = HVACAction.OFF
-        else:
+        if self._hvac_on is False:
+            self._attr_hvac_mode = HVACMode.OFF
+        elif self._hvac_on is True:
+            # Unmapped Compact P / odd mode values previously became None (HA "unknown").
             self._attr_hvac_mode = HVAC_MODE_TO_STATE.get(
-                await self._device.get_operation_mode()
+                await self._device.get_operation_mode(),
+                HVACMode.AUTO,
             )

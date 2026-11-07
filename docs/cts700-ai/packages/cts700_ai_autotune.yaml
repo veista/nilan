@@ -1,0 +1,476 @@
+﻿# CTS700 AI 24/7 autonomous tuning (Phase 2 + lag-aware)
+# Copy to /config/packages/cts700_ai_autotune.yaml
+# Requires packages/cts700_ai.yaml (helpers + memory).
+# Example site: Compact P Nordic. Example Modbus host in docs: 192.168.1.50
+#
+# Safety:
+# - Runs only when input_boolean.cts700_ai_enabled is on
+# - CTS writes only when input_boolean.cts700_ai_allow_writes is on
+# - Allowlist only: climate.nilan_cts700_nordic_hvac, input_number.nilan_fan_percent
+# - Never DHW auto-write (Ethernet dial is not tank target)
+# - Never cameras, locks, installer auth, or invent Modbus registers
+# - Rule-based (reliable unattended). LLM Assist remains optional for chat.
+# - Sense often (20 min); write rarely (hold hours after last CTS write).
+# - ~60 m2 apartment: high thermal inertia; cooling and venting need hours of lead time.
+
+input_text:
+  cts700_ai_last_action:
+    name: "CTS700 AI siste handling"
+    max: 255
+    icon: mdi:history
+    initial: "Ingen auto-handling ennÃ¥."
+
+input_number:
+  cts700_ai_room_deadband_c:
+    name: "CTS700 AI rom deadband"
+    min: 0.5
+    max: 2.0
+    step: 0.5
+    unit_of_measurement: "Â°C"
+    icon: mdi:delta
+    initial: 0.5
+    mode: box
+
+  cts700_ai_fan_deadband_pct:
+    name: "CTS700 AI vifte deadband"
+    min: 5
+    max: 20
+    step: 5
+    unit_of_measurement: "%"
+    icon: mdi:fan-alert
+    initial: 5
+    mode: box
+
+  cts700_ai_quiet_fan_percent:
+    name: "CTS700 AI stilletid vifte %"
+    min: 25
+    max: 70
+    step: 5
+    unit_of_measurement: "%"
+    icon: mdi:fan-chevron-down
+    initial: 40
+    mode: box
+
+script:
+  cts700_ai_autotune_once:
+    alias: "CTS700 AI Autotune Once"
+    icon: mdi:tune-vertical
+    mode: single
+    description: "Lag-aware comfort tune. Sense often; CTS writes gated by hold + allow_writes."
+    sequence:
+      - condition: state
+        entity_id: input_boolean.cts700_ai_enabled
+        state: "on"
+      - condition: template
+        value_template: "{{ not is_state('input_boolean.nilan_cts_write_busy', 'on') }}"
+      - variables:
+          allow_writes: "{{ is_state('input_boolean.cts700_ai_allow_writes', 'on') }}"
+          lag_h: "{{ states('input_number.cts700_ai_lag_hours') | float(3) }}"
+          hold_h: "{{ states('input_number.cts700_ai_write_hold_hours') | float(2.5) }}"
+          apt_m2: "{{ states('input_number.cts700_ai_apartment_m2') | int(60) }}"
+          in_hold: >-
+            {% set last = states('input_datetime.cts700_ai_last_write') %}
+            {% set hold_h = states('input_number.cts700_ai_write_hold_hours') | float(2.5) %}
+            {% if last in ['unknown', 'unavailable', 'none', ''] %}
+              {{ false }}
+            {% else %}
+              {% set ts = as_timestamp(last, none) %}
+              {{ ts is number and (as_timestamp(now()) - ts) < (hold_h * 3600) }}
+            {% endif %}
+          hold_left_h: >-
+            {% set last = states('input_datetime.cts700_ai_last_write') %}
+            {% set hold_h = states('input_number.cts700_ai_write_hold_hours') | float(2.5) %}
+            {% if last in ['unknown', 'unavailable', 'none', ''] %}
+              0
+            {% else %}
+              {% set ts = as_timestamp(last, none) %}
+              {% if ts is number %}
+                {{ [((hold_h * 3600) - (as_timestamp(now()) - ts)) / 3600, 0] | max | round(1) }}
+              {% else %}
+                0
+              {% endif %}
+            {% endif %}
+          hours_to_quiet: >-
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set s = states('input_number.cts700_ai_quiet_start_hour') | int(22) %}
+            {% set now_f = h + (m / 60) %}
+            {% if s >= now_f %}
+              {{ s - now_f }}
+            {% else %}
+              {{ (24 - now_f) + s }}
+            {% endif %}
+          in_quiet: >-
+            {% set h = now().hour | int %}
+            {% set s = states('input_number.cts700_ai_quiet_start_hour') | int(22) %}
+            {% set e = states('input_number.cts700_ai_quiet_end_hour') | int(7) %}
+            {% if is_state('input_boolean.cts700_ai_quiet_hours', 'on') %}
+              {{ (s > e and (h >= s or h < e)) or (s <= e and h >= s and h < e) }}
+            {% else %}
+              {{ false }}
+            {% endif %}
+          approaching_quiet: >-
+            {% set quiet_on = is_state('input_boolean.cts700_ai_quiet_hours', 'on') %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set s = states('input_number.cts700_ai_quiet_start_hour') | int(22) %}
+            {% set e = states('input_number.cts700_ai_quiet_end_hour') | int(7) %}
+            {% set now_f = h + (m / 60) %}
+            {% set to_q = (s - now_f) if s >= now_f else ((24 - now_f) + s) %}
+            {% set already = (s > e and (h >= s or h < e)) or (s <= e and h >= s and h < e) %}
+            {{ quiet_on and (not already) and to_q <= lag_h }}
+          effective_quiet: "{{ (in_quiet | bool) or (approaching_quiet | bool) }}"
+          pref_room: >-
+            {% set p = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+            {% set mn = states('input_number.cts700_ai_pref_min_room_c') | float(22) %}
+            {% set mx = states('input_number.cts700_ai_pref_max_room_c') | float(23) %}
+            {{ [[p, mn] | max, mx] | min }}
+          room_sp: "{{ state_attr('climate.nilan_cts700_nordic_hvac', 'temperature') | float(none) }}"
+          room_cur: >-
+            {% set c = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') %}
+            {% if c not in ['unknown', 'unavailable', 'none', ''] %}
+              {{ c | float(none) }}
+            {% else %}
+              {{ state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) }}
+            {% endif %}
+          outdoor: "{{ states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) }}"
+          cooling_ahead: >-
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set now_f = h + (m / 60) %}
+            {% set peak = 18.0 %}
+            {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+            {% set window = to_peak >= 0 and to_peak <= lag_h %}
+            {% set afternoon = h >= 12 and h < 22 %}
+            {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+            {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+            {% if cur is not number %}
+              {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+            {% endif %}
+            {% set pref = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+            {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref + 0.3)) %}
+            {{ warm and afternoon and (window or h >= 14) }}
+          room_target: >-
+            {% set pref = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+            {% set mn = states('input_number.cts700_ai_pref_min_room_c') | float(22) %}
+            {% set mx = states('input_number.cts700_ai_pref_max_room_c') | float(23) %}
+            {% set base = [[pref, mn] | max, mx] | min %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set now_f = h + (m / 60) %}
+            {% set peak = 18.0 %}
+            {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+            {% set window = to_peak >= 0 and to_peak <= lag_h %}
+            {% set afternoon = h >= 12 and h < 22 %}
+            {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+            {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+            {% if cur is not number %}
+              {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+            {% endif %}
+            {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref + 0.3)) %}
+            {% set cool_ahead = warm and afternoon and (window or h >= 14) %}
+            {% if cool_ahead %}
+              {{ [[base - 0.5, mn] | max, mx] | min }}
+            {% else %}
+              {{ base }}
+            {% endif %}
+          pref_fan: "{{ states('input_number.cts700_ai_pref_fan_percent') | int(55) }}"
+          quiet_fan: "{{ states('input_number.cts700_ai_quiet_fan_percent') | int(40) }}"
+          target_fan: >-
+            {% set pref = states('input_number.cts700_ai_pref_fan_percent') | int(55) %}
+            {% set qf = states('input_number.cts700_ai_quiet_fan_percent') | int(40) %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set s = states('input_number.cts700_ai_quiet_start_hour') | int(22) %}
+            {% set e = states('input_number.cts700_ai_quiet_end_hour') | int(7) %}
+            {% set now_f = h + (m / 60) %}
+            {% set to_q = (s - now_f) if s >= now_f else ((24 - now_f) + s) %}
+            {% set already = (s > e and (h >= s or h < e)) or (s <= e and h >= s and h < e) %}
+            {% set quiet_on = is_state('input_boolean.cts700_ai_quiet_hours', 'on') %}
+            {% set eff_quiet = quiet_on and (already or ((not already) and to_q <= lag_h)) %}
+            {% if eff_quiet %}
+              {{ [pref, qf] | min }}
+            {% else %}
+              {% set peak = 18.0 %}
+              {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+              {% set window = to_peak >= 0 and to_peak <= lag_h %}
+              {% set afternoon = h >= 12 and h < 22 %}
+              {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+              {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+              {% if cur is not number %}
+                {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+              {% endif %}
+              {% set pref_r = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+              {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref_r + 0.3)) %}
+              {% set cool_ahead = warm and afternoon and (window or h >= 14) %}
+              {% if cool_ahead %}
+                {{ [[pref + 10, 25] | max, 80] | min }}
+              {% else %}
+                {{ pref }}
+              {% endif %}
+            {% endif %}
+          fan_now: "{{ states('input_number.nilan_fan_percent') | float(55) }}"
+          room_db: "{{ states('input_number.cts700_ai_room_deadband_c') | float(0.5) }}"
+          fan_db: "{{ states('input_number.cts700_ai_fan_deadband_pct') | float(5) }}"
+          auto_mode: "{{ is_state('input_boolean.nilan_auto_mode', 'on') }}"
+          want_room: >-
+            {% set pref = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+            {% set mn = states('input_number.cts700_ai_pref_min_room_c') | float(22) %}
+            {% set mx = states('input_number.cts700_ai_pref_max_room_c') | float(23) %}
+            {% set base = [[pref, mn] | max, mx] | min %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set now_f = h + (m / 60) %}
+            {% set peak = 18.0 %}
+            {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+            {% set window = to_peak >= 0 and to_peak <= lag_h %}
+            {% set afternoon = h >= 12 and h < 22 %}
+            {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+            {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+            {% if cur is not number %}
+              {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+            {% endif %}
+            {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref + 0.3)) %}
+            {% set cool_ahead = warm and afternoon and (window or h >= 14) %}
+            {% set target = [[base - 0.5, mn] | max, mx] | min if cool_ahead else base %}
+            {% set sp = state_attr('climate.nilan_cts700_nordic_hvac', 'temperature') | float(target) %}
+            {% set step = 1.0 %}
+            {% if target > sp %}
+              {{ [sp + step, target] | min }}
+            {% elif target < sp %}
+              {{ [sp - step, target] | max }}
+            {% else %}
+              {{ sp }}
+            {% endif %}
+          need_room: >-
+            {% set sp = state_attr('climate.nilan_cts700_nordic_hvac', 'temperature') | float(none) %}
+            {% set pref = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+            {% set mn = states('input_number.cts700_ai_pref_min_room_c') | float(22) %}
+            {% set mx = states('input_number.cts700_ai_pref_max_room_c') | float(23) %}
+            {% set base = [[pref, mn] | max, mx] | min %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set now_f = h + (m / 60) %}
+            {% set peak = 18.0 %}
+            {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+            {% set window = to_peak >= 0 and to_peak <= lag_h %}
+            {% set afternoon = h >= 12 and h < 22 %}
+            {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+            {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+            {% if cur is not number %}
+              {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+            {% endif %}
+            {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref + 0.3)) %}
+            {% set cool_ahead = warm and afternoon and (window or h >= 14) %}
+            {% set target = [[base - 0.5, mn] | max, mx] | min if cool_ahead else base %}
+            {% set db = states('input_number.cts700_ai_room_deadband_c') | float(0.5) %}
+            {{ sp is number and (sp - target) | abs >= db }}
+          need_fan: >-
+            {% set pref = states('input_number.cts700_ai_pref_fan_percent') | int(55) %}
+            {% set qf = states('input_number.cts700_ai_quiet_fan_percent') | int(40) %}
+            {% set lag_h = states('input_number.cts700_ai_lag_hours') | float(3) %}
+            {% set h = now().hour | int %}
+            {% set m = now().minute | int %}
+            {% set s = states('input_number.cts700_ai_quiet_start_hour') | int(22) %}
+            {% set e = states('input_number.cts700_ai_quiet_end_hour') | int(7) %}
+            {% set now_f = h + (m / 60) %}
+            {% set to_q = (s - now_f) if s >= now_f else ((24 - now_f) + s) %}
+            {% set already = (s > e and (h >= s or h < e)) or (s <= e and h >= s and h < e) %}
+            {% set quiet_on = is_state('input_boolean.cts700_ai_quiet_hours', 'on') %}
+            {% set eff_quiet = quiet_on and (already or ((not already) and to_q <= lag_h)) %}
+            {% if eff_quiet %}
+              {% set target = [pref, qf] | min %}
+            {% else %}
+              {% set peak = 18.0 %}
+              {% set to_peak = (peak - now_f) if peak >= now_f else -1 %}
+              {% set window = to_peak >= 0 and to_peak <= lag_h %}
+              {% set afternoon = h >= 12 and h < 22 %}
+              {% set out = states('sensor.nilan_cts700_nordic_fresh_air_intake_temperature_t1') | float(none) %}
+              {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+              {% if cur is not number %}
+                {% set cur = state_attr('climate.nilan_cts700_nordic_hvac', 'current_temperature') | float(none) %}
+              {% endif %}
+              {% set pref_r = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+              {% set warm = (out is number and out >= 18) or (cur is number and cur >= (pref_r + 0.3)) %}
+              {% set cool_ahead = warm and afternoon and (window or h >= 14) %}
+              {% set target = [[pref + 10, 25] | max, 80] | min if cool_ahead else pref %}
+            {% endif %}
+            {% set nowf = states('input_number.nilan_fan_percent') | float(55) %}
+            {% set db = states('input_number.cts700_ai_fan_deadband_pct') | float(5) %}
+            {{ (not is_state('input_boolean.nilan_auto_mode', 'on')) and ((nowf - target) | abs >= db) }}
+          do_room: "{{ (need_room | bool) and (not (in_hold | bool)) }}"
+          do_fan: "{{ (need_fan | bool) and (not (in_hold | bool)) }}"
+      - if:
+          - condition: template
+            value_template: "{{ allow_writes | bool and do_room | bool }}"
+        then:
+          - service: climate.set_temperature
+            target:
+              entity_id: climate.nilan_cts700_nordic_hvac
+            data:
+              temperature: "{{ want_room | float }}"
+      - if:
+          - condition: template
+            value_template: "{{ allow_writes | bool and do_fan | bool }}"
+        then:
+          - service: input_number.set_value
+            target:
+              entity_id: input_number.nilan_fan_percent
+            data:
+              value: "{{ target_fan | int }}"
+      - variables:
+          summary: >-
+            {% set ns = namespace(parts=[]) %}
+            {% if in_hold | bool and (need_room | bool or need_fan | bool) %}
+              Hold: venter ca. {{ hold_left_h }} t (lag {{ lag_h }} t, {{ apt_m2 }} m2)
+            {% elif allow_writes | bool and do_room | bool %}
+              {% set ns.parts = ns.parts + ['rom ' ~ (want_room | float) ~ 'C'] %}
+              {% if allow_writes | bool and do_fan | bool %}
+                {% set ns.parts = ns.parts + ['vifte ' ~ (target_fan | int) ~ '%'] %}
+              {% endif %}
+              {% if cooling_ahead | bool %}
+                {% set ns.parts = ns.parts + ['kjoling-i-forkant'] %}
+              {% endif %}
+              {% if approaching_quiet | bool %}
+                {% set ns.parts = ns.parts + ['stille-i-forkant'] %}
+              {% endif %}
+              {{ ns.parts | join(', ') }}
+            {% elif allow_writes | bool and do_fan | bool %}
+              {% set ns.parts = ns.parts + ['vifte ' ~ (target_fan | int) ~ '%'] %}
+              {% if cooling_ahead | bool %}
+                {% set ns.parts = ns.parts + ['vent-i-forkant'] %}
+              {% endif %}
+              {% if approaching_quiet | bool %}
+                {% set ns.parts = ns.parts + ['stille-i-forkant'] %}
+              {% endif %}
+              {{ ns.parts | join(', ') }}
+            {% elif (need_room | bool or need_fan | bool) and not (allow_writes | bool) %}
+              Forslag (skriving av): rom {{ 'ja' if need_room else 'nei' }}, vifte {{ 'ja' if need_fan else 'nei' }}
+            {% else %}
+              Ingen endring (innenfor deadband / automodus / hold)
+            {% endif %}
+          did_write: "{{ allow_writes | bool and (do_room | bool or do_fan | bool) }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_last_action
+        data:
+          value: "{{ now().strftime('%d/%m/%Y %H:%M') }}: {{ summary }}"
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_last_advice
+        data:
+          value: >-
+            {% if did_write | bool %}
+              Auto: {{ summary }}. Effekt kan ta opptil {{ lag_h }} t (ca. {{ apt_m2 }} m2).
+            {% elif in_hold | bool and (need_room | bool or need_fan | bool) %}
+              Hold aktiv: ca. {{ hold_left_h }} t igjen. CTS er treg; ikke thrash setpunkt.
+            {% elif (need_room | bool or need_fan | bool) %}
+              Forslag: rom mot {{ room_target }} C, vifte mot {{ target_fan | int }} %. SlÃ¥ pÃ¥ auto-skriv for Ã¥ bruke.
+            {% else %}
+              OK: innenfor preferanser (evaluer over {{ lag_h }} t, ikke 20 min).
+            {% endif %}
+      - if:
+          - condition: template
+            value_template: "{{ did_write | bool }}"
+        then:
+          - service: input_datetime.set_datetime
+            target:
+              entity_id: input_datetime.cts700_ai_last_write
+            data:
+              datetime: "{{ now().strftime('%Y-%m-%d %H:%M:%S') }}"
+          - service: persistent_notification.create
+            data:
+              notification_id: cts700_ai_autotune
+              title: "CTS700 AI 24/7"
+              message: "{{ summary }} (hold {{ hold_h }} t)"
+          - service: logbook.log
+            data:
+              name: "CTS700 AI"
+              message: "Autotune {{ summary }}"
+              entity_id: sensor.cts700_ai_memory_snapshot
+
+automation:
+  - id: cts700_ai_autotune_periodic
+    alias: "CTS700 AI 24/7 periodisk"
+    description: "Every 20 min sense when master on. Writes only if hold expired."
+    mode: single
+    trigger:
+      - platform: time_pattern
+        minutes: "/20"
+    condition:
+      - condition: state
+        entity_id: input_boolean.cts700_ai_enabled
+        state: "on"
+    action:
+      - service: script.cts700_ai_autotune_once
+
+  - id: cts700_ai_autotune_on_comfort_drift
+    alias: "CTS700 AI 24/7 ved komfortavvik"
+    description: "Extract air vs pref >= 1.5 C for 90 min (lag-aware; not 10 min)."
+    mode: single
+    trigger:
+      - platform: template
+        value_template: >-
+          {% set cur = states('sensor.nilan_cts700_nordic_return_air_temperature_t3') | float(none) %}
+          {% set pref = states('input_number.cts700_ai_pref_room_c') | float(22.5) %}
+          {% set mn = states('input_number.cts700_ai_pref_min_room_c') | float(22) %}
+          {% set mx = states('input_number.cts700_ai_pref_max_room_c') | float(23) %}
+          {% set target = [[pref, mn] | max, mx] | min %}
+          {{ cur is number and (cur - target) | abs >= 1.5 }}
+        for:
+          minutes: 90
+    condition:
+      - condition: state
+        entity_id: input_boolean.cts700_ai_enabled
+        state: "on"
+    action:
+      - service: script.cts700_ai_autotune_once
+
+  - id: cts700_ai_master_off_note
+    alias: "CTS700 AI 24/7 slÃ¥tt av"
+    description: "Log when master switch turns off."
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_boolean.cts700_ai_enabled
+        to: "off"
+    action:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_last_action
+        data:
+          value: "{{ now().strftime('%d/%m/%Y %H:%M') }}: 24/7 av. Ingen auto-handlinger."
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "24/7 disabled by user"
+          entity_id: sensor.cts700_ai_memory_snapshot
+
+  # Optional site helper from self-test packages. If stuck on after an interrupted
+  # Modbus self-test, AI autotune never runs. Clear after 10 minutes.
+  - id: cts700_ai_clear_stuck_write_busy
+    alias: "CTS700 AI clear stuck write busy"
+    description: "Turns off input_boolean.nilan_cts_write_busy if left on for 10 minutes."
+    mode: single
+    trigger:
+      - platform: state
+        entity_id: input_boolean.nilan_cts_write_busy
+        to: "on"
+        for: "00:10:00"
+    condition:
+      - condition: template
+        value_template: "{{ states('input_boolean.nilan_cts_write_busy') not in ['unknown', 'unavailable', ''] }}"
+    action:
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.nilan_cts_write_busy
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "Cleared stuck nilan_cts_write_busy after 10 minutes"

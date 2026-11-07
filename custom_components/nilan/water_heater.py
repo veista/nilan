@@ -44,18 +44,37 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         self._state = None
         self._previous_temp = 55
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
-        self._attr_operation_list = [STATE_OFF, STATE_ELECTRIC]
-        self._attr_supported_features = (
-            WaterHeaterEntityFeature.TARGET_TEMPERATURE
-            | WaterHeaterEntityFeature.OPERATION_MODE
-        )
+        self._supports_off = True
+        if hasattr(device, "supports_water_heater_off"):
+            self._supports_off = device.supports_water_heater_off()
+        if self._supports_off:
+            self._attr_operation_list = [STATE_OFF, STATE_ELECTRIC]
+            self._attr_supported_features = (
+                WaterHeaterEntityFeature.TARGET_TEMPERATURE
+                | WaterHeaterEntityFeature.OPERATION_MODE
+            )
+        else:
+            # Nordic Compact P: Off via setpoint 0 is not reliable; temp only
+            self._attr_operation_list = [STATE_ELECTRIC]
+            self._attr_supported_features = WaterHeaterEntityFeature.TARGET_TEMPERATURE
+            self._attr_current_operation = STATE_ELECTRIC
         self._attr_translation_key = "top_water_heater"
         self._attr_has_entity_name = True
-        self._attr_unique_id = "top_water_heater"
+        self._attr_unique_id = self.make_unique_id("top_water_heater")
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
-        await self._device.set_electric_water_heater_setpoint(kwargs[ATTR_TEMPERATURE])
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        if temperature is None:
+            return
+        ok = await self._device.set_electric_water_heater_setpoint(temperature)
+        if ok is False:
+            self._attr_target_temperature = (
+                await self._device.get_electric_water_heater_setpoint()
+            )
+        else:
+            self._attr_target_temperature = temperature
+            self._previous_temp = temperature
         self.async_write_ha_state()
 
     async def async_set_operation_mode(self, operation_mode):
@@ -77,16 +96,17 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         running_state = await self._device.get_electric_water_heater_state()
         if running_state == 1:
             self._state = "heating"
-        elif self._attr_target_temperature != 0:
+        elif self._attr_target_temperature not in (None, 0):
             self._state = "idle"
         else:
-            self._state = STATE_OFF
+            self._state = "idle" if not self._supports_off else STATE_OFF
 
-        if self._attr_target_temperature != 0:
+        if self._attr_target_temperature not in (None, 0):
             self._previous_temp = self._attr_target_temperature
-            self._attr_current_operation = STATE_ELECTRIC
-        else:
+        if self._supports_off and self._attr_target_temperature in (None, 0):
             self._attr_current_operation = STATE_OFF
+        else:
+            self._attr_current_operation = STATE_ELECTRIC
 
     @property
     def min_temp(self):
@@ -120,20 +140,36 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
         self._state = None
         self._previous_temp = 55
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
-        self._attr_operation_list = [STATE_OFF, STATE_HEAT_PUMP]
-        self._attr_supported_features = (
-            WaterHeaterEntityFeature.TARGET_TEMPERATURE
-            | WaterHeaterEntityFeature.OPERATION_MODE
-        )
+        self._supports_off = True
+        if hasattr(device, "supports_water_heater_off"):
+            self._supports_off = device.supports_water_heater_off()
+        if self._supports_off:
+            self._attr_operation_list = [STATE_OFF, STATE_HEAT_PUMP]
+            self._attr_supported_features = (
+                WaterHeaterEntityFeature.TARGET_TEMPERATURE
+                | WaterHeaterEntityFeature.OPERATION_MODE
+            )
+        else:
+            self._attr_operation_list = [STATE_HEAT_PUMP]
+            self._attr_supported_features = WaterHeaterEntityFeature.TARGET_TEMPERATURE
+            self._attr_current_operation = STATE_HEAT_PUMP
         self._attr_translation_key = "bottom_water_heater"
         self._attr_has_entity_name = True
-        self._attr_unique_id = "bottom_water_heater"
+        self._attr_unique_id = self.make_unique_id("bottom_water_heater")
 
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
-        await self._device.set_compressor_water_heater_setpoint(
-            kwargs[ATTR_TEMPERATURE]
-        )
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        if temperature is None:
+            return
+        ok = await self._device.set_compressor_water_heater_setpoint(temperature)
+        if ok is False:
+            self._attr_target_temperature = (
+                await self._device.get_compressor_water_heater_setpoint()
+            )
+        else:
+            self._attr_target_temperature = temperature
+            self._previous_temp = temperature
         self.async_write_ha_state()
 
     async def async_set_operation_mode(self, operation_mode):
@@ -155,16 +191,17 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
         running_state = await self._device.get_control_state()
         if running_state in (9, 11, 17):
             self._state = "heating"
-        elif self._attr_target_temperature != 0:
+        elif self._attr_target_temperature not in (None, 0):
             self._state = "idle"
         else:
-            self._state = STATE_OFF
+            self._state = "idle" if not self._supports_off else STATE_OFF
 
-        if self._attr_target_temperature != 0:
+        if self._attr_target_temperature not in (None, 0):
             self._previous_temp = self._attr_target_temperature
-            self._attr_current_operation = STATE_HEAT_PUMP
-        else:
+        if self._supports_off and self._attr_target_temperature in (None, 0):
             self._attr_current_operation = STATE_OFF
+        else:
+            self._attr_current_operation = STATE_HEAT_PUMP
 
     @property
     def min_temp(self):

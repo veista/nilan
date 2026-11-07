@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  # pymodbus is declared in custom_components/nilan/manifest.json.
+  # Dependabot does not parse HA manifests; review pymodbus advisories
+  # periodically and bump the requirements string when needed.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-name: "pymodbus"

@@ -10,8 +10,8 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
-    CONCENTRATION_PARTS_PER_MILLION,
     PERCENTAGE,
+    UnitOfRatio,
     UnitOfTemperature,
     UnitOfTime,
 )
@@ -97,7 +97,7 @@ ATTRIBUTE_TO_SENSORS = {
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
-            None,
+            EntityCategory.DIAGNOSTIC,
             None,
             True,
         )
@@ -108,9 +108,9 @@ ATTRIBUTE_TO_SENSORS = {
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
             None,
-            None,
-            True,
+            False,
         )
     ],
     "get_t8_outdoor_temperature": [
@@ -119,7 +119,18 @@ ATTRIBUTE_TO_SENSORS = {
             UnitOfTemperature.CELSIUS,
             SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
             None,
+            True,
+        )
+    ],
+    "get_t9_heater_temperature": [
+        Map(
+            "heater_temperature_t9",
+            UnitOfTemperature.CELSIUS,
+            SensorDeviceClass.TEMPERATURE,
+            SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
             None,
             True,
         )
@@ -226,7 +237,7 @@ ATTRIBUTE_TO_SENSORS = {
     "get_co2_sensor_value": [
         Map(
             "co2_sensor",
-            CONCENTRATION_PARTS_PER_MILLION,
+            UnitOfRatio.PARTS_PER_MILLION,
             SensorDeviceClass.CO2,
             SensorStateClass.MEASUREMENT,
             None,
@@ -242,6 +253,17 @@ ATTRIBUTE_TO_SENSORS = {
             None,
             None,
             "mdi:state-machine",
+            True,
+        )
+    ],
+    "get_panel_operating_mode": [
+        Map(
+            "panel_operating_mode",
+            None,
+            None,
+            None,
+            None,
+            "mdi:heat-pump",
             True,
         )
     ],
@@ -292,6 +314,72 @@ ATTRIBUTE_TO_SENSORS = {
     "get_days_to_air_filter_change": [
         Map(
             "days_to_air_filter_change",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:calendar-end",
+            True,
+        )
+    ],
+    "get_filter_interval_inlet": [
+        Map(
+            "filter_interval_inlet",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
+            "mdi:filter-variant",
+            True,
+        )
+    ],
+    "get_filter_interval_exhaust": [
+        Map(
+            "filter_interval_exhaust",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            EntityCategory.DIAGNOSTIC,
+            "mdi:filter-variant",
+            True,
+        )
+    ],
+    "get_days_since_inlet_filter_change": [
+        Map(
+            "days_since_inlet_filter_change",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:calendar-start",
+            True,
+        )
+    ],
+    "get_days_to_inlet_filter_change": [
+        Map(
+            "days_to_inlet_filter_change",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:calendar-end",
+            True,
+        )
+    ],
+    "get_days_since_exhaust_filter_change": [
+        Map(
+            "days_since_exhaust_filter_change",
+            UnitOfTime.DAYS,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:calendar-start",
+            True,
+        )
+    ],
+    "get_days_to_exhaust_filter_change": [
+        Map(
+            "days_to_exhaust_filter_change",
             UnitOfTime.DAYS,
             None,
             SensorStateClass.MEASUREMENT,
@@ -396,6 +484,39 @@ ATTRIBUTE_TO_SENSORS = {
             SensorStateClass.MEASUREMENT,
             None,
             "mdi:fan",
+            True,
+        )
+    ],
+    "get_fan_speed_percent": [
+        Map(
+            "fan_speed_percent",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:fan-speed-3",
+            True,
+        )
+    ],
+    "get_bypass_damper_percent": [
+        Map(
+            "bypass_damper_percent",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:valve",
+            True,
+        )
+    ],
+    "get_main_compressor_effort": [
+        Map(
+            "main_compressor_effort",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:heat-pump",
             True,
         )
     ],
@@ -596,7 +717,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
                         m.state_class,
                         m.entity_category,
                         m.icon,
-                        m.enabled,
+                        m.enabled and device.supports_attribute(attribute),
                     )
                     for m in maps
                 ]
@@ -629,11 +750,17 @@ class NilanCTS602Sensor(SensorEntity, NilanEntity):
         self._attr_entity_category = entity_category
         self._attr_icon = icon
         self._name = name
-        self._attr_entity_registry_enabled_default = enabled
+        self._attr_entity_registry_enabled_default = (
+            enabled and device.supports_attribute(attribute)
+        )
         self._attr_has_entity_name = True
         self._attr_translation_key = self._name
-        self._attr_unique_id = self._name
+        self._attr_unique_id = self.make_unique_id(self._name)
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
-        self._attr_native_value = await getattr(self._device, self._attribute)()
+        value = await getattr(self._device, self._attribute)()
+        # Keep the last good reading when Modbus is briefly busy (dual hub, timeouts).
+        # Clearing to None surfaces as HA state "unknown" and glance/tile spinners.
+        if value is not None:
+            self._attr_native_value = value

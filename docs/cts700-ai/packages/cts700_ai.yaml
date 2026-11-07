@@ -1,0 +1,490 @@
+# CTS700 AI assistant: preference memory + 24/7 master switch (Phase 1+2)
+# Copy to /config/packages/cts700_ai.yaml on Home Assistant.
+# Requires: homeassistant.packages: !include_dir_named packages
+# Autonomous loop: packages/cts700_ai_autotune.yaml
+#
+# Scope: comfort preference helpers + memory read/write scripts.
+# Does NOT invent Modbus registers. Prefer the Nilan integration for Modbus.
+# Conversation / LLM agents are configured in the UI (see docs/cts700-ai/README.md).
+
+input_boolean:
+  cts700_ai_enabled:
+    name: "CTS700 AI 24/7"
+    icon: mdi:robot-outline
+    initial: true
+
+  cts700_ai_learn_preferences:
+    name: "CTS700 AI lær preferanser"
+    icon: mdi:brain
+    initial: true
+
+  cts700_ai_quiet_hours:
+    name: "CTS700 AI stilletid"
+    icon: mdi:moon-waning-crescent
+    initial: false
+
+  cts700_ai_prefer_local_llm:
+    name: "CTS700 AI preferer lokal LLM"
+    icon: mdi:home-assistant
+    initial: true
+
+  cts700_ai_allow_writes:
+    name: "CTS700 AI auto-skriv (CTS)"
+    icon: mdi:pencil-lock
+    initial: true
+
+input_number:
+  cts700_ai_pref_room_c:
+    name: "CTS700 AI preferert romtemp"
+    min: 16
+    max: 26
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer
+    # Comfort band midpoint (22 to 23 C). Live state may already exist; set via UI/service too.
+    initial: 22.5
+    mode: slider
+
+  cts700_ai_pref_dhw_c:
+    name: "CTS700 AI preferert VV-setpunkt"
+    min: 40
+    max: 55
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:water-boiler
+    initial: 50.0
+    mode: slider
+
+  cts700_ai_pref_fan_percent:
+    name: "CTS700 AI preferert vifte %"
+    min: 25
+    max: 100
+    step: 5
+    unit_of_measurement: "%"
+    icon: mdi:fan
+    initial: 55
+    mode: slider
+
+  cts700_ai_pref_min_room_c:
+    name: "CTS700 AI min romtemp"
+    min: 14
+    max: 24
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-low
+    # Preferred comfort band lower bound (22 to 23 C).
+    initial: 22.0
+    mode: box
+
+  cts700_ai_pref_max_room_c:
+    name: "CTS700 AI maks romtemp"
+    min: 18
+    max: 28
+    step: 0.5
+    unit_of_measurement: "°C"
+    icon: mdi:thermometer-high
+    # Preferred comfort band upper bound (22 to 23 C).
+    initial: 23.0
+    mode: box
+
+  cts700_ai_quiet_start_hour:
+    name: "CTS700 AI stilletid start (time)"
+    min: 0
+    max: 23
+    step: 1
+    icon: mdi:clock-start
+    initial: 22
+    mode: box
+
+  cts700_ai_quiet_end_hour:
+    name: "CTS700 AI stilletid slutt (time)"
+    min: 0
+    max: 23
+    step: 1
+    icon: mdi:clock-end
+    initial: 7
+    mode: box
+
+  # Thermal lag: room effect from setpoint/fan can take this long (hours).
+  cts700_ai_lag_hours:
+    name: "CTS700 AI termisk lag (timer)"
+    min: 1
+    max: 8
+    step: 0.5
+    unit_of_measurement: "h"
+    icon: mdi:timer-sand
+    initial: 3
+    mode: box
+
+  # Minimum hours between CTS setpoint/fan writes (anti-thrash).
+  cts700_ai_write_hold_hours:
+    name: "CTS700 AI skriv-hold (timer)"
+    min: 1
+    max: 6
+    step: 0.5
+    unit_of_measurement: "h"
+    icon: mdi:timer-lock-outline
+    initial: 2.5
+    mode: box
+
+  # Apartment size for inertia context (default ca. 60 m2).
+  cts700_ai_apartment_m2:
+    name: "CTS700 AI leilighet m2"
+    min: 20
+    max: 200
+    step: 5
+    unit_of_measurement: "m²"
+    icon: mdi:floor-plan
+    initial: 60
+    mode: box
+
+input_datetime:
+  cts700_ai_last_write:
+    name: "CTS700 AI siste CTS-skriv"
+    has_date: true
+    has_time: true
+    icon: mdi:clock-check-outline
+
+input_text:
+  cts700_ai_notes:
+    name: "CTS700 AI notater"
+    max: 255
+    icon: mdi:note-text-outline
+    initial: "Ca. 60 m2: hoy treghet. Preferert rom 22 til 23 C (mal 22.5). Kjoling og vifte tar timer. Ver i forkant (lag ca. 3 t)."
+
+  cts700_ai_constraints:
+    name: "CTS700 AI begrensninger"
+    max: 255
+    icon: mdi:shield-lock-outline
+    initial: "Ikke kamera/las. Ikke inventer registre. Respekter ETHERNET-LIMITS. Hold 2.5t etter skriv."
+
+  cts700_ai_memory_json:
+    name: "CTS700 AI minne (JSON)"
+    max: 255
+    icon: mdi:database-outline
+    initial: '{"v":1,"patterns":[]}'
+
+  cts700_ai_last_advice:
+    name: "CTS700 AI siste råd"
+    max: 255
+    icon: mdi:message-text-outline
+    initial: ""
+
+  cts700_ai_agent_hint:
+    name: "CTS700 AI agent-hint"
+    max: 64
+    icon: mdi:account-cog-outline
+    initial: "local"
+
+template:
+  - sensor:
+      - name: "CTS700 AI Memory Snapshot"
+        unique_id: cts700_ai_memory_snapshot
+        icon: mdi:memory
+        state: >-
+          {% if is_state('input_boolean.cts700_ai_enabled', 'on') %}ready{% else %}disabled{% endif %}
+        attributes:
+          enabled: "{{ is_state('input_boolean.cts700_ai_enabled', 'on') }}"
+          learn: "{{ is_state('input_boolean.cts700_ai_learn_preferences', 'on') }}"
+          quiet_hours: "{{ is_state('input_boolean.cts700_ai_quiet_hours', 'on') }}"
+          prefer_local: "{{ is_state('input_boolean.cts700_ai_prefer_local_llm', 'on') }}"
+          allow_writes: "{{ is_state('input_boolean.cts700_ai_allow_writes', 'on') }}"
+          pref_room_c: "{{ states('input_number.cts700_ai_pref_room_c') }}"
+          pref_dhw_c: "{{ states('input_number.cts700_ai_pref_dhw_c') }}"
+          pref_fan_percent: "{{ states('input_number.cts700_ai_pref_fan_percent') }}"
+          min_room_c: "{{ states('input_number.cts700_ai_pref_min_room_c') }}"
+          max_room_c: "{{ states('input_number.cts700_ai_pref_max_room_c') }}"
+          quiet_start: "{{ states('input_number.cts700_ai_quiet_start_hour') | int(22) }}"
+          quiet_end: "{{ states('input_number.cts700_ai_quiet_end_hour') | int(7) }}"
+          lag_hours: "{{ states('input_number.cts700_ai_lag_hours') | float(3) }}"
+          write_hold_hours: "{{ states('input_number.cts700_ai_write_hold_hours') | float(2.5) }}"
+          apartment_m2: "{{ states('input_number.cts700_ai_apartment_m2') | int(60) }}"
+          last_write: "{{ states('input_datetime.cts700_ai_last_write') }}"
+          notes: "{{ states('input_text.cts700_ai_notes') }}"
+          constraints: "{{ states('input_text.cts700_ai_constraints') }}"
+          memory_json: "{{ states('input_text.cts700_ai_memory_json') }}"
+          last_advice: "{{ states('input_text.cts700_ai_last_advice') }}"
+          agent_hint: "{{ states('input_text.cts700_ai_agent_hint') }}"
+          updated: "{{ now().isoformat() }}"
+
+      - name: "CTS700 AI Context Brief"
+        unique_id: cts700_ai_context_brief
+        icon: mdi:card-text-outline
+        state: >-
+          Rom {{ states('input_number.cts700_ai_pref_room_c') }}C, vifte {{ states('input_number.cts700_ai_pref_fan_percent') }}%, lag {{ states('input_number.cts700_ai_lag_hours') }}t
+        attributes:
+          brief_no: >-
+            Preferanser: rom {{ states('input_number.cts700_ai_pref_room_c') }} °C
+            (min {{ states('input_number.cts700_ai_pref_min_room_c') }},
+            maks {{ states('input_number.cts700_ai_pref_max_room_c') }}),
+            vifte {{ states('input_number.cts700_ai_pref_fan_percent') }} %,
+            VV-setpunkt {{ states('input_number.cts700_ai_pref_dhw_c') }} °C.
+            Bolig ca. {{ states('input_number.cts700_ai_apartment_m2') | int(60) }} m2 (hoy treghet).
+            Termisk lag: {{ states('input_number.cts700_ai_lag_hours') }} t.
+            Skriv-hold: {{ states('input_number.cts700_ai_write_hold_hours') }} t.
+            Kjoling og vifte tar lang tid: ver i forkant.
+            Stilletid: {{ 'på' if is_state('input_boolean.cts700_ai_quiet_hours', 'on') else 'av' }}
+            ({{ states('input_number.cts700_ai_quiet_start_hour') | int }}-{{ states('input_number.cts700_ai_quiet_end_hour') | int }}).
+            Skriving: {{ 'tillatt' if is_state('input_boolean.cts700_ai_allow_writes', 'on') else 'kun råd' }}.
+            Siste CTS-skriv: {{ states('input_datetime.cts700_ai_last_write') }}.
+            Notater: {{ states('input_text.cts700_ai_notes') }}.
+            Begrensninger: {{ states('input_text.cts700_ai_constraints') }}.
+
+script:
+  cts700_ai_memory_read:
+    alias: "CTS700 AI Memory Read"
+    icon: mdi:book-open-page-variant
+    mode: single
+    sequence:
+      - variables:
+          # Full JSON stays on sensor.cts700_ai_memory_snapshot / input_text.cts700_ai_memory_json (not in varsel).
+          # Literal block (|) keeps line breaks in the persistent notification.
+          message_no: |
+            {% set room = states('input_number.cts700_ai_pref_room_c') %}
+            {% set rmin = states('input_number.cts700_ai_pref_min_room_c') %}
+            {% set rmax = states('input_number.cts700_ai_pref_max_room_c') %}
+            {% set fan = states('input_number.cts700_ai_pref_fan_percent') %}
+            {% set lag = states('input_number.cts700_ai_lag_hours') %}
+            {% set hold = states('input_number.cts700_ai_write_hold_hours') %}
+            {% set last_w = states('input_datetime.cts700_ai_last_write') %}
+            {% set action = states('input_text.cts700_ai_last_action') %}
+            {% set advice = states('input_text.cts700_ai_last_advice') %}
+            {% set brief_txt = state_attr('sensor.cts700_ai_context_brief', 'brief_no') %}
+            {% if brief_txt %}{{ brief_txt }}
+
+            {% endif %}**Nokkelverdier**
+            Rom-mal: {{ room }} C (min {{ rmin }} / maks {{ rmax }})
+            Vifte: {{ fan }} %
+            AI 24/7: {{ 'på' if is_state('input_boolean.cts700_ai_enabled', 'on') else 'av' }}
+            Auto-skriv: {{ 'på' if is_state('input_boolean.cts700_ai_allow_writes', 'on') else 'av' }}
+            Lag / hold: {{ lag }} t / {{ hold }} t
+            Stilletid: {{ 'på' if is_state('input_boolean.cts700_ai_quiet_hours', 'on') else 'av' }}
+            Siste CTS-skriv: {{ last_w }}
+            Siste handling: {{ action if action not in ['unknown', 'unavailable', ''] else '(ingen)' }}
+            {% if advice not in ['unknown', 'unavailable', ''] %}AI råd: {{ advice }}{% endif %}
+      - service: persistent_notification.create
+        data:
+          notification_id: cts700_ai_memory
+          title: "CTS700 AI minne"
+          message: "{{ message_no }}"
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "Memory read OK (lesbar varsel, JSON i sensor/input_text)"
+          entity_id: sensor.cts700_ai_memory_snapshot
+
+  cts700_ai_memory_write_prefs:
+    alias: "CTS700 AI Memory Write Prefs"
+    icon: mdi:content-save-outline
+    mode: single
+    description: "Update preference helpers from script fields (clamped). Used by Assist / automations later."
+    fields:
+      room_c:
+        name: Room C
+        description: Preferred room temperature (16-26)
+        selector:
+          number:
+            min: 16
+            max: 26
+            step: 0.5
+            unit_of_measurement: "°C"
+      dhw_c:
+        name: DHW C
+        description: Preferred DHW setpoint helper (40-55). Ethernet dial may still cap lower.
+        selector:
+          number:
+            min: 40
+            max: 55
+            step: 0.5
+            unit_of_measurement: "°C"
+      fan_percent:
+        name: Fan percent
+        description: Preferred fan percent (25-100)
+        selector:
+          number:
+            min: 25
+            max: 100
+            step: 5
+            unit_of_measurement: "%"
+      notes:
+        name: Notes
+        description: Short preference note (max 255)
+        selector:
+          text:
+      last_advice:
+        name: Last advice
+        description: Short last advice string for UI (max 255)
+        selector:
+          text:
+      agent_hint:
+        name: Agent hint
+        description: local or cloud
+        selector:
+          select:
+            options:
+              - local
+              - cloud
+    sequence:
+      - condition: state
+        entity_id: input_boolean.cts700_ai_enabled
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.cts700_ai_learn_preferences
+        state: "on"
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ room_c is defined and room_c is not none }}"
+            sequence:
+              - service: input_number.set_value
+                target:
+                  entity_id: input_number.cts700_ai_pref_room_c
+                data:
+                  value: >-
+                    {{ [[room_c | float(22.5), 16] | max, 26] | min }}
+          - conditions:
+              - condition: template
+                value_template: "{{ dhw_c is defined and dhw_c is not none }}"
+            sequence:
+              - service: input_number.set_value
+                target:
+                  entity_id: input_number.cts700_ai_pref_dhw_c
+                data:
+                  value: >-
+                    {{ [[dhw_c | float(50), 40] | max, 55] | min }}
+          - conditions:
+              - condition: template
+                value_template: "{{ fan_percent is defined and fan_percent is not none }}"
+            sequence:
+              - service: input_number.set_value
+                target:
+                  entity_id: input_number.cts700_ai_pref_fan_percent
+                data:
+                  value: >-
+                    {{ [[fan_percent | int(55), 25] | max, 100] | min }}
+          - conditions:
+              - condition: template
+                value_template: "{{ notes is defined and notes is not none and (notes | string | length) > 0 }}"
+            sequence:
+              - service: input_text.set_value
+                target:
+                  entity_id: input_text.cts700_ai_notes
+                data:
+                  value: "{{ (notes | string)[:255] }}"
+          - conditions:
+              - condition: template
+                value_template: "{{ last_advice is defined and last_advice is not none }}"
+            sequence:
+              - service: input_text.set_value
+                target:
+                  entity_id: input_text.cts700_ai_last_advice
+                data:
+                  value: "{{ (last_advice | string)[:255] }}"
+          - conditions:
+              - condition: template
+                value_template: "{{ agent_hint is defined and agent_hint in ['local', 'cloud'] }}"
+            sequence:
+              - service: input_text.set_value
+                target:
+                  entity_id: input_text.cts700_ai_agent_hint
+                data:
+                  value: "{{ agent_hint }}"
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "Preference memory updated"
+          entity_id: sensor.cts700_ai_memory_snapshot
+
+  cts700_ai_memory_append_pattern:
+    alias: "CTS700 AI Memory Append Pattern"
+    icon: mdi:playlist-plus
+    mode: queued
+    max: 5
+    description: "Append a short pattern tag into memory_json (v1 compact list, max ~6 tags)."
+    fields:
+      pattern:
+        name: Pattern
+        required: true
+        description: Short tag, e.g. night_fan_low or morning_warm
+        selector:
+          text:
+    sequence:
+      - condition: state
+        entity_id: input_boolean.cts700_ai_enabled
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.cts700_ai_learn_preferences
+        state: "on"
+      - condition: template
+        value_template: >-
+          {% set p = pattern | default('', true) | string | trim | lower | replace(' ', '_') %}
+          {{ p | length >= 2 and p | length <= 40 }}
+      - variables:
+          tag: "{{ pattern | string | trim | lower | replace(' ', '_') }}"
+          next_json: >-
+            {% set tag = pattern | string | trim | lower | replace(' ', '_') %}
+            {% set raw = states('input_text.cts700_ai_memory_json') %}
+            {% set ns = namespace(parsed={'v': 1, 'patterns': []}) %}
+            {% if raw is string and raw[:1] == '{' %}
+              {% set ns.parsed = raw | from_json %}
+            {% endif %}
+            {% set plist = ns.parsed.patterns if ns.parsed is mapping and ns.parsed.patterns is iterable else [] %}
+            {% set kept = plist | reject('eq', tag) | map('string') | reject('eq', '') | list %}
+            {% set cleaned = (kept + [tag])[-6:] %}
+            {{ {'v': 1, 'patterns': cleaned} | to_json }}
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_memory_json
+        data:
+          value: "{{ (next_json | string)[:255] }}"
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "Pattern appended: {{ tag }}"
+          entity_id: sensor.cts700_ai_memory_snapshot
+
+  cts700_ai_set_last_advice:
+    alias: "CTS700 AI Set Last Advice"
+    icon: mdi:comment-check-outline
+    mode: single
+    fields:
+      advice:
+        name: Advice
+        required: true
+        selector:
+          text:
+    sequence:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_last_advice
+        data:
+          value: "{{ (advice | string)[:255] }}"
+
+group:
+  cts700_ai_helpers:
+    name: "CTS700 AI Helpers"
+    icon: mdi:robot-outline
+    entities:
+      - input_boolean.cts700_ai_enabled
+      - input_boolean.cts700_ai_learn_preferences
+      - input_boolean.cts700_ai_quiet_hours
+      - input_boolean.cts700_ai_prefer_local_llm
+      - input_boolean.cts700_ai_allow_writes
+      - input_number.cts700_ai_pref_room_c
+      - input_number.cts700_ai_pref_dhw_c
+      - input_number.cts700_ai_pref_fan_percent
+      - input_number.cts700_ai_pref_min_room_c
+      - input_number.cts700_ai_pref_max_room_c
+      - input_number.cts700_ai_quiet_start_hour
+      - input_number.cts700_ai_quiet_end_hour
+      - input_number.cts700_ai_lag_hours
+      - input_number.cts700_ai_write_hold_hours
+      - input_number.cts700_ai_apartment_m2
+      - input_datetime.cts700_ai_last_write
+      - input_text.cts700_ai_notes
+      - input_text.cts700_ai_constraints
+      - input_text.cts700_ai_memory_json
+      - input_text.cts700_ai_last_advice
+      - input_text.cts700_ai_agent_hint
+      - sensor.cts700_ai_memory_snapshot
+      - sensor.cts700_ai_context_brief

@@ -1,0 +1,24 @@
+# Template sensors for Nordic filter days (YAML Modbus path)
+#
+# Include after modbus sensors from cts700_nordic_xl.yaml are loaded.
+# Requires: sensor.nilan_nordic_filter_interval_inlet (1326),
+#           sensor.nilan_nordic_filter_remaining_inlet (1328), etc.
+
+template:
+  - sensor:
+      - name: Nilan Nordic Filter Days Since Inlet
+        unique_id: nilan_nordic_filter_days_since_inlet
+        unit_of_measurement: d
+        state_class: measurement
+        state: >
+          {% set interval = states('sensor.nilan_nordic_filter_interval_inlet') | int(0) %}
+          {% set remaining = states('sensor.nilan_nordic_filter_remaining_inlet') | int(0) %}
+          {{ [interval - remaining, 0] | max }}
+      - name: Nilan Nordic Filter Days Since Exhaust
+        unique_id: nilan_nordic_filter_days_since_exhaust
+        unit_of_measurement: d
+        state_class: measurement
+        state: >
+          {% set interval = states('sensor.nilan_nordic_filter_interval_exhaust') | int(0) %}
+          {% set remaining = states('sensor.nilan_nordic_filter_remaining_exhaust') | int(0) %}
+          {{ [interval - remaining, 0] | max }}

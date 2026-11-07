@@ -33,7 +33,7 @@ class NilanCTS602SyncTimeButton(ButtonEntity, NilanEntity):
         self._attr_icon = "mdi:clock-edit-outline"
         self._attr_translation_key = "sync_time"
         self._attr_has_entity_name = True
-        self._attr_unique_id = "sync_time"
+        self._attr_unique_id = self.make_unique_id("sync_time")
 
     async def async_press(self) -> None:
         """Handle the button press."""

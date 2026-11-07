@@ -18,6 +18,24 @@
                     "serial": "Serial"
                 }
             },
+            "board": {
+                "title": "Steuerplatine wählen",
+                "description": "Auto-Erkennung bevorzugen wenn unsicher. YAML-Modbus für dieses Gerät zuerst pausieren. {coexistence_warning}",
+                "menu_options": {
+                    "auto_detect": "Auto-Erkennung (empfohlen)",
+                    "cts602": "CTS602 (Comfort / Compact / VP)",
+                    "cts700": "CTS700 2018+ Compact P (Lüfter Prozent 21771)",
+                    "cts700_nordic": "CTS700 Nordic/Polar/Arctic XL (Lüfterstufen 101-104)",
+                    "cts700_legacy": "CTS700 2015 Legacy-Map"
+                },
+                "menu_option_descriptions": {
+                    "auto_detect": "Prüft CTS602, dann CTS700 Nordic / 2018+ / 2015. Beste Wahl bei Unsicherheit (z. B. Compact P GEO auf NCS-700).",
+                    "cts602": "Klassische Comfort / Compact / VP. Typische Unit-ID 30.",
+                    "cts700": "2018+ Compact P Ethernet-Map. Lüfter Holding 21771 als Prozent. Typische Unit-ID 1.",
+                    "cts700_nordic": "Nordic / Polar / Arctic XL Hybrid. Lüfter Holding 4747 Stufen 101-104. Typische Unit-ID 1.",
+                    "cts700_legacy": "2015 PDF-Map (Register meist unter 10000)."
+                }
+            },
             "tcp": {
                 "title": "TCP Konfiguration",
                 "data": {
@@ -43,6 +61,7 @@
             "smoke_alarm": {"name": "Rauch Alarm"},
             "defrost": {"name": "Auftauen"},
             "bypass_flap": {"name": "Bypass-Klappe"},
+            "heat_pump": {"name": "Wärmepumpe"},
             "user_selection_1": {"name": "Benutzer Auswahl 1"},
             "user_selection_2": {"name": "Benutzer Auswahl 2"},
             "display_led_1": {"name": "Anzeige LED 1"},
@@ -134,6 +153,12 @@
         },
         "number": {
           "scalding_protection_setpoint": {"name": "Verbrühungsschutz-Sollwert"},
+          "el_supplement_activated_below": {"name": "El-Zusatz unterhalb"},
+          "hot_water_pause_days": {"name": "Warmwasser-Pause Tage"},
+          "low_humidity_level": {"name": "Niedrige Luftfeuchtigkeit"},
+          "frost_protection_below": {"name": "Frostschutz unterhalb"},
+          "preheater_setpoint": {"name": "Vorheizer-Sollwert"},
+          "anti_legionella_time": {"name": "Anti-Legionellen Zeit"},
           "maximum_time_in_high_humidity_ventilation": {"name": "Maximale Zeit für hohe Luftfeuchtigkeitslüftung"},
           "low_temperature_curve": {"name": "Niedrige Temperaturkurve"},
           "high_temperature_curve": {"name": "Hohe Temperaturkurve"},
@@ -202,7 +227,7 @@
                     "2": "Luftfeuchtigkeit + CO2"
                 }
             },
-            "compressor_heating_priority": {
+            "hot_water_priority": {
                 "name": "Priorität der Kompressorheizung",
                 "state": {
                     "0": "Wasser",
@@ -394,15 +419,15 @@
         },
         "sensor": {
           "controller_board_temperature_t0": {"name": "Temperatur der Controllerplatine (T0)"},
-          "fresh_air_intake_temperature_t1": {"name": "Frischlufteinlasstemperatur (T1)"},
+          "fresh_air_intake_temperature_t1": {"name": "Außentemperatur (T1)"},
           "supply_air_temperature_t2": {"name": "Zulufttemperatur (T2)"},
-          "return_air_temperature_t3": {"name": "Rücklufttemperatur (T3)"},
-          "waste_air_temperature_t4": {"name": "Ablufttemperatur (T4)"},
-          "condenser_temperature_t5": {"name": "Kondensattemperatur (T5)"},
-          "waste_air_temperature_t6": {"name": "Ablufttemperatur (T6)"},
-          "supply_air_temperature_t7": {"name": "Zulufttemperatur (T7)"},
-          "fresh_air_intake_temperature_t8": {"name": "Frischlufteinlasstemperatur (T8)"},
-          "return_air_temperature_t10": {"name": "Rücklufttemperatur (T10)"},
+          "return_air_temperature_t3": {"name": "Ablufttemperatur (T3)"},
+          "waste_air_temperature_t4": {"name": "Abluft nach Wärmetauscher (T4)"},
+          "condenser_temperature_t5": {"name": "Kondensatortemperatur (T5)"},
+          "waste_air_temperature_t6": {"name": "Verdampfertemperatur (T6)"},
+          "supply_air_temperature_t7": {"name": "Zuluft nach Nachheizung (T7)"},
+          "fresh_air_intake_temperature_t8": {"name": "Außen / Vorheizerpfad (T8)"},
+          "return_air_temperature_t10": {"name": "Ablufttemperatur (T10)"},
           "return_water_temperature_t13": {"name": "Rücklaufwassertemperatur (T13)"},
           "supply_water_temperature_t14": {"name": "Vorlaufwassertemperatur (T14)"},
           "user_panel_temperature_t15": {"name": "Bedien Panel Temperatur (T15)"},
@@ -424,7 +449,7 @@
                 "6": "Lüftung",
                 "7": "Heizen",
                 "8": "Kühlen",
-                "9": "Heißwasser",
+                "9": "Warmwasserproduktion",
                 "10": "Legionellen",
                 "11": "Kühlen + Heißwasser",
                 "12": "Zentralheizung",
@@ -433,6 +458,16 @@
                 "15": "Service",
                 "16": "Alarm",
                 "17": "Heizen + Heißwasser"
+              }
+            },
+          "panel_operating_mode": {
+              "name": "Panel Betriebsmodus",
+              "state": {
+                "0": "Aus",
+                "1": "Kühlen",
+                "2": "Heizen",
+                "3": "Entfeuchtung",
+                "4": "Warmwasserproduktion"
               }
             },
           "after_heating_type": {
@@ -448,6 +483,12 @@
           "alarms_active": {"name": "Aktive Alarme"},
           "days_since_air_filter_change": {"name": "Tage seit dem letzten Filterwechsel"},
           "days_to_air_filter_change": {"name": "Tage bis zum nächsten Filterwechsel"},
+          "days_since_inlet_filter_change": {"name": "Tage seit Zuluftfilterwechsel"},
+          "days_to_inlet_filter_change": {"name": "Tage bis Zuluftfilterwechsel"},
+          "days_since_exhaust_filter_change": {"name": "Tage seit Abluftfilterwechsel"},
+          "days_to_exhaust_filter_change": {"name": "Tage bis Abluftfilterwechsel"},
+          "filter_interval_inlet": {"name": "Zuluftfilter Intervall"},
+          "filter_interval_exhaust": {"name": "Abluftfilter Intervall"},
           "climate_season": {
               "name": "Klima Saison",
               "state": {
@@ -482,12 +523,21 @@
           "return_fan_level": {"name": "Abluftventilator Stufe"},
           "return_fan_speed": {"name": "Abluftventilator Geschwindigkeit"},
           "supply_fan_speed": {"name": "Zuluftventilator Geschwindigkeit"},
+          "bypass_damper_percent": {"name": "Bypass-Klappe Prozent"},
+          "main_compressor_effort": {"name": "Hauptkompressor Leistung"},
           "display_text_line_1": {"name": "Display Text Zeile 1"},
           "display_text_line_2": {"name": "Display Text Zeile 2"},
           "modbus_version": {"name": "ModBus Version"}
         },
         "switch": {
-          "supply_air_after_heating": {"name": "Zuluftventilator nach Heizregister"}
+          "supply_air_after_heating": {"name": "Zuluftventilator nach Heizregister"},
+          "electrical_supplement_heater": {"name": "Elektrische Zusatzheizung"},
+          "ventilation_pause": {"name": "Lüftungspause"},
+          "hot_water_production_pause": {"name": "Warmwasserproduktion Pause"},
+          "allow_active_cooling": {"name": "Aktive Kühlung erlauben"},
+          "frost_protection": {"name": "Frostschutz"},
+          "anti_legionella_manual": {"name": "Anti-Legionellen starten"},
+          "automatic_anti_legionella": {"name": "Automatische Anti-Legionellen"}
         },
         "water_heater": {
           "top_water_heater": {

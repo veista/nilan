@@ -1,0 +1,80 @@
+# CTS700 AI runtime context (date / HA version / home brief)
+# Copy to /config/packages/cts700_ai_context.yaml
+# Injects fresh facts for Assist. Does not fine-tune the LLM.
+# No street names. Norwegian dates: dd/mm/yyyy.
+
+input_text:
+  cts700_ai_runtime_context:
+    name: "CTS700 AI runtime-kontekst"
+    max: 255
+    icon: mdi:calendar-clock
+    initial: "Dato ukjent. Oppdater via script.cts700_ai_refresh_runtime_context."
+
+template:
+  - sensor:
+      - name: "CTS700 AI Runtime Context"
+        unique_id: cts700_ai_runtime_context
+        icon: mdi:calendar-clock
+        state: >-
+          {{ now().strftime('%d/%m/%Y') }} {{ now().strftime('%H:%M') }}
+        attributes:
+          date_no: "{{ now().strftime('%d/%m/%Y') }}"
+          time_24h: "{{ now().strftime('%H:%M') }}"
+          weekday_no: >-
+            {% set d = ['mandag','tirsdag','onsdag','torsdag','fredag','lordag','sondag'] %}
+            {{ d[now().weekday()] }}
+          ha_version: >-
+            {% set v = states('sensor.current_version') %}
+            {% if v not in ['unknown', 'unavailable', ''] %}{{ v }}
+            {% else %}{{ state_attr('update.home_assistant_core_update', 'installed_version') | default('ukjent') }}{% endif %}
+          nilan_integration: "Nilan CTS700 Nordic (custom, se Marketplace/HACS/custom_components)"
+          home_brief: >-
+            Compact P Nordic, ca. {{ states('input_number.cts700_ai_apartment_m2') | int(60) }} m2,
+            preferert rom {{ states('input_number.cts700_ai_pref_room_c') }} C
+            ({{ states('input_number.cts700_ai_pref_min_room_c') }}-{{ states('input_number.cts700_ai_pref_max_room_c') }}),
+            lag {{ states('input_number.cts700_ai_lag_hours') }} t.
+          brief_no: >-
+            Na: {{ now().strftime('%d/%m/%Y') }} kl. {{ now().strftime('%H:%M') }}
+            ({{ ['mandag','tirsdag','onsdag','torsdag','fredag','lordag','sondag'][now().weekday()] }}).
+            Home Assistant Core:
+            {% set v = states('sensor.current_version') %}
+            {% if v not in ['unknown', 'unavailable', ''] %}{{ v }}
+            {% else %}{{ state_attr('update.home_assistant_core_update', 'installed_version') | default('ukjent') }}{% endif %}.
+            Bolig: Compact P Nordic, ca. {{ states('input_number.cts700_ai_apartment_m2') | int(60) }} m2,
+            rommal {{ states('input_number.cts700_ai_pref_room_c') }} C,
+            AI 24/7 {{ 'pa' if is_state('input_boolean.cts700_ai_enabled', 'on') else 'av' }},
+            auto-skriv {{ 'pa' if is_state('input_boolean.cts700_ai_allow_writes', 'on') else 'av' }}.
+            Ikke bruk gateadresse. Les live entiteter nar Assist-verktoy er pa.
+
+script:
+  cts700_ai_refresh_runtime_context:
+    alias: "CTS700 AI Refresh Runtime Context"
+    icon: mdi:calendar-sync
+    mode: single
+    sequence:
+      - variables:
+          brief: >-
+            {{ now().strftime('%d/%m/%Y') }} kl. {{ now().strftime('%H:%M') }}.
+            HA {% set v = states('sensor.current_version') %}{% if v not in ['unknown', 'unavailable', ''] %}{{ v }}{% else %}{{ state_attr('update.home_assistant_core_update', 'installed_version') | default('ukjent') }}{% endif %}.
+            Rommal {{ states('input_number.cts700_ai_pref_room_c') }}C, lag {{ states('input_number.cts700_ai_lag_hours') }}t.
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.cts700_ai_runtime_context
+        data:
+          value: "{{ (brief | string)[:255] }}"
+      - service: logbook.log
+        data:
+          name: "CTS700 AI"
+          message: "Runtime context refreshed"
+          entity_id: sensor.cts700_ai_runtime_context
+
+automation:
+  - id: cts700_ai_runtime_context_hourly
+    alias: "CTS700 AI runtime-kontekst (hver time)"
+    description: "Keeps input_text.cts700_ai_runtime_context fresh for Assist/prompt readers."
+    mode: single
+    trigger:
+      - platform: time_pattern
+        minutes: "5"
+    action:
+      - service: script.cts700_ai_refresh_runtime_context

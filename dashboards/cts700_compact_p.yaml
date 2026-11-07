@@ -1,0 +1,44 @@
+title: Nilan CTS700
+views:
+  - title: Nilan
+    path: nilan
+    type: sections
+    max_columns: 2
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: markdown
+            content: |
+              ## Nilan CTS700
+              Compact P overview. Entities from the Nilan integration only.
+          - type: thermostat
+            entity: climate.nilan_hvac
+          - type: entities
+            title: Climate and fan
+            entities:
+              - climate.nilan_hvac
+              - sensor.nilan_humidity
+              - sensor.nilan_days_to_air_filter_change
+      - type: grid
+        cards:
+          - type: entities
+            title: Temperatures
+            entities:
+              - sensor.nilan_fresh_air_intake_temperature_t1
+              - sensor.nilan_supply_air_temperature_t2
+              - sensor.nilan_return_air_temperature_t3
+              - sensor.nilan_waste_air_temperature_t4
+              - sensor.nilan_condenser_temperature_t5
+              - sensor.nilan_waste_air_temperature_t6
+          - type: entities
+            title: Domestic hot water
+            entities:
+              - water_heater.nilan_top_water_heater
+              - water_heater.nilan_bottom_water_heater
+          - type: history-graph
+            title: Room and outdoor
+            hours_to_show: 24
+            entities:
+              - climate.nilan_hvac
+              - sensor.nilan_fresh_air_intake_temperature_t1

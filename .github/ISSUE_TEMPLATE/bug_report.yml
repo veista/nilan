@@ -1,0 +1,63 @@
+name: Bug report
+description: Something does not work as expected with the Nilan integration
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Do **not** include secrets, installer passwords, or real LAN IPs (use `192.168.1.50` as an example).
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered steps help a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: input
+    id: ha_version
+    attributes:
+      label: Home Assistant version
+      placeholder: "2026.8.0"
+    validations:
+      required: true
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      placeholder: "1.3.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: board
+    attributes:
+      label: Board type
+      options:
+        - CTS602
+        - CTS700
+        - Unknown / auto-detect
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device / HMI type
+      description: Plate or HMI type string if known (example Compact P, VP18).
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Enable debug for custom_components.nilan if possible. Redact secrets.
+      render: shell

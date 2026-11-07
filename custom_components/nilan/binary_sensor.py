@@ -55,6 +55,16 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             True,
         )
     ],
+    "get_heat_pump_state": [
+        Map(
+            "heat_pump",
+            BinarySensorDeviceClass.RUNNING,
+            None,
+            "mdi:heat-pump",
+            "mdi:heat-pump-outline",
+            True,
+        )
+    ],
     "get_user_function_1_state": [
         Map(
             "user_selection_1",
@@ -135,6 +145,16 @@ ATTRIBUTE_TO_BINARY_SENSORS = {
             True,
         )
     ],
+    "get_filter_alarm_state": [
+        Map(
+            "filter_alarm",
+            BinarySensorDeviceClass.PROBLEM,
+            None,
+            "mdi:air-filter",
+            "mdi:air-filter",
+            True,
+        )
+    ],
 }
 
 
@@ -155,7 +175,7 @@ async def async_setup_entry(HomeAssistant, config_entry, async_add_entities):
                         m.entity_category,
                         m.on_icon,
                         m.off_icon,
-                        m.enabled,
+                        m.enabled and device.supports_attribute(attribute),
                     )
                     for m in maps
                 ]
@@ -186,10 +206,12 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
         self._name = name
         self._on_icon = on_icon
         self._off_icon = off_icon
-        self._attr_entity_registry_enabled_default = enabled
+        self._attr_entity_registry_enabled_default = (
+            enabled and device.supports_attribute(attribute)
+        )
         self._attr_has_entity_name = True
         self._attr_translation_key = self._name
-        self._attr_unique_id = self._name
+        self._attr_unique_id = self.make_unique_id(self._name)
 
     @property
     def icon(self) -> str | None:
@@ -200,4 +222,7 @@ class NilanCTS602BinarySensor(BinarySensorEntity, NilanEntity):
 
     async def async_update(self) -> None:
         """Fetch new state data for the binary sensor."""
-        self._attr_is_on = await getattr(self._device, self._attribute)()
+        value = await getattr(self._device, self._attribute)()
+        # Keep last known value on brief Modbus misses (avoids "unknown" flicker).
+        if value is not None:
+            self._attr_is_on = value

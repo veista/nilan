@@ -1,0 +1,169 @@
+# CTS700 2015 legacy (CTS700_LEGACY)
+# Fan on holding 4747 is percent 0-100 (not Nordic steps 101-104).
+# Prefer custom_components/nilan board "CTS700 (2015 legacy map)".
+# Never run this YAML and the Nilan integration on the same unit.
+
+modbus:
+  - name: nilan_cts700_2015
+    type: tcp
+    host: YOUR_HOST_IP
+    port: 502
+    delay: 1
+    timeout: 3
+    sensors:
+      - name: Nilan Legacy Room Setpoint
+        unique_id: nilan_legacy_room_setpoint
+        slave: 1
+        address: 4746
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy Fan Percent
+        unique_id: nilan_legacy_fan_percent
+        slave: 1
+        address: 4747
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        state_class: measurement
+
+      - name: Nilan Legacy Humidity
+        unique_id: nilan_legacy_humidity
+        slave: 1
+        address: 4716
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: Nilan Legacy Master Sensor
+        unique_id: nilan_legacy_master
+        slave: 1
+        address: 5088
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T1
+        unique_id: nilan_legacy_t1
+        slave: 1
+        address: 5152
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T2
+        unique_id: nilan_legacy_t2
+        slave: 1
+        address: 5153
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T3
+        unique_id: nilan_legacy_t3
+        slave: 1
+        address: 5154
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T4
+        unique_id: nilan_legacy_t4
+        slave: 1
+        address: 5155
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T5
+        unique_id: nilan_legacy_t5
+        slave: 1
+        address: 5156
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy T6
+        unique_id: nilan_legacy_t6
+        slave: 1
+        address: 5157
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan Legacy Operation Type
+        unique_id: nilan_legacy_op_type
+        slave: 1
+        address: 2402
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan Legacy Pause Mode
+        unique_id: nilan_legacy_pause
+        slave: 1
+        address: 4727
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan Legacy DHW Setpoint
+        unique_id: nilan_legacy_dhw_setpoint
+        slave: 1
+        address: 5548
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+    climates:
+      - name: Nilan Legacy Room
+        unique_id: nilan_legacy_room_climate
+        slave: 1
+        address: 5154
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        target_temp_register: 4746
+        target_temp_register_type: holding
+        max_temp: 30
+        min_temp: 5
+        temp_step: 0.5
+        temperature_unit: C

@@ -1,0 +1,161 @@
+# CTS602 CompactP type 44 (catalog Compact P XL Nordic / AIR / GEO on CTS602)
+# Typical unit id 30 on RS485. Not a CTS700 Ethernet map.
+# Prefer custom_components/nilan board "CTS602".
+# Never run this YAML and the Nilan integration on the same unit.
+
+modbus:
+  - name: nilan_cts602_compactp
+    type: tcp
+    host: YOUR_HOST_IP
+    port: 502
+    delay: 1
+    timeout: 3
+    sensors:
+      - name: Nilan CTS602 Control Type
+        unique_id: nilan_cts602_control_type
+        slave: 30
+        address: 1000
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan CTS602 Run Set
+        unique_id: nilan_cts602_run
+        slave: 30
+        address: 1001
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan CTS602 Mode Set
+        unique_id: nilan_cts602_mode
+        slave: 30
+        address: 1002
+        input_type: holding
+        data_type: uint16
+
+      - name: Nilan CTS602 Vent Set Act
+        unique_id: nilan_cts602_vent_set
+        slave: 30
+        address: 1100
+        input_type: input
+        data_type: uint16
+
+      - name: Nilan CTS602 T1 Intake
+        unique_id: nilan_cts602_t1
+        slave: 30
+        address: 201
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 T2 Inlet
+        unique_id: nilan_cts602_t2
+        slave: 30
+        address: 202
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 T3 Exhaust
+        unique_id: nilan_cts602_t3
+        slave: 30
+        address: 203
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 Humidity
+        unique_id: nilan_cts602_humidity
+        slave: 30
+        address: 221
+        input_type: input
+        data_type: uint16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: Nilan CTS602 Room Temp Control
+        unique_id: nilan_cts602_temp_control
+        slave: 30
+        address: 1202
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 Temp Set
+        unique_id: nilan_cts602_temp_set
+        slave: 30
+        address: 3008
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 T11 DHW Top
+        unique_id: nilan_cts602_t11
+        slave: 30
+        address: 211
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 T12 DHW Bottom
+        unique_id: nilan_cts602_t12
+        slave: 30
+        address: 212
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CTS602 Days To Filter
+        unique_id: nilan_cts602_filter_days
+        slave: 30
+        address: 1104
+        input_type: input
+        data_type: uint16
+        unit_of_measurement: d
+        state_class: measurement
+
+    climates:
+      - name: Nilan CTS602 Room
+        unique_id: nilan_cts602_room_climate
+        slave: 30
+        address: 1202
+        input_type: input
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        target_temp_register: 3008
+        target_temp_register_type: holding
+        max_temp: 30
+        min_temp: 5
+        temp_step: 0.5
+        temperature_unit: C

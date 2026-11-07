@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Upstream veista/nilan issues
+    url: https://github.com/veista/nilan/issues
+    about: Prefer upstream for general CTS602 discussions when using the default Marketplace / HACS package.
+  - name: Security report
+    url: https://github.com/master3395/veista-nilan/security/advisories/new
+    about: Report security issues privately (do not file a public issue).

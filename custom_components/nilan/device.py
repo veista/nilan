@@ -8,7 +8,17 @@ import logging
 from homeassistant.components.modbus import modbus
 from homeassistant.core import HomeAssistant
 
+from .capabilities import (
+    capabilities_for_cts602,
+    filter_attributes_by_capabilities,
+)
 from .device_map import CTS602_DEVICE_TYPES, CTS602_ENTITY_MAP
+from .modbus_hub_util import build_modbus_hub_name, wait_for_modbus_connected
+from .register_probe import (
+    PROBE_SPECS,
+    deserialize_dead_registers,
+    run_register_probe,
+)
 from .registers import CTS602HoldingRegisters, CTS602InputRegisters
 
 _LOGGER = logging.getLogger(__name__)
@@ -25,6 +35,8 @@ class Device:
         host_ip: str | None,
         host_port,
         unit_id,
+        hub_name: str | None = None,
+        stored_dead_registers: list | None = None,
     ) -> None:
         """Create new entity of Device Class."""
         self.hass = hass
@@ -36,8 +48,11 @@ class Device:
         self._host_port = host_port
         self._unit_id = int(unit_id)
         self._com_type = com_type
+        self._hub_name = hub_name or build_modbus_hub_name(
+            name, board_type="CTS602", unit_id=self._unit_id
+        )
         self._client_config = {
-            "name": self._device_name,
+            "name": self._hub_name,
             "type": self._com_type,
             "method": "rtu",
             "delay": 0,
@@ -52,6 +67,11 @@ class Device:
         self._modbus = modbus.ModbusHub(self.hass, self._client_config)
         self._attributes = {}
         self._air_geo_type = 0
+        self._capabilities = frozenset()
+        self._dead_registers: set[tuple[str, int]] = set()
+        self._unsupported_attributes: set[str] = set()
+        self._stored_dead_registers = stored_dead_registers
+        self._probe_ran = False
 
     async def async_close(self):
         """Close modbus connection."""
@@ -64,7 +84,7 @@ class Device:
         success = await self._modbus.async_setup()
 
         if success:
-            await self._modbus.event_connected.wait()
+            await wait_for_modbus_connected(self._modbus)
             _LOGGER.debug("Modbus has been setup")
         else:
             await self._modbus.async_close()
@@ -80,8 +100,13 @@ class Device:
             raise ValueError("hw_type returned None")
         if hw_type not in CTS602_DEVICE_TYPES:
             await self._modbus.async_close()
-            _LOGGER.error("HW type not supported")
-            raise ValueError("HW type not supported")
+            _LOGGER.error(
+                "HW type %s not supported. Share a dump: docs/catalog and CONTRIBUTING.",
+                hw_type,
+            )
+            raise ValueError(
+                f"HW type {hw_type} not supported (see docs/catalog and dump checklist)"
+            )
 
         bus_version = await self.get_bus_version()
 
@@ -101,9 +126,8 @@ class Device:
             self._device_type = CTS602_DEVICE_TYPES[hw_type] + " GEO"
         else:
             self._device_type = CTS602_DEVICE_TYPES[hw_type]
-        if (bus_version >= 10) or (self._air_geo_type != 0):
-            co2_present = await self.get_co2_present()
-        else:
+        co2_present = await self.get_co2_present()
+        if co2_present is None:
             co2_present = False
         if self._air_geo_type == 0:
             for entity, value in CTS602_ENTITY_MAP.items():
@@ -143,6 +167,45 @@ class Device:
         if "get_controller_hardware_version" in self._attributes:
             self._device_hw_ver = await self.get_controller_hardware_version()
 
+        caps = capabilities_for_cts602(hw_type, self._air_geo_type)
+        self._capabilities = caps
+        self._attributes = filter_attributes_by_capabilities(
+            self._attributes, CTS602_ENTITY_MAP, caps
+        )
+        _LOGGER.debug("CTS602 capabilities=%s", sorted(caps))
+
+        if self._stored_dead_registers is not None:
+            try:
+                self._dead_registers = deserialize_dead_registers(
+                    self._stored_dead_registers
+                )
+            except (TypeError, ValueError):
+                _LOGGER.warning(
+                    "Stored dead-register data invalid; re-probing"
+                )
+                self._stored_dead_registers = None
+            if self._stored_dead_registers is not None:
+                self._unsupported_attributes = {
+                    attr
+                    for attr, regs in PROBE_SPECS["CTS602"].items()
+                    if all(
+                        (kind, address) in self._dead_registers
+                        for kind, address in regs
+                    )
+                }
+                _LOGGER.debug(
+                    "Loaded %d dead registers from stored config",
+                    len(self._dead_registers),
+                )
+        if self._stored_dead_registers is None:
+            try:
+                await run_register_probe(self, PROBE_SPECS["CTS602"])
+                self._probe_ran = True
+            except Exception:  # noqa: BLE001 — probe must never fail setup
+                _LOGGER.warning(
+                    "CTS602 register probe failed; continuing with core-only setup"
+                )
+
     def get_assigned(self, platform: str):
         """Get platform assignment."""
         slots = self._attributes
@@ -152,6 +215,11 @@ class Device:
     def get_device_name(self):
         """Device name."""
         return self._device_name
+
+    @property
+    def get_hub_name(self):
+        """Stable entry-derived modbus hub name."""
+        return self._hub_name
 
     @property
     def get_device_type(self):
@@ -172,6 +240,10 @@ class Device:
     def get_attributes(self):
         """Return device attributes."""
         return self._attributes
+
+    def supports_attribute(self, name: str) -> bool:
+        """True when the probed registers for this attribute are alive."""
+        return name not in self._unsupported_attributes
 
     async def check_air_geo(self) -> int:
         """Check if machine type 44 has AIR/GEO support."""
@@ -747,14 +819,14 @@ class Device:
         return None
 
     async def get_external_heating_offset(self) -> float:
-        """Get external heating offset."""
+        """Get central heating external offset (register 1800)."""
         result = await self._modbus.async_pb_call(
             self._unit_id,
             CTS602HoldingRegisters.central_heat_heat_extern,
             1,
             "holding",
         )
-        if result is not None:
+        if result is not None and len(result.registers) >= 1:
             value = int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
@@ -762,6 +834,24 @@ class Device:
             )
             return float(value) / 100
         _LOGGER.error("Could not read get_external_heating_offset")
+        return None
+
+    async def get_room_temperature_neutral_zone(self) -> float:
+        """Get room temperature neutral zone (register 4011)."""
+        result = await self._modbus.async_pb_call(
+            self._unit_id,
+            CTS602HoldingRegisters.air_temp_room_nz,
+            1,
+            "holding",
+        )
+        if result is not None and len(result.registers) >= 1:
+            value = int.from_bytes(
+                result.registers[0].to_bytes(2, "little", signed=False),
+                "little",
+                signed=True,
+            )
+            return float(value) / 100
+        _LOGGER.error("Could not read get_room_temperature_neutral_zone")
         return None
 
     async def get_t0_controller_temperature(self) -> float:
@@ -1021,6 +1111,8 @@ class Device:
 
     async def get_t15_user_panel_temperature(self) -> float:
         """Get T15 user panel Temperature."""
+        if ("input", 215) in self._dead_registers:
+            return None
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602InputRegisters.input_t15_room, 1, "input"
         )
@@ -2096,7 +2188,7 @@ class Device:
             1,
             "input",
         )
-        if result is not None:
+        if result is not None and len(result.registers) >= 1:
             value = int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
@@ -2586,6 +2678,8 @@ class Device:
 
     async def get_user_function_1_state(self) -> bool:
         """Get user function State."""
+        if ("holding", 123) in self._dead_registers:
+            return None
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602HoldingRegisters.output_user_func, 1, "holding"
         )
@@ -2603,6 +2697,8 @@ class Device:
 
     async def get_user_function_2_state(self) -> bool:
         """Get user function 2 State."""
+        if ("holding", 124) in self._dead_registers:
+            return None
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602HoldingRegisters.output_user_func_2, 1, "holding"
         )
@@ -2674,7 +2770,7 @@ class Device:
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602InputRegisters.air_qual_co2_enable, 1, "input"
         )
-        if result is not None:
+        if result is not None and len(result.registers) >= 1:
             value = int.from_bytes(
                 result.registers[0].to_bytes(2, "little", signed=False),
                 "little",
@@ -2781,7 +2877,7 @@ class Device:
         result = await self._modbus.async_pb_call(
             self._unit_id, CTS602HoldingRegisters.time_second, 6, "holding"
         )
-        if result is not None:
+        if result is not None and len(result.registers) >= 6:
             times = [
                 int.from_bytes(
                     x.to_bytes(2, "little", signed=False),
@@ -3506,8 +3602,8 @@ class Device:
             )
 
     async def set_external_heating_offset(self, value: float):
-        """Set external heating offset."""
-        if value >= 0 and value <= 10:
+        """Set central heating external offset (register 1800)."""
+        if value >= -10 and value <= 10:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False
@@ -3515,6 +3611,20 @@ class Device:
             await self._modbus.async_pb_call(
                 self._unit_id,
                 CTS602HoldingRegisters.central_heat_heat_extern,
+                [output],
+                "write_registers",
+            )
+
+    async def set_room_temperature_neutral_zone(self, value: float):
+        """Set room temperature neutral zone (register 4011)."""
+        if value >= -10 and value <= 10:
+            value = int(value * 100)
+            output = int.from_bytes(
+                value.to_bytes(2, "little", signed=True), "little", signed=False
+            )
+            await self._modbus.async_pb_call(
+                self._unit_id,
+                CTS602HoldingRegisters.air_temp_room_nz,
                 [output],
                 "write_registers",
             )

@@ -1,0 +1,201 @@
+# CTS700 2018+ Compact P (CTS700)
+# Fan: holding 21771 percent. Setpoint 20102. Room current 20286.
+# Do NOT use Nordic 4747 = 101-104 on this board.
+# Prefer custom_components/nilan board "CTS700 (2018+ / Compact P)".
+# Never run this YAML and the Nilan integration on the same unit.
+
+modbus:
+  - name: nilan_cts700_2018
+    type: tcp
+    host: YOUR_HOST_IP
+    port: 502
+    delay: 1
+    timeout: 3
+    sensors:
+      - name: Nilan CompactP Room Setpoint
+        unique_id: nilan_2018_room_setpoint
+        slave: 1
+        address: 20102
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP Room Current
+        unique_id: nilan_2018_room_current
+        slave: 1
+        address: 20286
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP Fan Percent
+        unique_id: nilan_2018_fan_percent
+        slave: 1
+        address: 21771
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        state_class: measurement
+
+      - name: Nilan CompactP Humidity Average
+        unique_id: nilan_2018_humidity
+        slave: 1
+        address: 20164
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+
+      - name: Nilan CompactP T1 Outdoor
+        unique_id: nilan_2018_t1
+        slave: 1
+        address: 20282
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T2 Supply
+        unique_id: nilan_2018_t2
+        slave: 1
+        address: 20284
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T3 Extract
+        unique_id: nilan_2018_t3
+        slave: 1
+        address: 20286
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T4 After HEX
+        unique_id: nilan_2018_t4
+        slave: 1
+        address: 20288
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T5 After HP
+        unique_id: nilan_2018_t5
+        slave: 1
+        address: 20290
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T6 Evaporator
+        unique_id: nilan_2018_t6
+        slave: 1
+        address: 20292
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T8 Before Preheater
+        unique_id: nilan_2018_t8
+        slave: 1
+        address: 20296
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP Filter Days
+        unique_id: nilan_2018_filter_days
+        slave: 1
+        address: 20103
+        input_type: holding
+        data_type: uint16
+        unit_of_measurement: d
+        state_class: measurement
+
+      - name: Nilan CompactP DHW Setpoint
+        unique_id: nilan_2018_dhw_setpoint
+        slave: 1
+        address: 20460
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T11 DHW Top
+        unique_id: nilan_2018_t11
+        slave: 1
+        address: 20520
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+      - name: Nilan CompactP T12 DHW Bottom
+        unique_id: nilan_2018_t12
+        slave: 1
+        address: 20522
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+
+    climates:
+      - name: Nilan CompactP Room
+        unique_id: nilan_2018_room_climate
+        slave: 1
+        address: 20286
+        input_type: holding
+        data_type: int16
+        scale: 0.1
+        precision: 1
+        target_temp_register: 20102
+        target_temp_register_type: holding
+        max_temp: 30
+        min_temp: 5
+        temp_step: 0.5
+        temperature_unit: C

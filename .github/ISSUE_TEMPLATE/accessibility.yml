@@ -1,0 +1,41 @@
+name: Accessibility
+description: Barrier in docs, translations, or entity naming
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Accessibility reports are welcome. Most Lovelace UI comes from Home Assistant core; focus on this integration's docs, translations, and entity or config-flow strings when possible.
+  - type: textarea
+    id: barrier
+    attributes:
+      label: What blocked you?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Critical (cannot complete a core task)
+        - High
+        - Medium
+        - Low
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser or companion app, assistive technology and version if any.
+  - type: textarea
+    id: extra
+    attributes:
+      label: Extra context
+      description: Screenshots, entity ids, language setting.

@@ -25,6 +25,83 @@ ATTRIBUTE_TO_SWITCHES = {
             "mdi:radiator",
         )
     ],
+    "get_electric_water_heater_state": [
+        Map(
+            "electrical_supplement_heater",
+            "set_electric_water_heater_state",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:heating-coil",
+            "mdi:heating-coil",
+        )
+    ],
+    "get_ventilation_pause": [
+        Map(
+            "ventilation_pause",
+            "set_ventilation_pause",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:fan-off",
+            "mdi:fan-off",
+        )
+    ],
+    "get_hot_water_production_pause": [
+        Map(
+            "hot_water_production_pause",
+            "set_hot_water_production_pause",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:water-boiler-off",
+            "mdi:water-boiler-off",
+        )
+    ],
+    "get_allow_active_cooling": [
+        Map(
+            "allow_active_cooling",
+            "set_allow_active_cooling",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:snowflake-off",
+            "mdi:snowflake",
+        )
+    ],
+    "get_frost_protection": [
+        Map(
+            "frost_protection",
+            "set_frost_protection",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:snowflake-melt",
+            "mdi:snowflake-alert",
+        )
+    ],
+    "get_anti_legionella_manual": [
+        Map(
+            "anti_legionella_manual",
+            "set_anti_legionella_manual",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:bacteria-outline",
+            "mdi:bacteria",
+        )
+    ],
+    "get_automatic_anti_legionella": [
+        Map(
+            "automatic_anti_legionella",
+            "set_automatic_anti_legionella",
+            EntityCategory.CONFIG,
+            0,
+            1,
+            "mdi:bacteria-outline",
+            "mdi:bacteria",
+        )
+    ],
     "get_hps_main_switch": [
         Map(
             "hps_main_switch",
@@ -93,7 +170,7 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
         self._on_value = on_value
         self._attr_translation_key = self._name
         self._attr_has_entity_name = True
-        self._attr_unique_id = self._name
+        self._attr_unique_id = self.make_unique_id(self._name)
 
     @property
     def icon(self) -> str | None:
@@ -112,4 +189,7 @@ class NilanCTS602Switch(SwitchEntity, NilanEntity):
 
     async def async_update(self) -> None:
         """Fetch new state data for the sensor."""
-        self._attr_is_on = await getattr(self._device, self._attribute)()
+        value = await getattr(self._device, self._attribute)()
+        # Keep last known value on brief Modbus misses (avoids "unknown" flicker).
+        if value is not None:
+            self._attr_is_on = value
