@@ -450,6 +450,7 @@
           "central_heating_setpoint": {"name": "Keskuslämmityksen Tavoitelämpötila"},
           "humidity": {"name": "Kosteus"},
           "24h_average_humidity": {"name": "24h Kosteuden Keskiarvo"},
+          "central_heater_capacity": {"name": "Keskuslämmityksen Sähkövastuksen Teho"},
           "after_heating_element_capacity": {"name": "Jälkilämmityselementin Kapasiteetti"},
           "co2_sensor": {"name": "Hiilidioksidi"},
           "control_state": {

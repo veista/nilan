@@ -432,6 +432,17 @@ ATTRIBUTE_TO_SENSORS = {
             True,
         )
     ],
+    "get_central_heater_capacity": [
+        Map(
+            "central_heater_capacity",
+            PERCENTAGE,
+            None,
+            SensorStateClass.MEASUREMENT,
+            None,
+            "mdi:heating-coil",
+            True,
+        )
+    ],
     "get_hps_compressor_capacity": [
         Map(
             "hps_compressor_capacity",
