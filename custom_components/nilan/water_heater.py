@@ -43,7 +43,7 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
         super().__init__(device)
         self._state = None
         self._previous_temp = 55
-        self._attr_temperature_unit = UnitOfTemperature.CELSIUS
+        self._attr_native_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_operation_list = [STATE_OFF, STATE_ELECTRIC]
         self._attr_supported_features = (
             WaterHeaterEntityFeature.TARGET_TEMPERATURE
@@ -68,22 +68,22 @@ class NilanTopWaterHeater(NilanEntity, WaterHeaterEntity):
 
     async def async_update(self) -> None:
         """Update sensor values."""
-        self._attr_target_temperature = (
+        self._attr_native_target_temperature = (
             await self._device.get_electric_water_heater_setpoint()
         )
-        self._attr_current_temperature = (
+        self._attr_native_current_temperature = (
             await self._device.get_t11_electric_water_heater_temperature()
         )
         running_state = await self._device.get_electric_water_heater_state()
         if running_state == 1:
             self._state = "heating"
-        elif self._attr_target_temperature != 0:
+        elif self._attr_native_target_temperature != 0:
             self._state = "idle"
         else:
             self._state = STATE_OFF
 
-        if self._attr_target_temperature != 0:
-            self._previous_temp = self._attr_target_temperature
+        if self._attr_native_target_temperature != 0:
+            self._previous_temp = self._attr_native_target_temperature
             self._attr_current_operation = STATE_ELECTRIC
         else:
             self._attr_current_operation = STATE_OFF
@@ -119,7 +119,7 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
         super().__init__(device)
         self._state = None
         self._previous_temp = 55
-        self._attr_temperature_unit = UnitOfTemperature.CELSIUS
+        self._attr_native_temperature_unit = UnitOfTemperature.CELSIUS
         self._attr_operation_list = [STATE_OFF, STATE_HEAT_PUMP]
         self._attr_supported_features = (
             WaterHeaterEntityFeature.TARGET_TEMPERATURE
@@ -146,22 +146,22 @@ class NilanBottomWaterHeater(NilanEntity, WaterHeaterEntity):
 
     async def async_update(self) -> None:
         """Update sensor values."""
-        self._attr_target_temperature = (
+        self._attr_native_target_temperature = (
             await self._device.get_compressor_water_heater_setpoint()
         )
-        self._attr_current_temperature = (
+        self._attr_native_current_temperature = (
             await self._device.get_t12_compressor_water_heater_temperature()
         )
         running_state = await self._device.get_control_state()
         if running_state in (9, 11, 17):
             self._state = "heating"
-        elif self._attr_target_temperature != 0:
+        elif self._attr_native_target_temperature != 0:
             self._state = "idle"
         else:
             self._state = STATE_OFF
 
-        if self._attr_target_temperature != 0:
-            self._previous_temp = self._attr_target_temperature
+        if self._attr_native_target_temperature != 0:
+            self._previous_temp = self._attr_native_target_temperature
             self._attr_current_operation = STATE_HEAT_PUMP
         else:
             self._attr_current_operation = STATE_OFF
