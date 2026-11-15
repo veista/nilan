@@ -41,6 +41,38 @@ You must have one interface type installed on your Nilan device for this Integra
 * USR-TCP232-410S
 * Waveshare RS485 TO ETH (B)
 * https://github.com/veista/modbus_bridge
+* Elfin EW11 (WiFi), see [Elfin EW11 setup](#elfin-ew11-setup)
+
+#### Elfin EW11 setup
+Known-working configuration, tested with EW11 firmware 1.50.0 on a CTS602 unit (Modbus address 30).
+
+**Serial Port Settings**
+
+| Setting | Value |
+|---|---|
+| Baud Rate / Data Bit / Stop Bit / Parity | 19200 / 8 / 1 / Even |
+| Buffer Size | 512 |
+| Gap Time | 10 ms |
+| Flow Control | Half Duplex |
+| Protocol | Modbus |
+
+**Communication Settings** (socket `netp`)
+
+| Setting | Value |
+|---|---|
+| Protocol | Tcp Server |
+| Local Port | 502 |
+| Buffer Size | 512 |
+| Keep Alive | 60 s |
+| Timeout | 60 s |
+| Max Accept | 3 |
+| Route | Uart |
+
+Notes:
+- The serial-page Protocol must be **Modbus**. That is what makes the EW11 translate Modbus TCP to Modbus RTU; a plain transparent serial bridge will not work.
+- Flow Control **Half Duplex** is needed for RS485.
+- Gap Time 10 ms (default 50 ms) and socket Timeout 60 s (default 3 s) noticeably reduced "Not connected" errors in long-term use.
+- If the connection stops responding after a Home Assistant restart, restart the EW11 from its web UI (Other tab).
 
 ### Software
 #### Manually
