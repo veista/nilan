@@ -143,7 +143,7 @@
           "minimum_supply_air_temperature_in_winter": {"name": "Minimale Zulufttemperatur im Winter"},
           "maximum_supply_air_temperature_in_summer": {"name": "Maximale Zulufttemperatur im Sommer"},
           "maximum_supply_air_temperature_in_winter": {"name": "Maximale Zulufttemperatur im Winter"},
-          "room_temperature_neutral_zone": {"name": "Neutrale Raumtemperaturzone"},
+          "room_temperature_neutral_zone": {"name": "Offset externe Heizung"},
           "change_to_summer_state_setpoint": {"name": "Sollwert für wechsel in Sommer Status"},
           "supply_fan_power_at_level_1": {"name": "Lüfterleistung auf Stufe 1 stellen"},
           "supply_fan_power_at_level_2": {"name": "Lüfterleistung auf Stufe 2 stellen"},
