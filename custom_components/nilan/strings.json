@@ -142,7 +142,7 @@
       "minimum_supply_air_temperature_in_winter": {"name": "Minimum Supply Air Temperature in Winter"},
       "maximum_supply_air_temperature_in_summer": {"name": "Maximum Supply Air Temperature in Summer"},
       "maximum_supply_air_temperature_in_winter": {"name": "Maximum Supply Air Temperature in Winter"},
-      "room_temperature_neutral_zone": {"name": "Room Temperature Neutral Zone"},
+      "room_temperature_neutral_zone": {"name": "External Heating Offset"},
       "change_to_summer_state_setpoint": {"name": "Change to Summer State Setpoint"},
       "supply_fan_power_at_level_1": {"name": "Supply Fan Power at Level 1"},
       "supply_fan_power_at_level_2": {"name": "Supply Fan Power at Level 2"},

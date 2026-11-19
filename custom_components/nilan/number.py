@@ -156,7 +156,7 @@ ATTRIBUTE_TO_NUMBERS = {
             "room_temperature_neutral_zone",
             "set_external_heating_offset",
             EntityCategory.CONFIG,
-            0,
+            -5,
             10,
             1,
             NumberMode.BOX,

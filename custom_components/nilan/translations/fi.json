@@ -142,7 +142,7 @@
           "minimum_supply_air_temperature_in_winter": {"name": "Pienin Tuloilman Lämpötila Talvella"},
           "maximum_supply_air_temperature_in_summer": {"name": "Suurin Tuloilman Lämpötila Kesälla"},
           "maximum_supply_air_temperature_in_winter": {"name": "Suurin Tuloilman Lämpötila Talvella"},
-          "room_temperature_neutral_zone": {"name": "Huonelämpötilan Neutraali Alue"},
+          "room_temperature_neutral_zone": {"name": "Ulkoisen lämmityksen offset"},
           "change_to_summer_state_setpoint": {"name": "Kesätilan Raja-arvo"},
           "supply_fan_power_at_level_1": {"name": "Tuloilman Teho Tasolla 1"},
           "supply_fan_power_at_level_2": {"name": "Tuloilman Teho Tasolla 2"},

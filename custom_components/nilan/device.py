@@ -3507,7 +3507,7 @@ class Device:
 
     async def set_external_heating_offset(self, value: float):
         """Set external heating offset."""
-        if value >= 0 and value <= 10:
+        if value >= -5 and value <= 10:
             value = int(value * 100)
             output = int.from_bytes(
                 value.to_bytes(2, "little", signed=True), "little", signed=False

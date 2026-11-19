@@ -142,7 +142,7 @@
           "minimum_supply_air_temperature_in_winter": {"name": "Min tilluftstemperatur om vinteren"},
           "maximum_supply_air_temperature_in_summer": {"name": "Maks tilluftstemperatur om sommeren"},
           "maximum_supply_air_temperature_in_winter": {"name": "Maks tilluftstemperatur om vinteren"},
-          "room_temperature_neutral_zone": {"name": "Nøytral sone for romtemperatur"},
+          "room_temperature_neutral_zone": {"name": "Ekstern varme-offset"},
           "change_to_summer_state_setpoint": {"name": "Settpunkt for overgang til sommermodus"},
           "supply_fan_power_at_level_1": {"name": "Tilluftsvifte effekt på nivå 1"},
           "supply_fan_power_at_level_2": {"name": "Tilluftsvifte effekt på nivå 2"},
